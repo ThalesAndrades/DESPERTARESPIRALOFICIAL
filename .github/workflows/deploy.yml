@@ -1,11 +1,14 @@
 name: Deploy
 
-# Builda em push para main e publica os arquivos finais na branch `production`.
+# Em PR contra main: roda só lint + build (verifica que não quebra).
+# Em push para main: roda lint + build + publica na branch `production`.
 # O Hostinger Cloud aponta o Git Auto Deploy do site `despertarespiral.com`
 # para essa branch — assim ele recebe só o dist/ pronto, sem source code.
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -23,7 +26,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Checkout main
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -57,6 +60,7 @@ jobs:
           test -f dist/sitemap.xml && echo "✓ sitemap.xml presente"
 
       - name: Publish to production branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           cd dist
           # Cria um marcador para o Hostinger e GitHub identificarem
@@ -75,7 +79,8 @@ jobs:
           git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" production
           echo "✓ Branch production atualizada com sucesso"
 
-      - name: Summary
+      - name: Summary (deploy)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           echo "## 🚀 Deploy publicado" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -85,3 +90,14 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Próximo passo: o Git Auto Deploy do Hostinger Cloud deve puxar a branch \`production\` automaticamente." >> $GITHUB_STEP_SUMMARY
           echo "Se não estiver configurado, veja \`docs/DEPLOY.md\`." >> $GITHUB_STEP_SUMMARY
+
+      - name: Summary (verify)
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## ✅ PR verificada" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Lint: ok" >> $GITHUB_STEP_SUMMARY
+          echo "- Build: ok" >> $GITHUB_STEP_SUMMARY
+          echo "- Artefatos verificados: \`.htaccess\`, \`index.html\`, \`robots.txt\`, \`sitemap.xml\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Deploy real só roda quando esta PR for mergeada para \`main\`." >> $GITHUB_STEP_SUMMARY
