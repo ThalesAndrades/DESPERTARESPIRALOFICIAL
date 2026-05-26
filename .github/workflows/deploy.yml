@@ -1,0 +1,87 @@
+name: Deploy
+
+# Builda em push para main e publica os arquivos finais na branch `production`.
+# O Hostinger Cloud aponta o Git Auto Deploy do site `despertarespiral.com`
+# para essa branch — assim ele recebe só o dist/ pronto, sem source code.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    name: Build & Publish to production
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build (produção)
+        run: npm run build
+        env:
+          VITE_SITE_URL: https://despertarespiral.com
+          NODE_ENV: production
+
+      - name: Preparar dist com .htaccess e SEO
+        run: |
+          # Garante que arquivos vindos de public/ chegaram em dist/
+          ls -la dist/
+          # Sanity check: .htaccess presente?
+          test -f dist/.htaccess && echo "✓ .htaccess presente" || (echo "✗ .htaccess faltando" && exit 1)
+          test -f dist/index.html && echo "✓ index.html presente" || (echo "✗ index.html faltando" && exit 1)
+          test -f dist/robots.txt && echo "✓ robots.txt presente"
+          test -f dist/sitemap.xml && echo "✓ sitemap.xml presente"
+
+      - name: Publish to production branch
+        run: |
+          cd dist
+          # Cria um marcador para o Hostinger e GitHub identificarem
+          cat > .deploy-info <<EOF
+          Build: ${{ github.sha }}
+          Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          Run: ${{ github.run_number }}
+          EOF
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q -b production
+          git add -A
+          git commit -q -m "Deploy ${{ github.sha }} (run #${{ github.run_number }})"
+          # Force-push: a branch production é descartável — sempre reflete o último build
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" production
+          echo "✓ Branch production atualizada com sucesso"
+
+      - name: Summary
+        run: |
+          echo "## 🚀 Deploy publicado" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: \`production\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit fonte: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Run: #${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Próximo passo: o Git Auto Deploy do Hostinger Cloud deve puxar a branch \`production\` automaticamente." >> $GITHUB_STEP_SUMMARY
+          echo "Se não estiver configurado, veja \`docs/DEPLOY.md\`." >> $GITHUB_STEP_SUMMARY
