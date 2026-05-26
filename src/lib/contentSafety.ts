@@ -30,14 +30,23 @@ function isSafeHref(href: string): boolean {
 
 export function sanitizeHtml(input: string): string {
   if (!input) return "";
-  const doc = new DOMParser().parseFromString(input, "text/html");
+  // document.createElement is more reliable in jsdom than DOMParser.
+  const container = document.createElement("div");
+  container.innerHTML = input;
+
+  // Tags whose content must be discarded entirely (not unwrapped).
+  const DROP_TAGS = new Set(["script", "style", "iframe", "object", "embed", "noscript"]);
 
   const walk = (node: Node) => {
     if (node.nodeType === Node.ELEMENT_NODE) {
       const el = node as HTMLElement;
       const tag = el.tagName.toLowerCase();
+      if (DROP_TAGS.has(tag)) {
+        el.remove();
+        return;
+      }
       if (!ALLOWED_TAGS.has(tag)) {
-        const text = doc.createTextNode(el.textContent ?? "");
+        const text = document.createTextNode(el.textContent ?? "");
         el.replaceWith(text);
         return;
       }
@@ -51,7 +60,7 @@ export function sanitizeHtml(input: string): string {
       if (tag === "a") {
         const href = el.getAttribute("href") ?? "";
         if (!href || !isSafeHref(href)) {
-          const text = doc.createTextNode(el.textContent ?? "");
+          const text = document.createTextNode(el.textContent ?? "");
           el.replaceWith(text);
           return;
         }
@@ -65,8 +74,11 @@ export function sanitizeHtml(input: string): string {
     }
   };
 
-  walk(doc.body);
-  return doc.body.innerHTML;
+  // Walk children only — the root container itself is just a holder.
+  for (const child of Array.from(container.childNodes)) {
+    walk(child);
+  }
+  return container.innerHTML;
 }
 
 export function safeExternalUrl(input: string): string | null {

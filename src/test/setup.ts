@@ -56,16 +56,10 @@ Object.defineProperty(window, "localStorage", {
   writable: true,
 });
 
-// DOMParser (available in jsdom — stub for environments that miss it)
-if (!global.DOMParser) {
-  // @ts-expect-error minimal stub
-  global.DOMParser = class {
-    parseFromString(str: string, _type: string) {
-      const doc = document.implementation.createHTMLDocument();
-      doc.body.innerHTML = str;
-      return doc;
-    }
-  };
+// DOMParser — jsdom exposes it on window only; bridge it to globalThis so
+// non-window callers (e.g. src/lib/contentSafety.ts) can use `new DOMParser()`.
+if (typeof window !== "undefined" && window.DOMParser && !globalThis.DOMParser) {
+  globalThis.DOMParser = window.DOMParser;
 }
 
 // Silence console.warn/error noise from React internals in tests
