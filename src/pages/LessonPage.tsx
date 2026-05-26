@@ -747,7 +747,7 @@ export default function LessonPage() {
                       <p style={{ fontSize: "14px", color: "rgba(245,240,232,0.75)", lineHeight: 1.7, marginBottom: "10px" }}>
                         Link de vídeo inválido ou não permitido.
                       </p>
-                      <a href="mailto:contato@despertarespiral.com" className="btn-outline-gold" style={{ fontSize: "9px", padding: "10px 22px" }}>
+                      <a href="mailto:contato@despertarespiral.com.br" className="btn-outline-gold" style={{ fontSize: "9px", padding: "10px 22px" }}>
                         Falar com suporte
                       </a>
                     </div>

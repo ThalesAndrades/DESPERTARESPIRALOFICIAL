@@ -184,9 +184,12 @@ export default function App() {
         <Route path="/admin/traffic"              element={<AdminRoute><AdminTrafficPage /></AdminRoute>} />
         <Route path="/admin/events"               element={<AdminRoute><AdminEventsPage /></AdminRoute>} />
 
-        {/* QR-gated event page — access control handled inside component */}
-        <Route path="/mapadopoder" element={<MapaDoPoder />} />
-        <Route path="/mapa"        element={<MapaDoPoder />} />
+        {/* Mapa do Poder — ferramenta pública (acesso direto, sem QR) */}
+        <Route path="/mapa-do-poder" element={<MapaDoPoder />} />
+
+        {/* Rotas legacy — QR-gated (compatibilidade com QRs já impressos) */}
+        <Route path="/mapadopoder" element={<MapaDoPoder requireQR />} />
+        <Route path="/mapa"        element={<MapaDoPoder requireQR />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

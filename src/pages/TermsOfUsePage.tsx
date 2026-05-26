@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
-const CONTACT_EMAIL = "contato@despertarespiral.com";
+const CONTACT_EMAIL = "contato@despertarespiral.com.br";
 const SITE_NAME = "Despertar Espiral";
 
 function SectionTitle({ children }: { children: string }) {
@@ -50,7 +50,7 @@ function Li({ children }: { children: ReactNode }) {
 export default function TermsOfUsePage() {
   const title = `Termos de Uso — ${SITE_NAME}`;
   const description = "Regras e condições para uso do site e plataforma Despertar Espiral.";
-  const canonical = "https://despertarespiral.com/termos";
+  const canonical = "https://despertarespiral.com.br/termos";
 
   return (
     <div style={{ minHeight: "100dvh", background: "var(--bg-surface)", color: "var(--text-primary)" }}>

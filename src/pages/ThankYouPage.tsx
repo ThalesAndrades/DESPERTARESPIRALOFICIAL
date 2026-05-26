@@ -262,9 +262,9 @@ export default function ThankYouPage() {
               <div style={{ background: "var(--bg-surface)", borderRadius: "10px", padding: "10px 12px", border: "1px solid var(--border-subtle)", marginBottom: "10px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
                   <code style={{ fontSize: "clamp(11px,1.4vw,13px)", color: "var(--text-primary)", flex: 1, wordBreak: "break-all", lineHeight: 1.6 }}>
-                    {pixKey || "contato@despertarespiral.com"}
+                    {pixKey || "contato@despertarespiral.com.br"}
                   </code>
-                  <CopyButton text={pixKey || "contato@despertarespiral.com"} />
+                  <CopyButton text={pixKey || "contato@despertarespiral.com.br"} />
                 </div>
               </div>
 
@@ -304,8 +304,8 @@ export default function ThankYouPage() {
 
           <p style={{ fontSize: "12px", color: "var(--text-muted)", lineHeight: 1.72 }}>
             {payMethod === "pix"
-              ? <>Após o pagamento, envie o comprovante com o número <strong style={{ color: "var(--text-primary)" }}>#{shortId}</strong> para{" "}<a href="mailto:contato@despertarespiral.com" style={{ color: "var(--gold)", textDecoration: "none" }}>contato@despertarespiral.com</a>. Acesso liberado em até 1h.</>
-              : <>Em caso de dúvidas, entre em contato com o número <strong style={{ color: "var(--text-primary)" }}>#{shortId}</strong> pelo e-mail{" "}<a href="mailto:contato@despertarespiral.com" style={{ color: "var(--gold)", textDecoration: "none" }}>contato@despertarespiral.com</a>.</>}
+              ? <>Após o pagamento, envie o comprovante com o número <strong style={{ color: "var(--text-primary)" }}>#{shortId}</strong> para{" "}<a href="mailto:contato@despertarespiral.com.br" style={{ color: "var(--gold)", textDecoration: "none" }}>contato@despertarespiral.com.br</a>. Acesso liberado em até 1h.</>
+              : <>Em caso de dúvidas, entre em contato com o número <strong style={{ color: "var(--text-primary)" }}>#{shortId}</strong> pelo e-mail{" "}<a href="mailto:contato@despertarespiral.com.br" style={{ color: "var(--gold)", textDecoration: "none" }}>contato@despertarespiral.com.br</a>.</>}
           </p>
         </div>
 

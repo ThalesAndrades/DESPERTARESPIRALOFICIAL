@@ -32,7 +32,7 @@ function clearCache() {
 
 const MOCK_USER: AuthUser = {
   id: "user-123",
-  email: "test@despertarespiral.com",
+  email: "test@despertarespiral.com.br",
   name: "Test User",
   role: "member",
   anonymous_name: "Lua Crescente",
@@ -62,7 +62,7 @@ describe("Auth cache helpers", () => {
     it("returns cached user when no userId filter", () => {
       writeCache(MOCK_USER);
       const result = readCache();
-      expect(result).toMatchObject({ id: "user-123", email: "test@despertarespiral.com" });
+      expect(result).toMatchObject({ id: "user-123", email: "test@despertarespiral.com.br" });
     });
 
     it("returns cached user when userId matches", () => {

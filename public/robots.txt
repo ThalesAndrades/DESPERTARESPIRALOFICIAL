@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://despertarespiral.com/sitemap.xml
+Sitemap: https://despertarespiral.com.br/sitemap.xml
