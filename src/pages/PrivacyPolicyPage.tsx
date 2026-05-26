@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
-const CONTACT_EMAIL = "contato@despertarespiral.com";
+const CONTACT_EMAIL = "contato@despertarespiral.com.br";
 const SITE_NAME = "Despertar Espiral";
 
 function SectionTitle({ children }: { children: string }) {
@@ -51,7 +51,7 @@ export default function PrivacyPolicyPage() {
   const title = `Política de Privacidade — ${SITE_NAME}`;
   const description =
     "Entenda quais dados coletamos, como usamos, com quem compartilhamos e como você pode exercer seus direitos.";
-  const canonical = "https://despertarespiral.com/privacidade";
+  const canonical = "https://despertarespiral.com.br/privacidade";
 
   return (
     <div style={{ minHeight: "100dvh", background: "var(--bg-surface)", color: "var(--text-primary)" }}>

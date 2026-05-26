@@ -1,12 +1,12 @@
 # Despertar Espiral
 
-Plataforma de cursos, comunidade e jornadas femininas — **modo local**, sem dependências externas. Deploy direto em `despertarespiral.com` via Hostinger Cloud + GitHub Auto Deploy.
+Plataforma de cursos, comunidade e jornadas femininas — **modo local**, sem dependências externas. Deploy direto em `despertarespiral.com.br` via Hostinger Cloud + GitHub Auto Deploy.
 
 Roda 100% no navegador: dados são persistidos em `localStorage`, autenticação e pagamentos são simulados, e o build padrão não precisa de chaves de API ou serviços de terceiros.
 
 ## Deploy
 
-- **Produção**: `despertarespiral.com`
+- **Produção**: `despertarespiral.com.br`
 - **Fluxo**: push em `main` → GitHub Actions builda → publica em branch `production` → Hostinger Git Auto Deploy puxa → ar
 - **Guia completo**: [`docs/DEPLOY.md`](docs/DEPLOY.md)
 

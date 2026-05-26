@@ -2,7 +2,7 @@ name: Deploy
 
 # Em PR contra main: roda só lint + build (verifica que não quebra).
 # Em push para main: roda lint + build + publica na branch `production`.
-# O Hostinger Cloud aponta o Git Auto Deploy do site `despertarespiral.com`
+# O Hostinger Cloud aponta o Git Auto Deploy do site `despertarespiral.com.br`
 # para essa branch — assim ele recebe só o dist/ pronto, sem source code.
 
 on:
@@ -46,7 +46,7 @@ jobs:
       - name: Build (produção)
         run: npm run build
         env:
-          VITE_SITE_URL: https://despertarespiral.com
+          VITE_SITE_URL: https://despertarespiral.com.br
           NODE_ENV: production
 
       - name: Preparar dist com .htaccess e SEO

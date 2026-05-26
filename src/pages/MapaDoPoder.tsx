@@ -1,18 +1,25 @@
 /**
- * MapaDoPoder — QR-gated event experience
- * Access: only via QR code (?src=evento or ?r=*)
- * Direct URL access → redirect to /
+ * MapaDoPoder — ferramenta de ativação do poder (8 etapas)
  *
- * 4 Phases: Intro → 8 Steps → Lead Capture → Complete
- * Premium UI/UX: immersive, scroll-snap, cinematic transitions
+ * Modos de acesso:
+ * - `/mapa-do-poder`: acesso público direto (modo ferramenta)
+ * - `/mapadopoder` ou `/mapa`: legacy, QR-gated (mantém compatibilidade com QRs já impressos)
+ *
+ * 5 fases: Intro → 8 Etapas → Lead Capture → Meu Mapa (resumo) → Complete
+ * Persistência: respostas salvas em localStorage; sobrevive a refresh.
  */
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { fireEventAsync } from "@/lib/sequenzy";
 import { toast } from "sonner";
-import { ArrowRight, ChevronLeft, ChevronRight, Sparkles, Star, Heart, Volume2, Send, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Sparkles, Star, Heart, Volume2, Send, CheckCircle2, Loader2, Printer, RotateCcw } from "lucide-react";
 import heroImg from "@/assets/mapa-poder-hero.jpg";
+
+interface MapaDoPoderProps {
+  /** Quando true, requer query param ?src/?r/?ref. Quando false, acesso público. */
+  requireQR?: boolean;
+}
 
 /* ════════════════════════════════════════════════════════
    STEP DEFINITIONS
@@ -183,11 +190,62 @@ function GoldParticles() {
 }
 
 /* ════════════════════════════════════════════════════════
+   PERSISTÊNCIA (localStorage)
+════════════════════════════════════════════════════════ */
+type Phase = "intro" | "steps" | "capture" | "result" | "complete";
+
+const PROGRESS_KEY = "mapa_poder_progress_v1";
+
+interface SavedProgress {
+  phase: Phase;
+  step: number;
+  answers: string[][];
+  affirmRead: boolean;
+  medDone: boolean;
+  email?: string;
+  phone?: string;
+  updatedAt: number;
+}
+
+function emptyAnswers(): string[][] {
+  return STEPS.map((s) =>
+    s.type === "multi-textarea" ? Array(s.inputs ?? 1).fill("") : [""]
+  );
+}
+
+function loadProgress(): SavedProgress | null {
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as SavedProgress;
+    // Sanity check: precisa ter o mesmo número de etapas
+    if (!Array.isArray(parsed.answers) || parsed.answers.length !== STEPS.length) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function saveProgress(p: SavedProgress) {
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
+  } catch {
+    /* quota — ignora */
+  }
+}
+
+function clearProgress() {
+  try {
+    localStorage.removeItem(PROGRESS_KEY);
+  } catch {
+    /* ignora */
+  }
+}
+
+/* ════════════════════════════════════════════════════════
    MAIN PAGE COMPONENT
 ════════════════════════════════════════════════════════ */
-type Phase = "intro" | "steps" | "capture" | "complete";
-
-export default function MapaDoPoder() {
+export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}) {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const [hasAccess, setHasAccess] = useState<boolean | null>(null);
@@ -195,25 +253,56 @@ export default function MapaDoPoder() {
   // State
   const [phase,      setPhase]      = useState<Phase>("intro");
   const [step,       setStep]       = useState(0);          // 0-based index
-  const [answers,    setAnswers]    = useState<string[][]>( STEPS.map((s) => s.type === "multi-textarea" ? Array(s.inputs ?? 1).fill("") : [""]) );
+  const [answers,    setAnswers]    = useState<string[][]>(() => emptyAnswers());
   const [email,      setEmail]      = useState("");
   const [phone,      setPhone]      = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [affirmRead, setAffirmRead] = useState(false);
   const [medDone,    setMedDone]    = useState(false);
   const [animIn,     setAnimIn]     = useState(true);
+  const [hydrated,   setHydrated]   = useState(false);
   const containerRef  = useRef<HTMLDivElement>(null);
   /* Placeholder email used for anonymous tracking before lead capture */
-  const trackEmail    = useRef(`anon_mapa_${Date.now()}@despertarespiral.com`);
+  const trackEmail    = useRef(`anon_mapa_${Date.now()}@despertarespiral.com.br`);
 
-  /* ── Access check on mount ── */
+  /* ── Access check + hidratação do localStorage ── */
   useEffect(() => {
-    const access = checkQRAccess(params);
+    // Quando requireQR=true (rotas legacy /mapadopoder, /mapa): exige query param
+    // Quando requireQR=false (rota /mapa-do-poder): acesso público direto
+    const access = requireQR ? checkQRAccess(params) : true;
     setHasAccess(access);
+
     if (!access) {
       setTimeout(() => navigate("/", { replace: true }), 100);
+      return;
     }
-  }, [params, navigate]);
+
+    // Restaura progresso anterior
+    const saved = loadProgress();
+    if (saved) {
+      setPhase(saved.phase);
+      setStep(saved.step);
+      setAnswers(saved.answers);
+      setAffirmRead(saved.affirmRead);
+      setMedDone(saved.medDone);
+      if (saved.email)  setEmail(saved.email);
+      if (saved.phone)  setPhone(saved.phone);
+    }
+    setHydrated(true);
+  }, [params, navigate, requireQR]);
+
+  /* ── Salva progresso a cada mudança relevante (após hidratação) ── */
+  useEffect(() => {
+    if (!hydrated || !hasAccess) return;
+    // Não salva quando termina (estado limpo após "Refazer")
+    if (phase === "complete") return;
+    saveProgress({
+      phase, step, answers, affirmRead, medDone,
+      email: email || undefined,
+      phone: phone || undefined,
+      updatedAt: Date.now(),
+    });
+  }, [hydrated, hasAccess, phase, step, answers, affirmRead, medDone, email, phone]);
 
   /* ── Fire mapa.finished once when complete phase is entered ── */
   const finishedFired = useRef(false);
@@ -277,13 +366,13 @@ export default function MapaDoPoder() {
   /* ── Lead capture submit ── */
   const handleCapture = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email && !phone) { setPhase("complete"); return; }
+    if (!email && !phone) { setPhase("result"); return; }
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast.error("E-mail inválido. Verifique e tente novamente.");
       return;
     }
     setSubmitting(true);
-    const finalEmail = email.trim() || `evento_${Date.now()}@despertarespiral.com`;
+    const finalEmail = email.trim() || `evento_${Date.now()}@despertarespiral.com.br`;
     /* Update tracking email to real email if provided */
     if (email.trim()) trackEmail.current = email.trim();
 
@@ -304,7 +393,7 @@ export default function MapaDoPoder() {
     });
 
     setSubmitting(false);
-    setPhase("complete");
+    setPhase("result");
   };
 
   /* ── Can advance current step? ── */
@@ -447,9 +536,9 @@ export default function MapaDoPoder() {
               <ArrowRight size={18} strokeWidth={2.5} />
             </button>
 
-            {/* Scroll hint */}
+            {/* Hint contextual */}
             <p style={{ marginTop: "20px", fontSize: "11px", color: "rgba(245,240,232,0.32)", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.12em" }}>
-              Exclusive — acesso via QR code
+              {requireQR ? "Exclusive — acesso via QR code" : "Suas respostas são salvas automaticamente neste dispositivo"}
             </p>
           </div>
         </div>
@@ -948,7 +1037,7 @@ export default function MapaDoPoder() {
 
             <button
               type="button"
-              onClick={() => setPhase("complete")}
+              onClick={() => setPhase("result")}
               style={{
                 background: "none", border: "none", color: "rgba(245,240,232,0.32)",
                 fontFamily: "Montserrat, sans-serif", fontSize: "9px",
@@ -968,6 +1057,181 @@ export default function MapaDoPoder() {
             Você pode cancelar a qualquer momento.
           </p>
         </div>
+      </div>
+    );
+  }
+
+  /* ════════════════════════════
+     RESULT PHASE — Meu Mapa do Poder (integra todas as respostas)
+  ════════════════════════════ */
+  if (phase === "result") {
+    return (
+      <div style={{ minHeight: "100dvh", background: "#04060f", fontFamily: "DM Sans, sans-serif", overflowX: "hidden", color: "#f5f0e8" }}>
+        {/* Background fixo */}
+        <div style={{ position: "fixed", inset: 0, zIndex: 0 }} className="no-print">
+          <img src={heroImg} alt="" aria-hidden style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.12) saturate(0.7)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 90% 70% at 50% 30%, rgba(198,168,112,0.06) 0%, rgba(4,6,15,0.97) 70%)" }} />
+        </div>
+
+        {/* Conteúdo imprimível */}
+        <div id="mapa-do-poder-print" style={{ position: "relative", zIndex: 10, maxWidth: "720px", margin: "0 auto", padding: "clamp(32px,6vw,64px) clamp(20px,4vw,40px)" }}>
+          {/* Header */}
+          <div style={{ textAlign: "center", marginBottom: "clamp(32px,5vw,52px)" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "12px", marginBottom: "18px" }}>
+              <div style={{ height: "1px", width: "40px", background: "var(--gold)" }} />
+              <span style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.26em", textTransform: "uppercase", color: "var(--gold)" }}>
+                Despertar Espiral
+              </span>
+              <div style={{ height: "1px", width: "40px", background: "var(--gold)" }} />
+            </div>
+            <h1 style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "clamp(32px,5vw,52px)", fontWeight: 300, lineHeight: 1.1, marginBottom: "10px", letterSpacing: "-0.01em" }}>
+              Seu Mapa <em style={{ fontStyle: "italic", color: "var(--gold)" }}>do Poder</em>
+            </h1>
+            <p style={{ fontSize: "clamp(13px,2vw,15px)", color: "rgba(245,240,232,0.55)", lineHeight: 1.7 }}>
+              Registro pessoal das 8 etapas de ativação. Guarde, releia, retorne sempre que precisar.
+            </p>
+            <p style={{ marginTop: "10px", fontSize: "11px", color: "rgba(245,240,232,0.35)", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.12em" }}>
+              {new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}
+            </p>
+          </div>
+
+          {/* Cards de cada etapa */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            {STEPS.map((s, idx) => {
+              const stepAnswers = answers[idx] ?? [""];
+              const isMulti = s.type === "multi-textarea";
+              const isAffirm = s.type === "affirmation";
+              const isMed = s.type === "meditation";
+              return (
+                <div key={s.id} style={{
+                  background: "rgba(255,255,255,0.025)",
+                  border: "1px solid rgba(198,168,112,0.16)",
+                  borderRadius: "14px",
+                  padding: "clamp(18px,3vw,26px)",
+                  pageBreakInside: "avoid",
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
+                    <div style={{
+                      width: "40px", height: "40px",
+                      borderRadius: "50%",
+                      background: "rgba(198,168,112,0.10)",
+                      border: "1px solid rgba(198,168,112,0.30)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      flexShrink: 0,
+                    }}>
+                      <span style={{ color: "var(--gold)", fontSize: "16px" }}>{s.symbol}</span>
+                    </div>
+                    <div>
+                      <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "2px" }}>
+                        Etapa 0{s.id} · {s.label}
+                      </p>
+                      <p style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "clamp(16px,2.4vw,19px)", color: "rgba(245,240,232,0.88)", lineHeight: 1.3, fontWeight: 400 }}>
+                        {s.question}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Respostas */}
+                  <div style={{ paddingLeft: "54px" }}>
+                    {isAffirm && (
+                      <p style={{ fontSize: "13px", color: affirmRead ? "var(--sage)" : "rgba(245,240,232,0.42)", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.04em" }}>
+                        {affirmRead ? "✓ Compromisso lido em voz alta" : "Não confirmado"}
+                      </p>
+                    )}
+                    {isMed && (
+                      <p style={{ fontSize: "13px", color: medDone ? "var(--sage)" : "rgba(245,240,232,0.42)", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.04em" }}>
+                        {medDone ? "✓ Visualização concluída" : "Não confirmada"}
+                      </p>
+                    )}
+                    {!isAffirm && !isMed && (
+                      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                        {(isMulti ? stepAnswers : stepAnswers.slice(0, 1)).map((ans, i) => {
+                          const trimmed = (ans ?? "").trim();
+                          return (
+                            <p key={i} style={{
+                              fontSize: "14px",
+                              lineHeight: 1.7,
+                              color: trimmed ? "rgba(245,240,232,0.85)" : "rgba(245,240,232,0.35)",
+                              fontStyle: trimmed ? "normal" : "italic",
+                              margin: 0,
+                            }}>
+                              {trimmed || "— em branco —"}
+                            </p>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Footer do mapa */}
+          <div style={{ textAlign: "center", marginTop: "clamp(28px,5vw,40px)", padding: "20px", borderTop: "1px solid rgba(198,168,112,0.18)" }}>
+            <p style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "clamp(16px,2.4vw,20px)", fontStyle: "italic", color: "rgba(245,240,232,0.75)", lineHeight: 1.5, marginBottom: "8px" }}>
+              "Você é o mapa. Você é o poder."
+            </p>
+            <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "rgba(198,168,112,0.55)" }}>
+              despertarespiral.com.br/mapa-do-poder
+            </p>
+          </div>
+        </div>
+
+        {/* Ações (não imprime) */}
+        <div className="no-print" style={{ position: "relative", zIndex: 10, maxWidth: "520px", margin: "0 auto clamp(40px,8vw,72px)", padding: "0 clamp(20px,4vw,40px)", display: "flex", flexDirection: "column", gap: "12px" }}>
+          <button
+            onClick={() => {
+              fireEventAsync("mapa.printed", { email: trackEmail.current, properties: { source: "result_screen" } });
+              window.print();
+            }}
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
+              padding: "17px 24px",
+              background: "var(--gold)", color: "#04060f",
+              border: "none", borderRadius: "14px",
+              fontFamily: "Montserrat, sans-serif", fontSize: "11px",
+              fontWeight: 700, letterSpacing: "0.20em", textTransform: "uppercase",
+              cursor: "pointer", minHeight: "56px",
+              boxShadow: "0 8px 32px rgba(198,168,112,0.30)",
+              transition: "transform 0.22s, box-shadow 0.22s",
+            }}
+            onMouseEnter={(e) => { const el = e.currentTarget; el.style.transform = "translateY(-2px)"; el.style.boxShadow = "0 16px 50px rgba(198,168,112,0.40)"; }}
+            onMouseLeave={(e) => { const el = e.currentTarget; el.style.transform = ""; el.style.boxShadow = "0 8px 32px rgba(198,168,112,0.30)"; }}
+          >
+            <Printer size={15} /> Imprimir ou salvar PDF
+          </button>
+
+          <button
+            onClick={() => setPhase("complete")}
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
+              padding: "16px 24px",
+              background: "transparent",
+              border: "1px solid rgba(198,168,112,0.30)",
+              borderRadius: "14px", color: "rgba(245,240,232,0.75)",
+              fontFamily: "Montserrat, sans-serif", fontSize: "10px",
+              fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase",
+              cursor: "pointer", minHeight: "52px",
+              transition: "border-color 0.22s, color 0.22s",
+            }}
+            onMouseEnter={(e) => { const el = e.currentTarget; el.style.borderColor = "var(--gold)"; el.style.color = "var(--gold)"; }}
+            onMouseLeave={(e) => { const el = e.currentTarget; el.style.borderColor = "rgba(198,168,112,0.30)"; el.style.color = "rgba(245,240,232,0.75)"; }}
+          >
+            Continuar <ArrowRight size={14} />
+          </button>
+        </div>
+
+        {/* Estilos de impressão */}
+        <style>{`
+          @media print {
+            body { background: white !important; color: black !important; }
+            .no-print { display: none !important; }
+            #mapa-do-poder-print { color: black !important; background: white !important; max-width: 100% !important; }
+            #mapa-do-poder-print * { color: black !important; background: transparent !important; border-color: #c6a870 !important; }
+            #mapa-do-poder-print h1, #mapa-do-poder-print em, #mapa-do-poder-print [style*="--gold"] { color: #8a6d3b !important; }
+          }
+        `}</style>
       </div>
     );
   }
@@ -1047,8 +1311,8 @@ export default function MapaDoPoder() {
         }}>
           {/* QR code via API */}
           <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://despertarespiral.com/mapa&color=04060f&bgcolor=ffffff&margin=2"
-            alt="QR Code — despertarespiral.com/mapa"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://despertarespiral.com.br/mapa-do-poder&color=04060f&bgcolor=ffffff&margin=2"
+            alt="QR Code — despertarespiral.com.br/mapa-do-poder"
             width="200" height="200"
             loading="lazy"
             style={{ display: "block", borderRadius: "8px" }}
@@ -1057,8 +1321,8 @@ export default function MapaDoPoder() {
             <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(4,6,15,0.45)", marginBottom: "4px" }}>
               Acesse sempre
             </p>
-            <p style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "18px", color: "#04060f", fontWeight: 500, letterSpacing: "0.03em" }}>
-              despertarespiral.com/mapa
+            <p style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "16px", color: "#04060f", fontWeight: 500, letterSpacing: "0.02em" }}>
+              despertarespiral.com.br/mapa-do-poder
             </p>
           </div>
         </div>
@@ -1077,7 +1341,7 @@ export default function MapaDoPoder() {
         {/* Final CTA */}
         <div style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%", maxWidth: "400px", animation: "fadeUp 0.6s ease 1.0s both" }}>
           <a
-            href="https://despertarespiral.com"
+            href="https://despertarespiral.com.br"
             target="_blank" rel="noopener noreferrer"
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
@@ -1098,14 +1362,17 @@ export default function MapaDoPoder() {
 
           <button
             onClick={() => {
+                clearProgress();
                 setPhase("intro");
                 setStep(0);
-                setAnswers(STEPS.map((s) => s.type === "multi-textarea" ? Array(s.inputs ?? 1).fill("") : [""]));
+                setAnswers(emptyAnswers());
                 setAffirmRead(false);
                 setMedDone(false);
+                setEmail("");
+                setPhone("");
                 /* Reset flags so events fire again on next completion */
                 finishedFired.current = false;
-                trackEmail.current = `anon_mapa_${Date.now()}@despertarespiral.com`;
+                trackEmail.current = `anon_mapa_${Date.now()}@despertarespiral.com.br`;
               }}
             style={{
               padding: "14px 24px", background: "transparent",

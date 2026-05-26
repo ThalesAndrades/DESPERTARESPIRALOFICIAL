@@ -181,7 +181,7 @@ export default function AdminUsersPage() {
                         )}
                       </td>
                       <td style={{ padding: "14px 18px" }}>
-                        {u.email !== "sunyan@despertarespiral.com" && (
+                        {u.email !== "sunyan@despertarespiral.com.br" && (
                           <button
                             onClick={() => toggleRole(u.id, u.role)}
                             disabled={updating === u.id}
@@ -233,7 +233,7 @@ export default function AdminUsersPage() {
                       <BookOpen size={10} strokeWidth={1.5} /> {u.product_count ?? 0} curso(s)
                     </span>
                   </div>
-                  {u.email !== "sunyan@despertarespiral.com" && (
+                  {u.email !== "sunyan@despertarespiral.com.br" && (
                     <button
                       onClick={() => toggleRole(u.id, u.role)}
                       disabled={updating === u.id}
