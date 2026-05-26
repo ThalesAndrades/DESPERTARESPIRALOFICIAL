@@ -72,6 +72,7 @@ const mockEqActive   = vi.fn();
 const mockSingle     = vi.fn();
 
 vi.mock("@/lib/supabase", () => ({
+  FunctionsHttpError: class FunctionsHttpError extends Error { context = { status: 500, text: async () => "" }; },
   supabase: {
     from: (...args: unknown[]) => mockFrom(...args),
     functions: {

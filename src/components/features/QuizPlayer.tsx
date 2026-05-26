@@ -58,7 +58,7 @@ export default function QuizPlayer({ moduleId, moduleTitle, onClose, onPassed }:
         .order("sort_order");
 
       const qIds = (questions ?? []).map((q: { id: string }) => q.id);
-      let optsByQ: Record<string, import("@/types").QuizOption[]> = {};
+      const optsByQ: Record<string, import("@/types").QuizOption[]> = {};
 
       if (qIds.length > 0) {
         const { data: opts } = await supabase

@@ -9,7 +9,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import SpiralLogo from "@/components/layout/SpiralLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/supabase";
-import { FunctionsHttpError } from "@supabase/supabase-js";
+import { FunctionsHttpError } from "@/lib/supabase";
 import mulherEspiralProductImg from "@/assets/mulher-espiral-hero-new.jpg";
 import { Shield, CheckCircle, ArrowLeft, ArrowRight, Lock, Loader2, Zap, Star, Users } from "lucide-react";
 import { toast } from "sonner";

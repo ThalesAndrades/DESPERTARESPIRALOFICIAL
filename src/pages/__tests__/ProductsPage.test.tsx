@@ -19,6 +19,7 @@ vi.mock("@/hooks/useAuth", () => ({
 
 const mockFrom = vi.fn();
 vi.mock("@/lib/supabase", () => ({
+  FunctionsHttpError: class FunctionsHttpError extends Error { context = { status: 500, text: async () => "" }; },
   supabase: {
     from: (table: string) => mockFrom(table),
     auth: { getSession: vi.fn().mockResolvedValue({ data: { session: null } }) },

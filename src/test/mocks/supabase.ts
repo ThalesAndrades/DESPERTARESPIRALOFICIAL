@@ -59,6 +59,10 @@ mockFrom.mockReturnValue({
   insert: mockInsert.mockReturnThis(),
 });
 
+export class FunctionsHttpError extends Error {
+  context = { status: 500, text: async () => "" };
+}
+
 export const supabase = {
   auth: {
     getSession:        mockAuthGetSession,

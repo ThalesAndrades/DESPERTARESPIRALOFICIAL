@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, createContext, useContext } from "react";
-import type { User } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabase";
+import { supabase, type User } from "@/lib/supabase";
 import { fireEventAsync } from "@/lib/sequenzy";
 import { sendEmailAsync } from "@/lib/email";
 import { mapAuthError } from "@/lib/authErrors";
@@ -69,18 +68,19 @@ function mapSupabaseUser(
   profile?: { role?: string; anonymous_name?: string; full_name?: string; username?: string },
   slugs?: string[]
 ): AuthUser {
+  const meta = (user.user_metadata ?? {}) as Record<string, string | undefined>;
   return {
     id: user.id,
     email: user.email!,
     name:
       profile?.full_name ||
-      user.user_metadata?.full_name ||
-      user.user_metadata?.name ||
-      user.user_metadata?.username ||
+      meta.full_name ||
+      meta.name ||
+      meta.username ||
       user.email!.split("@")[0],
     role: (profile?.role as "member" | "admin") ?? "member",
     anonymous_name:
-      profile?.anonymous_name || user.user_metadata?.anonymous_name || "Convidada",
+      profile?.anonymous_name || meta.anonymous_name || "Convidada",
     products: slugs ?? [],
   };
 }

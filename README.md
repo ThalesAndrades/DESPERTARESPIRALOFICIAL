@@ -1,61 +1,102 @@
-# Welcome to your OnSpace project
+# Despertar Espiral
 
-## How can I edit this code?
+Plataforma de cursos, comunidade e jornadas femininas — **modo local**, sem dependências externas.
 
-There are several ways of editing your application.
+Roda 100% no navegador: dados são persistidos em `localStorage`, autenticação e pagamentos são simulados, e o build padrão não precisa de chaves de API ou serviços de terceiros.
 
-**Use OnSpace**
+## Stack
 
-Simply visit the [OnSpace Project]() and start prompting.
+| Camada | Tecnologia |
+|---|---|
+| Framework | Vite 5 + React 18 + TypeScript |
+| UI | shadcn/ui + Tailwind CSS |
+| Roteamento | React Router v6 |
+| Estado servidor | TanStack Query |
+| Backend local | `src/lib/local/` — cliente compatível com Supabase, baseado em `localStorage` |
+| Testes | Vitest + Testing Library |
 
-Changes made via OnSpace will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in OnSpace.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Como rodar
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+npm install
+npm run dev          # dev server em http://localhost:5173
+npm run build        # build de produção
+npm run preview      # serve o build
+npm run lint         # ESLint
+npm run test         # Vitest (run único)
+npm run test:watch   # Vitest em watch
 ```
 
-**Edit a file directly in GitHub**
+## Usuárias de exemplo (seed)
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+| Papel | Email | Senha |
+|---|---|---|
+| Admin | `admin@despertarespiral.local` | `admin123` |
+| Membro | `membro@despertarespiral.local` | `membro123` |
 
-**Use GitHub Codespaces**
+Para resetar o banco local (apagar tudo e voltar ao seed):
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```js
+// Console do navegador:
+localStorage.clear(); location.reload();
+```
 
-## What technologies are used for this project?
+Ou no código:
 
-This project is built with:
+```ts
+import { resetDB } from "@/lib/supabase";
+resetDB();
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Estrutura
 
-## How can I deploy this project?
+```
+src/
+├── App.tsx                  # Rotas (lazy)
+├── main.tsx                 # Bootstrap (providers + theme)
+├── index.css                # Variáveis CSS + utilitários
+├── assets/                  # Imagens
+├── components/
+│   ├── ui/                  # shadcn/ui (não editar)
+│   ├── layout/              # Layouts de área (Dashboard, Admin) + nav
+│   └── features/            # Componentes de feature (Quiz)
+├── constants/               # Conteúdo e seeds de UI
+├── hooks/                   # useAuth, useTheme, etc.
+├── lib/
+│   ├── supabase.ts          # Re-export do backend local (mantém API)
+│   ├── local/               # Implementação local (auth, query, storage, fns)
+│   ├── analytics.ts         # Captura de UTM
+│   ├── authErrors.ts        # Mapeamento de mensagens
+│   ├── contentSafety.ts     # Sanitização de input
+│   ├── dateUtils.ts         # Formatação de data
+│   ├── email.ts             # Stub de email (no-op)
+│   ├── sequenzy.ts          # Stub de CRM (no-op)
+│   ├── ErrorBoundary.tsx
+│   └── utils.ts             # cn() helper
+├── pages/                   # Componentes de rota
+│   ├── admin/               # Painel administrativo
+│   └── __tests__/
+├── test/                    # Setup e mocks de teste
+└── types/                   # Tipos de domínio
+```
 
-Simply open [OnSpace]() and click on Share -> Publish.
+## Backend local
+
+Tudo que antes ia para Supabase, Asaas ou Sequenzy agora é tratado por `src/lib/local/`:
+
+- **Auth** (`auth.ts`) — login com email/senha, OTP fake (qualquer código de 6 dígitos), sessão em `localStorage`
+- **Query builder** (`query.ts`) — chainable, compatível com a API do Supabase (`from().select().eq().single()`)
+- **Storage** (`storage.ts`) — uploads viram `Object URL`s na sessão atual
+- **Edge functions** (`functions.ts`) — handlers locais para `checkout-session`, `crm-stats`, etc.
+- **Seed** (`seed.ts`) — dados iniciais: 2 usuárias, 2 produtos, 9 aulas, 3 posts da comunidade
+
+## O que não está disponível em modo local
+
+- Google OAuth (use email/senha — admin / membro)
+- Webhooks reais (Asaas, Sequenzy)
+- Envio de email real (mensagens são logadas no console em DEV)
+- Sync entre dispositivos (os dados ficam só no `localStorage` do navegador)
+
+## Licença
+
+Privado.

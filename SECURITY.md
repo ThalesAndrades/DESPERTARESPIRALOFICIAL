@@ -1,21 +1,18 @@
-# Security Policy
+# Política de Segurança
 
-## Supported Versions
+## Modelo de execução
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Esta aplicação roda 100% no navegador (cliente único). Não há servidor próprio,
+banco de dados remoto, nem credenciais sensíveis em código.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+- **Dados**: persistidos em `localStorage` do navegador da usuária. Nada é enviado para fora.
+- **Autenticação local**: senhas dos seeds são apenas para uso de demonstração em ambiente local. Não use estas credenciais em produção pública.
+- **Sem chaves**: não há `.env` com segredos, tokens ou chaves de API.
 
-## Reporting a Vulnerability
+## Reportar vulnerabilidade
 
-Use this section to tell people how to report a vulnerability.
+Como o projeto não expõe superfície de servidor, vulnerabilidades relevantes
+seriam XSS, fuga de dados via `localStorage` ou problemas no fluxo de auth local.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Se encontrar algo, abra uma issue privada (Security Advisory) no GitHub do
+repositório ou contate diretamente a pessoa mantenedora.

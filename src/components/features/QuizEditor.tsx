@@ -71,7 +71,7 @@ export default function QuizEditor({ moduleId, productId }: Props) {
       .order("sort_order");
 
     const qIds = (questions ?? []).map((q: { id: string }) => q.id);
-    let optionsMap: Record<string, QuizOption[]> = {};
+    const optionsMap: Record<string, QuizOption[]> = {};
 
     if (qIds.length > 0) {
       const { data: options } = await supabase

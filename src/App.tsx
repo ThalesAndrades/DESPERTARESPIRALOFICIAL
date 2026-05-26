@@ -85,25 +85,22 @@ function GlobalLoader() {
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const location = useLocation();
-  if (loading) return <GlobalLoader />;
-  if (!user) {
-    const full = `${location.pathname}${location.search}${location.hash}`;
-    return <Navigate to={`/login?next=${encodeURIComponent(full)}`} replace />;
-  }
 
-  /* Prefetch member pages on first authenticated render */
   React.useEffect(() => {
+    if (!user) return;
     const timer = setTimeout(() => {
       prefetchDashboard();
       prefetchProducts();
       prefetchCommunity();
     }, 1200);
     return () => clearTimeout(timer);
-  // The error message "Definition for rule 'react-hooks/exhaustive-deps' was not found"
-  // indicates an issue with ESLint configuration, not a TypeScript syntax error.
-  // Removing the ESLint comment will stop ESLint from trying to apply a rule it can't find.
-  // If the intent was to disable the rule, it should be done in the ESLint config or with a valid comment.
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, [user]);
+
+  if (loading) return <GlobalLoader />;
+  if (!user) {
+    const full = `${location.pathname}${location.search}${location.hash}`;
+    return <Navigate to={`/login?next=${encodeURIComponent(full)}`} replace />;
+  }
 
   return <>{children}</>;
 }

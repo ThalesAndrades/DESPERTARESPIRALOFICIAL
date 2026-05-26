@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import AdminLayout from "@/components/layout/AdminLayout";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/lib/supabase";
-import { FunctionsHttpError } from "@supabase/supabase-js";
+import { FunctionsHttpError } from "@/lib/supabase";
 import { toast } from "sonner";
 import { TrendingUp, CheckCircle, Loader2, RefreshCw, X, CreditCard, Zap, FileText, AlertTriangle, Send } from "lucide-react";
 
