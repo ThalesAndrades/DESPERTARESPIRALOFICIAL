@@ -7,7 +7,7 @@
  */
 import { useState } from "react";
 import { fireEventAsync } from "@/lib/sequenzy";
-import { getAttribution } from "@/lib/analytics";
+import { Events, getAttribution, sha256, track } from "@/lib/analytics";
 import { supabase } from "@/lib/supabase";
 import sunyanPortrait from "@/assets/sunyan-portrait.jpg";
 
@@ -133,6 +133,8 @@ export default function QuizSection() {
     setAnimating(true);
     const next = [...answers.slice(0, step), value];
     setAnswers(next);
+    if (step === 0) track(Events.StartQuiz, { quiz: "diagnostico-landing" }, "analytics");
+    track("quiz_step", { step, value, quiz: "diagnostico-landing" }, "analytics");
     setTimeout(() => {
       const nextStep = step + 1;
       setStep(nextStep as 0 | 1 | 2 | 3 | 4);
@@ -182,9 +184,23 @@ export default function QuizSection() {
 
     if (insertError && !/duplicate|unique/i.test(insertError.message ?? "")) {
       setSubmitting(false);
+      track(Events.FormError, { form: "quiz", code: insertError.code ?? "unknown" }, "analytics");
       setSubmitError("Não conseguimos registrar agora. Tente novamente em instantes.");
       return;
     }
+
+    const emailHash = await sha256(email);
+    const params = {
+      content_name: "Quiz Diagnóstico Mulher Espiral",
+      content_category: "quiz",
+      pain_type: painKey,
+      currency: "BRL",
+      value: 0,
+      em_hash: emailHash,
+      ...getAttribution(),
+    };
+    track(Events.CompleteQuiz, params, "analytics");
+    track(Events.GenerateLead, params, "marketing");
 
     setSubmitting(false);
     setSubmitted(true);

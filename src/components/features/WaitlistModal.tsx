@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "@/lib/supabase";
 import { fireEventAsync } from "@/lib/sequenzy";
-import { getAttribution } from "@/lib/analytics";
+import { Events, getAttribution, sha256, track } from "@/lib/analytics";
 import { Loader2, X, CheckCircle2 } from "lucide-react";
 
 interface Props {
@@ -31,6 +31,7 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
     if (open) {
       setError(null);
       setSuccess(false);
+      track(Events.OpenWaitlist, { source }, "analytics");
       const t = setTimeout(() => firstInputRef.current?.focus(), 60);
       const onKey = (e: KeyboardEvent) => {
         if (e.key === "Escape") onClose();
@@ -81,6 +82,7 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
 
     if (insertError && !/duplicate|unique/i.test(insertError.message ?? "")) {
       setLoading(false);
+      track(Events.FormError, { form: "waitlist", code: insertError.code ?? "unknown" }, "analytics");
       setError("Não conseguimos registrar agora. Tente novamente em instantes.");
       return;
     }
@@ -93,6 +95,21 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
         ...attribution,
       },
     });
+
+    // Tracking: lead + waitlist (analytics e marketing pixels).
+    const emailHash = await sha256(cleanEmail);
+    const baseParams = {
+      source,
+      content_name: "Mulher Espiral — Pré-lançamento",
+      content_category: "waitlist",
+      currency: "BRL",
+      value: 0,
+      em_hash: emailHash,
+      ...attribution,
+    };
+    track(Events.JoinWaitlist, baseParams, "marketing");
+    track(Events.GenerateLead, baseParams, "marketing");
+    track(Events.Subscribe, baseParams, "marketing");
 
     setLoading(false);
     setSuccess(true);
