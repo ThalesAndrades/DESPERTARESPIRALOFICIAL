@@ -41,6 +41,7 @@ const AdminTrafficPage      = React.lazy(() => import("@/pages/admin/AdminTraffi
 const AdminEventsPage       = React.lazy(() => import("@/pages/admin/AdminEventsPage"));
 const CertificatePage       = React.lazy(() => import("@/pages/CertificatePage"));
 const ProfilePage           = React.lazy(() => import("@/pages/ProfilePage"));
+const AccountPage            = React.lazy(() => import("@/pages/AccountPage"));
 const MapaDoPoder           = React.lazy(() => import("@/pages/MapaDoPoder"));
 
 /* ── Global loader — branded spiral spinner ── */
@@ -170,6 +171,7 @@ export default function App() {
         <Route path="/community"                           element={<PrivateRoute><CommunityPage /></PrivateRoute>} />
         <Route path="/community/topic/:id"                 element={<PrivateRoute><TopicPage /></PrivateRoute>} />
         <Route path="/perfil"                              element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+        <Route path="/conta"                               element={<PrivateRoute><AccountPage /></PrivateRoute>} />
 
         {/* Admin */}
         <Route path="/admin"                      element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
