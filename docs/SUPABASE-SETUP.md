@@ -30,7 +30,7 @@ Verifique em `Table Editor` que existem:
 - **Email**: já vem ativo. Em `Email Templates`, traduza os emails do Supabase pra português se quiser.
 - **Google OAuth** (opcional, recomendado):
   1. [Google Cloud Console](https://console.cloud.google.com) → criar OAuth 2.0 Client
-  2. Authorized redirect: `https://SEU-PROJETO.supabase.co/auth/v1/callback`
+  2. Authorized redirect: `https://dwblhkpodaabuuubloht.supabase.co/auth/v1/callback`
   3. Cole Client ID + Secret no Supabase em Google provider
   4. Salvar
 
@@ -90,7 +90,7 @@ supabase login
 Linke o projeto:
 ```sh
 cd projeto/
-supabase link --project-ref SEU-PROJECT-REF  # vê em Settings → General
+supabase link --project-ref dwblhkpodaabuuubloht  # vê em Settings → General
 ```
 
 Configure secrets das functions:
@@ -122,7 +122,7 @@ No GitHub do projeto → `Settings → Secrets and variables → Actions`:
 
 | Secret | Valor |
 |---|---|
-| `VITE_SUPABASE_URL` | `https://SEU-PROJETO.supabase.co` (em Project Settings → API) |
+| `VITE_SUPABASE_URL` | `https://dwblhkpodaabuuubloht.supabase.co` (em Project Settings → API) |
 | `VITE_SUPABASE_ANON_KEY` | a `anon public` key (mesma página) |
 
 Atualize `.github/workflows/deploy.yml` (já está pronto pra ler essas vars).
