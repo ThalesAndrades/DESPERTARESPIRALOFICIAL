@@ -64,10 +64,10 @@ export default function ConsentBanner() {
             fontFamily: "Montserrat, sans-serif", fontSize: 10,
             letterSpacing: "0.20em", textTransform: "uppercase",
             color: "var(--gold)", marginBottom: 4,
-          }}>Sua privacidade</p>
-          <p style={{ fontSize: 13.5, color: "var(--text-secondary)", lineHeight: 1.55 }}>
-            Usamos cookies para melhorar sua experiência e medir o desempenho do site.
-            Você pode aceitar, recusar ou personalizar suas preferências a qualquer momento.
+          }}>Antes de entrar</p>
+          <p style={{ fontSize: 13.5, color: "var(--text-secondary)", lineHeight: 1.6 }}>
+            Usamos cookies pra entender o que está funcionando aqui e pra te oferecer uma experiência
+            mais cuidada. Você escolhe o que aceitar — e pode mudar de ideia a qualquer momento.
           </p>
         </div>
         <button
@@ -89,20 +89,20 @@ export default function ConsentBanner() {
         <div style={{ display: "grid", gap: 10, marginBottom: 14, padding: "12px 12px 10px", background: "var(--bg-surface)", borderRadius: 12, border: "1px solid var(--border-subtle)" }}>
           <CookieRow
             label="Essenciais"
-            description="Necessários para o site funcionar."
+            description="O básico pro site funcionar — sempre ativo."
             checked
             disabled
             onChange={() => { /* sempre ativo */ }}
           />
           <CookieRow
-            label="Analytics"
-            description="Estatísticas anônimas de uso (Google Analytics 4)."
+            label="Medição anônima"
+            description="Pra eu saber o que está ressoando aqui (Google Analytics)."
             checked={analytics}
             onChange={setAnalytics}
           />
           <CookieRow
-            label="Marketing"
-            description="Anúncios personalizados (Meta, TikTok, remarketing)."
+            label="Conteúdo direcionado"
+            description="Pra te encontrar com conteúdo que faz sentido nas redes (Meta, TikTok)."
             checked={marketing}
             onChange={setMarketing}
           />
@@ -115,7 +115,7 @@ export default function ConsentBanner() {
           onClick={handleAcceptAll}
           className="btn-gold"
           style={{ flex: 1, minWidth: 120, fontSize: 10, padding: "11px 16px", border: "none", cursor: "pointer" }}
-        >Aceitar todos</button>
+        >Aceitar tudo</button>
         <button
           type="button"
           onClick={details ? handleSave : () => setDetails(true)}

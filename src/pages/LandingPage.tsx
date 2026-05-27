@@ -266,10 +266,10 @@ export default function LandingPage() {
   return (
     <>
       <Helmet>
-        <title>Despertar Espiral — Método de Reconexão e Cura Feminina</title>
-        <meta name="description" content="Uma jornada de autoconhecimento feminino com aulas práticas, comunidade ativa e certificado de conclusão. Inicie sua espiral de transformação." />
-        <meta property="og:title" content="Despertar Espiral — Método de Reconexão e Cura Feminina" />
-        <meta property="og:description" content="Uma jornada de autoconhecimento feminino com aulas práticas, comunidade ativa e certificado de conclusão." />
+        <title>Despertar Espiral — Um caminho feminino de reconexão</title>
+        <meta name="description" content="Um caminho gentil e profundo de autoconhecimento feminino, com aulas práticas, comunidade viva e o seu próprio ritmo. Por Sunyan Nunes." />
+        <meta property="og:title" content="Despertar Espiral — Um caminho feminino de reconexão" />
+        <meta property="og:description" content="Um caminho gentil e profundo de autoconhecimento feminino — aulas práticas, comunidade viva e o seu próprio ritmo." />
       </Helmet>
 
       <div style={{
@@ -691,7 +691,7 @@ export default function LandingPage() {
                     textAlign: "center", marginBottom: "clamp(24px,3.5vw,38px)",
                   }}
                 >
-                  Uma jornada de autoconhecimento feminina, clara e acolhedora, para quem quer voltar a sentir presença, direção e verdade.
+                  Um caminho feminino de autoconhecimento — claro, acolhedor, no seu ritmo — pra quem está voltando a sentir presença, direção e verdade.
                 </p>
 
                 <div className="animate-fade-up delay-400" style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "360px", marginBottom: "clamp(18px,2.5vw,26px)" }}>
@@ -701,17 +701,19 @@ export default function LandingPage() {
                     className="btn-gold"
                     style={{ justifyContent: "center", minHeight: "58px", borderRadius: "18px", width: "100%", border: "none", cursor: "pointer" }}
                   >
-                    Quero entrar no pré-lançamento <ArrowRight size={15} />
+                    Quero entrar na lista <ArrowRight size={15} />
                   </button>
-                  <Link
-                    to="/login"
-                    className="btn-outline-gold"
-                    style={{ justifyContent: "center", minHeight: "52px", borderRadius: "18px" }}
-                    onMouseEnter={prefetchLogin}
-                    onFocus={prefetchLogin}
-                  >
-                    Já sou aluna
-                  </Link>
+                  {showAuthEntry && (
+                    <Link
+                      to="/login"
+                      className="btn-outline-gold"
+                      style={{ justifyContent: "center", minHeight: "52px", borderRadius: "18px" }}
+                      onMouseEnter={prefetchLogin}
+                      onFocus={prefetchLogin}
+                    >
+                      Já sou aluna
+                    </Link>
+                  )}
                 </div>
 
                 <div className="animate-fade-in delay-600" style={{ display: "flex", justifyContent: "center", gap: "clamp(10px,2vw,20px)", flexWrap: "wrap" }}>
@@ -1197,7 +1199,7 @@ export default function LandingPage() {
                 className="btn-gold"
                 style={{ cursor: "pointer", border: "none" }}
               >
-                Quero ser avisada na abertura <ArrowRight size={14} />
+                Quero ser avisada quando abrir <ArrowRight size={14} />
               </button>
             </div>
           </div>
@@ -1271,7 +1273,7 @@ export default function LandingPage() {
                 className="btn-gold"
                 style={{ padding: "17px clamp(32px,5vw,60px)", fontSize: "10px", width: "100%", maxWidth: "440px", justifyContent: "center", cursor: "pointer", border: "none" }}
               >
-                Quero entrar no pré-lançamento <ArrowRight size={15} />
+                Quero entrar na lista <ArrowRight size={15} />
               </button>
             </div>
             <div className="reveal reveal-delay-5" style={{ display: "flex", justifyContent: "center", gap: "clamp(12px,3vw,24px)", marginTop: "clamp(24px,3vw,36px)", flexWrap: "wrap" }}>

@@ -134,7 +134,7 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
                 className="btn-gold"
                 style={{ padding: "10px 22px", fontSize: "9px", minHeight: "40px", border: "none", cursor: "pointer" }}
               >
-                Pré-lançamento
+                Entrar na lista
               </button>
             </>
           )}
@@ -236,7 +236,7 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
                   className="btn-gold"
                   style={{ width: "100%", fontSize: "9px", border: "none", cursor: "pointer" }}
                 >
-                  Pré-lançamento
+                  Entrar na lista
                 </button>
               </>
             )}

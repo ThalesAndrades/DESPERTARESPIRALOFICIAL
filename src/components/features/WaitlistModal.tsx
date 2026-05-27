@@ -58,11 +58,11 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
     const cleanMessage = message.trim();
 
     if (!cleanName) {
-      setError("Conte como podemos te chamar.");
+      setError("Como você gosta de ser chamada?");
       return;
     }
     if (!EMAIL_RE.test(cleanEmail)) {
-      setError("Confira o e-mail, parece inválido.");
+      setError("Confere o e-mail pra mim? Acho que tem algo faltando.");
       return;
     }
 
@@ -83,7 +83,7 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
     if (insertError && !/duplicate|unique/i.test(insertError.message ?? "")) {
       setLoading(false);
       track(Events.FormError, { form: "waitlist", code: insertError.code ?? "unknown" }, "analytics");
-      setError("Não conseguimos registrar agora. Tente novamente em instantes.");
+      setError("Algo se perdeu no caminho. Pode tentar de novo em alguns segundos?");
       return;
     }
 
@@ -193,10 +193,10 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
                 marginBottom: 10,
               }}
             >
-              Você está na lista
+              Que bom te ter por aqui {name.trim().split(" ")[0] ? `, ${name.trim().split(" ")[0]}` : ""}
             </h3>
-            <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.6, marginBottom: 22 }}>
-              Vamos te avisar antes de qualquer pessoa quando o Mulher Espiral abrir as portas. Fique de olho no seu e-mail.
+            <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.65, marginBottom: 22 }}>
+              Guardei o seu cantinho. Quando o Mulher Espiral abrir, você é uma das primeiras a saber — direto no seu e-mail, sem ruído.
             </p>
             <button
               onClick={onClose}
@@ -214,7 +214,7 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
                 cursor: "pointer",
               }}
             >
-              Fechar
+              Voltar pro site
             </button>
           </div>
         ) : (
@@ -243,15 +243,15 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
                 letterSpacing: "-0.01em",
               }}
             >
-              Entre em contato para o pré-lançamento
+              Quero ser uma das primeiras a saber
             </h3>
-            <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.6, marginBottom: 22 }}>
-              Deixe seus dados e te avisamos primeiro quando o Mulher Espiral abrir. Sem spam.
+            <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.65, marginBottom: 22 }}>
+              Guardo um cantinho pra você e te aviso antes de qualquer pessoa quando o Mulher Espiral abrir. Sem ruído, só o que importa.
             </p>
 
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <label style={fieldLabel}>
-                <span>Nome</span>
+                <span>Seu nome</span>
                 <input
                   ref={firstInputRef}
                   type="text"
@@ -259,26 +259,26 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
                   onChange={(e) => setName(e.target.value)}
                   required
                   autoComplete="given-name"
-                  placeholder="Como podemos te chamar"
+                  placeholder="Como você gosta de ser chamada"
                   style={inputStyle}
                 />
               </label>
 
               <label style={fieldLabel}>
-                <span>E-mail</span>
+                <span>Seu melhor e-mail</span>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   autoComplete="email"
-                  placeholder="seu@email.com"
+                  placeholder="o que você abre todo dia"
                   style={inputStyle}
                 />
               </label>
 
               <label style={fieldLabel}>
-                <span>WhatsApp <em style={{ color: "var(--text-faint)", fontStyle: "normal" }}>(opcional)</em></span>
+                <span>WhatsApp <em style={{ color: "var(--text-faint)", fontStyle: "normal" }}>(se quiser receber por aqui também)</em></span>
                 <input
                   type="tel"
                   value={phone}
@@ -290,13 +290,13 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
               </label>
 
               <label style={fieldLabel}>
-                <span>O que te trouxe até aqui? <em style={{ color: "var(--text-faint)", fontStyle: "normal" }}>(opcional)</em></span>
+                <span>O que te trouxe até aqui? <em style={{ color: "var(--text-faint)", fontStyle: "normal" }}>(se sentir vontade de contar)</em></span>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   rows={3}
                   maxLength={500}
-                  placeholder="Conte rapidamente o que está te chamando para essa jornada"
+                  placeholder="Pode ser uma palavra, uma sensação, o que estiver pulsando agora"
                   style={{ ...inputStyle, resize: "vertical", minHeight: 80, fontFamily: "Inter, system-ui, sans-serif" }}
                 />
               </label>
@@ -342,11 +342,11 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
                 }}
               >
                 {loading ? <Loader2 size={16} style={{ animation: "spin 1s linear infinite" }} /> : null}
-                {loading ? "Enviando..." : "Quero entrar na lista"}
+                {loading ? "Cuidando do seu pedido…" : "Quero entrar na lista"}
               </button>
 
               <p style={{ fontSize: 11, color: "var(--text-faint)", textAlign: "center", marginTop: 8, lineHeight: 1.5 }}>
-                Ao enviar, você concorda em receber comunicações sobre o lançamento. Pode sair quando quiser.
+                Eu cuido bem do seu e-mail. Sem spam, sem repasse, com a opção de sair quando quiser.
               </p>
             </form>
           </>
