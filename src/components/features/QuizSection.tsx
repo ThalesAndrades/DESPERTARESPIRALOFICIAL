@@ -247,8 +247,8 @@ export default function QuizSection() {
           <h2 className="font-display text-balance" style={{ fontSize: "clamp(32px,6vw,72px)", fontWeight: 300, fontStyle: "italic", lineHeight: 1.04, color: "#f5f0e8", marginBottom: "14px" }}>
             Descubra por onde<br />começar sua jornada.
           </h2>
-          <p style={{ fontSize: "clamp(14px,1.7vw,16px)", color: "rgba(245,240,232,0.50)", lineHeight: 1.85, maxWidth: "480px", margin: "0 auto", fontFamily: "Montserrat,sans-serif" }}>
-            4 perguntas. Sem julgamento. Só para você entender o que o seu ser está pedindo agora.
+          <p style={{ fontSize: "clamp(14px,1.7vw,16px)", color: "rgba(245,240,232,0.55)", lineHeight: 1.85, maxWidth: "480px", margin: "0 auto", fontFamily: "Montserrat,sans-serif" }}>
+            4 perguntas, sem certas ou erradas. Só pra você ouvir o que o seu ser está pedindo agora.
           </p>
         </div>
 
@@ -446,14 +446,14 @@ export default function QuizSection() {
                         fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase",
                         color: "rgba(198,168,112,0.55)", fontFamily: "Montserrat,sans-serif", marginBottom: "4px",
                       }}>
-                        Entre na lista do pré-lançamento
+                        Quero ser avisada quando abrir
                       </p>
                       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                         <input
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          placeholder="seu@email.com"
+                          placeholder="seu melhor e-mail"
                           required
                           style={{
                             flex: "1 1 200px",
@@ -476,7 +476,7 @@ export default function QuizSection() {
                           className="btn-gold"
                           style={{ flexShrink: 0, minHeight: "52px", borderRadius: "14px", padding: "0 24px", fontSize: "9px" }}
                         >
-                          {submitting ? "Enviando…" : "Quero ser avisada →"}
+                          {submitting ? "Cuidando…" : "Quero ser avisada →"}
                         </button>
                       </div>
 
@@ -486,8 +486,8 @@ export default function QuizSection() {
                         </p>
                       )}
 
-                      <p style={{ fontSize: "11px", color: "rgba(245,240,232,0.22)", fontFamily: "Montserrat,sans-serif" }}>
-                        Avisamos você antes de qualquer pessoa. Sem spam.
+                      <p style={{ fontSize: "11px", color: "rgba(245,240,232,0.30)", fontFamily: "Montserrat,sans-serif", lineHeight: 1.55 }}>
+                        Eu te aviso antes de qualquer pessoa, sem ruído.
                       </p>
                     </form>
                   ) : (
@@ -497,8 +497,8 @@ export default function QuizSection() {
                       display: "flex", alignItems: "center", gap: "12px",
                     }}>
                       <span style={{ color: "var(--sage)", fontSize: "20px" }}>✦</span>
-                      <p style={{ fontSize: "14px", color: "var(--sage)", fontFamily: "Montserrat,sans-serif" }}>
-                        Você está na lista. Vamos te avisar pelo e-mail informado.
+                      <p style={{ fontSize: "14px", color: "var(--sage)", fontFamily: "Montserrat,sans-serif", lineHeight: 1.55 }}>
+                        Recebi com carinho. Te aviso pelo e-mail assim que abrir.
                       </p>
                     </div>
                   )}

@@ -101,10 +101,10 @@ export default function CaptionPage() {
     const cleanEmail = email.trim().toLowerCase();
     const cleanPhone = phone.replace(/[^\d+]/g, "");
 
-    if (!cleanName) return setError("Conte como podemos te chamar.");
-    if (!EMAIL_RE.test(cleanEmail)) return setError("Confira o e-mail, parece inválido.");
-    if (cleanPhone.length < PHONE_MIN) return setError("WhatsApp parece incompleto.");
-    if (!archetype) return setError("Algo deu errado. Tente refazer o teste.");
+    if (!cleanName) return setError("Como você gosta de ser chamada?");
+    if (!EMAIL_RE.test(cleanEmail)) return setError("Confere o e-mail pra mim? Acho que ficou faltando algo.");
+    if (cleanPhone.length < PHONE_MIN) return setError("Seu WhatsApp parece incompleto — pode revisar?");
+    if (!archetype) return setError("Algo se perdeu no caminho. Pode refazer o teste?");
 
     setLoading(true);
     const attribution = getAttribution();
@@ -122,7 +122,7 @@ export default function CaptionPage() {
     if (insertError && !/duplicate|unique/i.test(insertError.message ?? "")) {
       setLoading(false);
       track(Events.FormError, { form: "caption", code: insertError.code ?? "unknown" }, "analytics");
-      setError("Não conseguimos registrar agora. Tente novamente em instantes.");
+      setError("Algo se perdeu no caminho. Pode tentar de novo em alguns segundos?");
       return;
     }
 
@@ -229,22 +229,22 @@ function Intro({ onStart }: { onStart: () => void }) {
       <p className="font-label" style={{
         fontSize: 10, letterSpacing: "0.30em", textTransform: "uppercase",
         color: "var(--gold)", marginBottom: 18,
-      }}>Teste de Poder Feminino · 2 minutos</p>
+      }}>Teste do Poder Feminino · 2 minutos</p>
 
       <h1 className="font-display text-balance" style={{
         fontSize: "clamp(34px,6vw,68px)", fontWeight: 300, lineHeight: 1.04,
         letterSpacing: "-0.02em", marginBottom: 22,
       }}>
-        Qual é a sua força <em style={{ fontStyle: "italic", color: "var(--gold)" }}>feminina dominante</em>?
+        Qual é a sua <em style={{ fontStyle: "italic", color: "var(--gold)" }}>força feminina</em> mais viva hoje?
       </h1>
 
       <p className="text-pretty" style={{
         fontSize: "clamp(15px,1.8vw,18px)", color: "var(--text-secondary)",
-        lineHeight: 1.7, maxWidth: 560, margin: "0 auto 36px",
+        lineHeight: 1.75, maxWidth: 560, margin: "0 auto 36px",
       }}>
-        Existem 6 arquétipos do feminino vivos dentro de você. Um deles está mais ativo hoje
-        — guiando suas escolhas, seu corpo, seus sonhos. Esse teste revela qual é, e o que está
-        pedindo pra ser despertado nos próximos meses.
+        Dentro de você vivem 6 arquétipos do feminino. Um deles está mais aceso agora —
+        guiando suas escolhas, seu corpo, o que você sonha de noite. Esse teste revela
+        qual é, e o que está pedindo pra ser despertado no próximo ciclo da sua vida.
       </p>
 
       <div style={{
@@ -252,9 +252,9 @@ function Intro({ onStart }: { onStart: () => void }) {
         maxWidth: 580, margin: "0 auto 40px",
       }}>
         {[
-          ["6 perguntas", "intuitivas, sem certas ou erradas"],
-          ["Resultado profundo", "com seu arquétipo + sombra + prática"],
-          ["Relatório completo", "no seu e-mail, gratuito"],
+          ["6 perguntas", "intuitivas — sem certas ou erradas"],
+          ["Resultado profundo", "seu arquétipo, sua sombra, sua prática"],
+          ["Aprofundamento", "chega no seu e-mail, gratuito"],
         ].map(([t, s]) => (
           <div key={t} style={{
             padding: "16px 14px",
@@ -282,14 +282,14 @@ function Intro({ onStart }: { onStart: () => void }) {
           display: "inline-flex", alignItems: "center", gap: 10,
         }}
       >
-        Começar o teste <ArrowRight size={14} />
+        Quero descobrir <ArrowRight size={14} />
       </button>
 
       <p className="font-label" style={{
         marginTop: 26, fontSize: 9, letterSpacing: "0.18em", textTransform: "uppercase",
         color: "var(--text-faint)",
       }}>
-        Criado por Sunyan Nunes · Método Mulher Espiral
+        Conduzido por Sunyan Nunes · Método Mulher Espiral
       </p>
     </div>
   );
@@ -482,26 +482,26 @@ function Reveal({
           Receba sua leitura completa + prática de retomada
         </h3>
         <p style={{
-          fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.65,
+          fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7,
           textAlign: "center", marginBottom: 22, maxWidth: 460, marginInline: "auto",
         }}>
-          Vou te mandar no seu e-mail e WhatsApp o aprofundamento da sua {p.name}: práticas,
-          rituais, perguntas pra meditar e prioridade no lançamento de Mulher Espiral.
+          Eu te envio no e-mail (e no WhatsApp, se quiser) o aprofundamento da sua {p.name}: práticas,
+          rituais, perguntas pra meditar e prioridade quando o Mulher Espiral abrir.
         </p>
 
         <form onSubmit={onSubmit} style={{ display: "grid", gap: 12, maxWidth: 460, margin: "0 auto" }}>
           <FieldInput
             label="Seu nome" value={name} onChange={setName}
-            placeholder="Como podemos te chamar"
+            placeholder="Como você gosta de ser chamada"
             autoComplete="given-name"
           />
           <FieldInput
             label="Melhor e-mail" value={email} onChange={setEmail}
-            type="email" placeholder="voce@email.com"
+            type="email" placeholder="o que você abre todo dia"
             autoComplete="email" inputMode="email"
           />
           <FieldInput
-            label="WhatsApp" value={phone} onChange={setPhone}
+            label="Seu WhatsApp" value={phone} onChange={setPhone}
             type="tel" placeholder="(00) 00000-0000"
             autoComplete="tel" inputMode="tel"
           />
@@ -521,14 +521,14 @@ function Reveal({
               display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
             }}
           >
-            {loading ? <><Loader2 size={14} className="animate-spin" /> Enviando…</> : <>Receber meu relatório <ArrowRight size={13} /></>}
+            {loading ? <><Loader2 size={14} className="animate-spin" /> Cuidando do seu pedido…</> : <>Quero meu aprofundamento <ArrowRight size={13} /></>}
           </button>
 
           <p className="font-label" style={{
             fontSize: 8.5, letterSpacing: "0.16em", textTransform: "uppercase",
             color: "var(--text-faint)", textAlign: "center", marginTop: 4,
           }}>
-            Seus dados protegidos · LGPD · Sem spam
+            Cuidamos do seu cadastro · LGPD · Sem spam
           </p>
         </form>
       </div>
@@ -555,14 +555,14 @@ function Done({ profile, name }: { profile: typeof ARCHETYPES[Archetype]; name: 
         fontSize: "clamp(28px,5vw,46px)", fontWeight: 300, lineHeight: 1.1,
         marginBottom: 14,
       }}>
-        Pronto{firstName ? `, ${firstName}` : ""}.
+        Recebi com carinho{firstName ? `, ${firstName}` : ""}.
       </h1>
       <p style={{
         fontSize: "clamp(15px,1.8vw,17px)", color: "var(--text-secondary)",
-        lineHeight: 1.7, maxWidth: 480, margin: "0 auto 30px",
+        lineHeight: 1.75, maxWidth: 480, margin: "0 auto 30px",
       }}>
-        Seu relatório completo de <strong style={{ color: "var(--gold)", fontWeight: 500 }}>{profile.name}</strong> está
-        a caminho. Confira o seu e-mail nos próximos minutos — pode chegar também na aba de promoções.
+        O aprofundamento da sua <strong style={{ color: "var(--gold)", fontWeight: 500 }}>{profile.name}</strong> já
+        está a caminho do seu e-mail. Dá uma olhada nos próximos minutos — às vezes ele se esconde na aba de promoções.
       </p>
 
       <div style={{

@@ -34,26 +34,26 @@ export const guarantees = [
 export const faqs = [
   {
     q: "Para quem é o Mulher Espiral?",
-    a: "Para mulheres que sentem que algo está faltando — mesmo quando tudo 'parece' bem por fora. Para quem carrega histórias difíceis no corpo, mas ainda acredita em transformação. Não é necessária nenhuma experiência prévia com autoconhecimento.",
+    a: "Para mulheres que sentem que algo está faltando — mesmo quando tudo parece bem por fora. Para quem carrega histórias difíceis no corpo, mas ainda acredita que dá pra ressignificar. Você não precisa de nenhuma experiência prévia com autoconhecimento, só de vontade de se reencontrar.",
   },
   {
     q: "Quando começa a primeira turma?",
-    a: "Estamos em pré-lançamento. Ao entrar na lista, você é avisada antes de qualquer pessoa quando as vagas abrirem.",
+    a: "Estamos em pré-lançamento. Quando você entra na lista, eu te aviso antes de qualquer pessoa assim que as portas abrirem.",
   },
   {
-    q: "Como funciona o acesso ao curso?",
-    a: "Após a confirmação da matrícula, você terá acesso vitalício à plataforma. Os módulos são liberados progressivamente para que você possa integrar cada etapa, no seu ritmo.",
+    q: "Como vou acessar o curso?",
+    a: "Assim que sua matrícula for confirmada, você recebe acesso vitalício à plataforma. Os módulos vão sendo liberados em ritmo gentil, pra você integrar cada etapa sem pressa.",
   },
   {
     q: "Existe garantia?",
-    a: "Sim — 7 dias de garantia incondicional após o início da turma. Se sentir que não é o momento certo, devolvemos 100% do investimento sem burocracia.",
+    a: "Sim. Você tem 7 dias de garantia incondicional depois do início da turma. Se sentir que não é o momento certo, eu devolvo 100% do investimento — sem perguntas, sem burocracia.",
   },
   {
-    q: "Preciso de muito tempo disponível?",
-    a: "As aulas foram criadas para a realidade da mulher moderna. Você pode progredir com 20 a 40 minutos por dia. O que importa é constância, não velocidade.",
+    q: "Preciso de muito tempo livre?",
+    a: "As aulas foram pensadas pra mulher real — com trabalho, filhos, cansaço, vida. Você pode avançar com 20 a 40 minutos por dia. O que faz a diferença é constância, não velocidade.",
   },
   {
-    q: "Existe suporte durante a jornada?",
-    a: "Sim. Você tem acesso à comunidade exclusiva de alunas e ao suporte humanizado da nossa equipe. Ninguém percorre esse caminho sozinha.",
+    q: "Vou ter suporte durante a jornada?",
+    a: "Sim. Você entra na nossa comunidade exclusiva de alunas e conta com o cuidado da nossa equipe sempre que precisar. Nenhuma mulher percorre essa espiral sozinha.",
   },
 ];
