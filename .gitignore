@@ -32,3 +32,9 @@ dist-ssr
 bun.lock
 yarn.lock
 pnpm-lock.yaml
+
+# Supabase CLI: estado local de link/migrations (contém project ref e tokens)
+.supabase/
+supabase/.branches/
+supabase/.temp/
+supabase/seed.sql

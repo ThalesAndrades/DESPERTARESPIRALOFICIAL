@@ -15,6 +15,7 @@ Roda 100% no navegador: dados são persistidos em `localStorage`, autenticação
 - **Setup Stripe** (produtos, prices, webhook, portal): [`docs/STRIPE-SETUP.md`](docs/STRIPE-SETUP.md)
 - **Setup Resend** (email transacional): [`docs/RESEND-SETUP.md`](docs/RESEND-SETUP.md)
 - **Conectar Claude Code ao Supabase** (MCP): [`docs/CLAUDE-MCP-SETUP.md`](docs/CLAUDE-MCP-SETUP.md)
+- **Supabase CLI** (migrations + edge functions): [`docs/SUPABASE-CLI.md`](docs/SUPABASE-CLI.md)
 
 ## Stack
 
