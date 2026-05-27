@@ -1,5 +1,23 @@
 import { Shield, Clock, Infinity as InfinityIcon } from "lucide-react";
 
+export const testimonials = [
+  {
+    name: "Lua Crescente",
+    text: "Pela primeira vez em anos me senti em casa na minha própria pele. O método da Sunyan toca onde nenhum outro chegou.",
+    detail: "Módulo 3 — O Corpo como Sabedoria",
+  },
+  {
+    name: "Violeta Silvestre",
+    text: "Esse curso não te ensina sobre autoconhecimento. Ele te faz vivê-lo. É completamente diferente de qualquer coisa que já experimentei.",
+    detail: "Concluiu Mulher Espiral",
+  },
+  {
+    name: "Rosa do Deserto",
+    text: "Cheguei cética. Fui transformada. A profundidade do conteúdo e o cuidado de cada aula são incomparáveis.",
+    detail: "Módulo 5 — O Feminino Sagrado",
+  },
+];
+
 export const steps = [
   { num: "01", title: "Reconhecer", body: "Você enxerga os padrões que te aprisionam, com olhos de compaixão — não de julgamento." },
   { num: "02", title: "Sentir", body: "O corpo fala. Aprendemos a ouvir o que ele carrega há anos em silêncio." },
