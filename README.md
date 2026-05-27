@@ -10,7 +10,10 @@ Roda 100% no navegador: dados são persistidos em `localStorage`, autenticação
 - **Fluxo**: push em `main` → GitHub Actions builda → publica em branch `production` → Hostinger Git Auto Deploy puxa → ar
 - **Checklist Hostinger** (configuração inicial): [`docs/HOSTINGER-CHECKLIST.md`](docs/HOSTINGER-CHECKLIST.md)
 - **Guia técnico de deploy**: [`docs/DEPLOY.md`](docs/DEPLOY.md)
-- **Plano de ação ponta-a-ponta** (Supabase, pagamentos, emails, etc.): [`docs/PLANO-DE-ACAO.md`](docs/PLANO-DE-ACAO.md)
+- **Plano de ação ponta-a-ponta**: [`docs/PLANO-DE-ACAO.md`](docs/PLANO-DE-ACAO.md)
+- **Setup Supabase** (DB + Auth + Storage + Edge Functions): [`docs/SUPABASE-SETUP.md`](docs/SUPABASE-SETUP.md)
+- **Setup Stripe** (produtos, prices, webhook, portal): [`docs/STRIPE-SETUP.md`](docs/STRIPE-SETUP.md)
+- **Setup Resend** (email transacional): [`docs/RESEND-SETUP.md`](docs/RESEND-SETUP.md)
 
 ## Stack
 

@@ -1,375 +1,190 @@
 /**
- * ThankYouPage — /obrigado — Mobile-first, full theme coverage
- * Fixes: var(--surface-2) → var(--bg-surface-2) | var(--bg-base) tokens
+ * ThankYouPage — pós-checkout do Stripe.
+ *
+ * URL: /obrigado?session_id={CHECKOUT_SESSION_ID}
+ *
+ * Tenta resolver o pedido pela `stripe_session_id` (webhook do Stripe
+ * atualiza o status para `paid` em background). Faz polling curto
+ * caso o webhook ainda não tenha chegado.
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link, useSearchParams } from "react-router-dom";
 import SpiralLogo from "@/components/layout/SpiralLogo";
-import { CheckCircle, ArrowRight, Mail, Copy, Check, Star, Shield, Infinity as InfinityIcon, Clock, BookOpen, Users, Award } from "lucide-react";
+import { supabase, isRealBackend } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
+import { fireEventAsync } from "@/lib/sequenzy";
+import { CheckCircle2, Loader2, ArrowRight, Sparkles } from "lucide-react";
 
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-  return (
-    <button
-      type="button"
-      onClick={() => {
-        navigator.clipboard.writeText(text).then(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2200);
-        });
-      }}
-      style={{
-        display: "inline-flex", alignItems: "center", gap: "5px",
-        background: "transparent", border: "1px solid var(--border-soft)",
-        borderRadius: "8px", padding: "6px 14px", cursor: "pointer",
-        color: copied ? "var(--sage)" : "var(--text-muted)",
-        fontFamily: "Montserrat, sans-serif", fontSize: "9px",
-        letterSpacing: "0.12em", textTransform: "uppercase",
-        transition: "all 0.2s", flexShrink: 0, minHeight: "36px",
-      }}
-    >
-      {copied ? <Check size={11} /> : <Copy size={11} />}
-      {copied ? "Copiado!" : "Copiar"}
-    </button>
-  );
+interface OrderState {
+  id: string;
+  status: "pending" | "paid" | "failed" | "refunded" | "canceled";
+  amount: number;
+  product_title?: string | null;
+  product_slug?: string | null;
+  email: string;
 }
-
-function StepItem({ num, title, desc, icon: Icon, status = "pending" }: {
-  num: string; title: string; desc: string;
-  icon: React.ElementType; status?: "done" | "active" | "pending";
-}) {
-  const colors = {
-    done:    { bg: "rgba(140,170,150,0.10)", border: "rgba(140,170,150,0.30)", num: "var(--sage)", icon: "var(--sage)" },
-    active:  { bg: "rgba(198,168,112,0.08)", border: "rgba(198,168,112,0.30)", num: "var(--gold)", icon: "var(--gold)" },
-    pending: { bg: "var(--bg-surface-2)",    border: "var(--border-subtle)",   num: "var(--text-faint)", icon: "var(--text-faint)" },
-  }[status];
-
-  return (
-    <div style={{
-      display: "flex", gap: "clamp(12px,3vw,20px)", alignItems: "flex-start",
-      padding: "clamp(14px,2.5vw,20px) clamp(14px,3vw,22px)",
-      background: colors.bg, border: `1px solid ${colors.border}`,
-      borderRadius: "clamp(14px,2vw,18px)", transition: "border-color 0.3s",
-    }}>
-      <div style={{
-        width: "clamp(36px,5vw,44px)", height: "clamp(36px,5vw,44px)", borderRadius: "50%",
-        background: colors.bg, border: `1px solid ${colors.border}`,
-        display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-      }}>
-        <Icon size={clamp(15, 18, 22)} style={{ color: colors.icon }} strokeWidth={1.5} />
-      </div>
-      <div style={{ flex: 1 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px", flexWrap: "wrap" }}>
-          <span className="font-label" style={{ fontSize: "8px", color: colors.num, letterSpacing: "0.22em", textTransform: "uppercase" }}>
-            Passo {num}
-          </span>
-          {status === "done"   && <span style={{ fontSize: "8px", color: "var(--sage)", fontFamily: "Montserrat" }}>✓ concluído</span>}
-          {status === "active" && <span style={{ fontSize: "8px", color: "var(--gold)", fontFamily: "Montserrat", animation: "pulseOpacity 2s ease-in-out infinite" }}>● aguardando</span>}
-        </div>
-        <p style={{ fontSize: "clamp(13px,1.6vw,15px)", color: "var(--text-primary)", fontWeight: 500, marginBottom: "4px", lineHeight: 1.4 }}>{title}</p>
-        <p style={{ fontSize: "clamp(12px,1.4vw,13px)", color: "var(--text-secondary)", lineHeight: 1.72 }}>{desc}</p>
-      </div>
-    </div>
-  );
-}
-
-// Helper: clamp a number between min and max
-function clamp(min: number, val: number, max: number) { return Math.max(min, Math.min(val, max)); }
 
 export default function ThankYouPage() {
   const [params] = useSearchParams();
-  const confettiRef = useRef<HTMLDivElement>(null);
+  const sessionId = params.get("session_id");
+  const isLocal = params.get("local") === "1" || !isRealBackend;
+  const { user } = useAuth();
+  const [order, setOrder] = useState<OrderState | null>(null);
+  const [attempts, setAttempts] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  const orderId      = params.get("orderId")  ?? "";
-  const productSlug  = params.get("slug")     ?? "mulher-espiral";
-  const productTitle = params.get("title")    ?? "Mulher Espiral";
-  const buyerEmail   = params.get("email")    ?? "";
-  const payMethod    = (params.get("method")  ?? "pix") as "pix" | "credit" | "boleto";
-  const invoiceUrl   = params.get("invoiceUrl") ?? "";
-  const pixKey       = params.get("pixKey")   ?? "";
-  const barCode      = params.get("barCode")  ?? "";
-  const shortId      = orderId ? orderId.slice(0, 8).toUpperCase() : "—";
+  const fetchOrder = useCallback(async () => {
+    if (!sessionId) return;
+    if (isLocal) {
+      setOrder({ id: sessionId, status: "paid", amount: 0, product_title: null, product_slug: null, email: user?.email ?? "demo@demo.com" });
+      setLoading(false);
+      return;
+    }
+    const { data } = await supabase
+      .from("orders")
+      .select("id, status, amount, email, products(title, slug)")
+      .eq("stripe_session_id", sessionId)
+      .maybeSingle();
 
-  // QR Code stored in sessionStorage (too long for URL)
-  const pixQrCode = sessionStorage.getItem("pix_qr_code") ?? "";
+    if (data) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const p = (data as any).products;
+      setOrder({
+        id: data.id,
+        status: data.status,
+        amount: Number(data.amount),
+        product_title: p?.title ?? null,
+        product_slug: p?.slug ?? null,
+        email: data.email,
+      });
+    }
+    setLoading(false);
+  }, [sessionId, isLocal, user?.email]);
 
-  // Suppress unused warning
-  void productSlug;
+  useEffect(() => { fetchOrder(); }, [fetchOrder]);
 
-  /* CSS confetti burst */
+  // Polling — espera o webhook do Stripe processar (até ~20s)
   useEffect(() => {
-    const el = confettiRef.current;
-    if (!el) return;
-    const colors = ["#c6a870", "#dac394", "#c99aaa", "#a49ed0", "#8caa96"];
-    const particles = Array.from({ length: 24 }, (_, i) => {
-      const p = document.createElement("div");
-      const color = colors[i % colors.length];
-      const angle = (i / 24) * 360;
-      const dist  = 70 + Math.random() * 100;
-      const dx = Math.cos((angle * Math.PI) / 180) * dist;
-      const dy = Math.sin((angle * Math.PI) / 180) * dist - 36;
-      const sheet = document.createElement("style");
-      sheet.textContent = `@keyframes burst${i} {
-        0%   { opacity:1; transform: translate(-50%,-50%) scale(0); }
-        60%  { opacity:1; }
-        100% { opacity:0; transform: translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(1) rotate(${Math.random()*360}deg); }
-      }`;
-      document.head.appendChild(sheet);
-      p.style.cssText = `position:absolute;width:5px;height:5px;border-radius:${Math.random()>0.5?"50%":"2px"};background:${color};top:50%;left:50%;animation:burst${i} 1.1s cubic-bezier(.22,1,.36,1) forwards;opacity:0;`;
-      el.appendChild(p);
-      return { p, sheet };
-    });
-    return () => particles.forEach(({ p, sheet }) => { p.remove(); sheet.remove(); });
-  }, []);
+    if (!order || order.status === "paid" || attempts >= 10) return;
+    const t = setTimeout(() => {
+      setAttempts(a => a + 1);
+      fetchOrder();
+    }, 2000);
+    return () => clearTimeout(t);
+  }, [order, attempts, fetchOrder]);
+
+  useEffect(() => {
+    if (order?.status === "paid") {
+      fireEventAsync("checkout.success", {
+        email: order.email,
+        properties: { product_slug: order.product_slug ?? "", amount: order.amount },
+      });
+    }
+  }, [order?.status, order]);
+
+  const isPaid = order?.status === "paid" || isLocal;
 
   return (
-    <div style={{
-      minHeight: "100dvh", background: "var(--bg-surface)", color: "var(--text-primary)",
-      display: "flex", flexDirection: "column", alignItems: "center", overflowX: "hidden",
-    }}>
-      {/* Gold glow */}
-      <div aria-hidden="true" style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, background: "radial-gradient(ellipse 70% 50% at 50% 20%, var(--gold-glow) 0%, transparent 65%)" }} />
+    <div style={{ minHeight: "100dvh", background: "var(--bg-deep)", color: "var(--text-primary)", fontFamily: "DM Sans, sans-serif" }}>
+      <Helmet>
+        <title>Obrigada · Despertar Espiral</title>
+        <meta name="robots" content="noindex" />
+      </Helmet>
 
-      {/* Nav */}
-      <header style={{
-        width: "100%", padding: "clamp(16px,3vw,28px) clamp(16px,5vw,24px)",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        position: "sticky", top: 0, zIndex: 2,
-        background: "var(--nav-bg)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid var(--border-subtle)",
-      }}>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <SpiralLogo variant="dark" size={28} autoTheme />
+      <header style={{ padding: "20px clamp(20px,5vw,40px)" }}>
+        <Link to="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", color: "var(--text-primary)" }}>
+          <SpiralLogo size={28} />
+          <span style={{ fontFamily: "Cormorant Garamond, serif", fontSize: 18 }}>Despertar Espiral</span>
         </Link>
-        <span className="font-label" style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--text-muted)" }}>
-          Área do membro
-        </span>
       </header>
 
-      <main style={{
-        position: "relative", zIndex: 1, width: "100%",
-        maxWidth: "680px", padding: "0 clamp(16px,5vw,24px) clamp(60px,10vw,100px)",
-        display: "flex", flexDirection: "column", alignItems: "center",
-      }}>
-        {/* Hero icon */}
-        <div style={{ position: "relative", width: "80px", height: "80px", margin: "clamp(28px,5vw,48px) auto clamp(20px,3vw,28px)" }}>
-          <div ref={confettiRef} style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
-          <div style={{
-            width: "80px", height: "80px", borderRadius: "50%",
-            background: "linear-gradient(135deg, rgba(198,168,112,0.16) 0%, rgba(198,168,112,0.06) 100%)",
-            border: "1px solid rgba(198,168,112,0.35)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            boxShadow: "0 0 40px rgba(198,168,112,0.18)",
-          }}>
-            <CheckCircle size={34} style={{ color: "var(--gold)" }} strokeWidth={1.2} />
-          </div>
-        </div>
+      <main style={{ maxWidth: 580, margin: "0 auto", padding: "clamp(40px,8vw,80px) clamp(20px,5vw,40px)", textAlign: "center" }}>
+        {loading ? (
+          <Loader2 size={32} style={{ color: "var(--gold)", animation: "spin 1s linear infinite" }} />
+        ) : isPaid ? (
+          <>
+            <div style={{
+              width: 88, height: 88, borderRadius: "50%",
+              background: "rgba(140,170,150,0.18)", border: "2px solid rgba(140,170,150,0.45)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              margin: "0 auto 24px", animation: "bounceScale 0.6s cubic-bezier(.34,1.56,.64,1) both",
+            }}>
+              <CheckCircle2 size={42} style={{ color: "#8caa96" }} strokeWidth={1.5} />
+            </div>
 
-        {/* Stars */}
-        <div style={{ display: "flex", gap: "5px", justifyContent: "center", marginBottom: "18px" }}>
-          {[...Array(5)].map((_, i) => <Star key={i} size={13} fill="var(--gold)" style={{ color: "var(--gold)" }} />)}
-        </div>
-
-        {/* Headline */}
-        <p className="overline" style={{ color: "var(--gold)", letterSpacing: "0.28em", marginBottom: "12px", textAlign: "center" }}>
-          Pedido registrado com sucesso
-        </p>
-        <h1 className="font-display text-balance" style={{
-          fontSize: "clamp(30px,5.5vw,58px)", fontWeight: 300, fontStyle: "italic",
-          lineHeight: 1.08, textAlign: "center", marginBottom: "14px", color: "var(--text-primary)",
-        }}>
-          Bem-vinda à sua jornada,<br />
-          <span style={{ color: "var(--gold)" }}>Mulher Espiral.</span>
-        </h1>
-        <p style={{
-          fontSize: "clamp(14px,1.8vw,16px)", color: "var(--text-secondary)",
-          lineHeight: 1.85, textAlign: "center", maxWidth: "520px", marginBottom: "clamp(28px,5vw,44px)",
-        }}>
-          Estamos ansiosas para te ver florescer. Siga os passos abaixo para garantir seu acesso ao{" "}
-          <strong style={{ color: "var(--text-primary)" }}>{productTitle}</strong>.
-        </p>
-
-        {/* Order number card */}
-        <div style={{
-          width: "100%",
-          background: "linear-gradient(135deg, rgba(198,168,112,0.10) 0%, rgba(198,168,112,0.04) 100%)",
-          border: "1px solid rgba(198,168,112,0.28)", borderRadius: "clamp(16px,2.5vw,22px)",
-          padding: "clamp(18px,4vw,28px)", marginBottom: "clamp(16px,3vw,24px)",
-          display: "flex", flexDirection: "column", gap: "clamp(12px,2vw,18px)",
-        }}>
-          <p className="overline" style={{ color: "var(--gold)", fontSize: "8px", letterSpacing: "0.25em" }}>Número do pedido</p>
-
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
-            <p className="font-display" style={{ fontSize: "clamp(28px,5vw,42px)", color: "var(--gold)", fontWeight: 300, lineHeight: 1, letterSpacing: "0.06em" }}>
-              #{shortId}
+            <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: 10, letterSpacing: "0.26em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 14 }}>
+              Pagamento confirmado
             </p>
-            {orderId && <CopyButton text={shortId} />}
-          </div>
 
-          <hr className="divider-gold" />
+            <h1 style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "clamp(36px,5.5vw,56px)", fontWeight: 300, lineHeight: 1.05, letterSpacing: "-0.01em", marginBottom: 18 }}>
+              Bem-vinda ao<br /><em style={{ color: "var(--gold)" }}>{order?.product_title ?? "Despertar Espiral"}</em>
+            </h1>
 
-          {buyerEmail && (
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Mail size={14} style={{ color: "var(--lavender)", flexShrink: 0 }} strokeWidth={1.5} />
-              <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                Instruções enviadas para <strong style={{ color: "var(--text-primary)" }}>{buyerEmail}</strong>
-              </p>
-            </div>
-          )}
+            <p style={{ fontSize: 16, color: "var(--text-muted)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 28px" }}>
+              Acabamos de receber sua compra. Em instantes você receberá um email de boas-vindas
+              com seu acesso. Se ainda não criou sua conta, faça login com o mesmo email da compra.
+            </p>
 
-          {/* Payment instructions — dynamic per method */}
-          {payMethod === "pix" && (
-            <div style={{ background: "var(--bg-surface-2)", border: "1px solid var(--border-subtle)", borderRadius: "16px", padding: "clamp(14px,2.5vw,20px)" }}>
-              <p className="font-label" style={{ fontSize: "8px", color: "var(--text-muted)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "14px" }}>
-                Pagamento via PIX
-              </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 360, margin: "0 auto" }}>
+              <Link to="/dashboard" style={{
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+                padding: "17px 32px",
+                background: "var(--gold)", color: "#04060f",
+                borderRadius: 12, textDecoration: "none",
+                fontFamily: "Montserrat, sans-serif", fontSize: 12, fontWeight: 700,
+                letterSpacing: "0.18em", textTransform: "uppercase",
+                boxShadow: "0 8px 30px rgba(198,168,112,0.30)",
+              }}>
+                <Sparkles size={15} /> Ir para meu painel
+              </Link>
 
-              {/* QR Code block */}
-              {pixQrCode && (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
-                  <div style={{
-                    background: "#fff", borderRadius: "16px", padding: "14px",
-                    border: "2px solid rgba(198,168,112,0.35)",
-                    boxShadow: "0 6px 32px rgba(0,0,0,0.22)",
-                    display: "inline-flex",
-                  }}>
-                    <img
-                      src={`data:image/png;base64,${pixQrCode}`}
-                      alt="QR Code PIX"
-                      width={180}
-                      height={180}
-                      style={{ display: "block", borderRadius: "6px" }}
-                    />
-                  </div>
-                  <p style={{ fontSize: "12px", color: "var(--text-muted)", textAlign: "center", lineHeight: 1.65 }}>
-                    Escaneie com o app do seu banco para pagar
-
-                    <span style={{ color: "var(--text-faint)", display: "block", marginTop: "3px", fontSize: "11px" }}>O QR Code expira em 24h</span>
-                  </p>
-                </div>
-              )}
-
-              {/* Divider */}
-              {pixQrCode && (
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
-                  <div style={{ flex: 1, height: "1px", background: "var(--border-subtle)" }} />
-                  <span className="font-label" style={{ fontSize: "8px", letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--text-faint)" }}>ou copie a chave</span>
-                  <div style={{ flex: 1, height: "1px", background: "var(--border-subtle)" }} />
-                </div>
-              )}
-
-              {/* PIX key copy */}
-              <div style={{ background: "var(--bg-surface)", borderRadius: "10px", padding: "10px 12px", border: "1px solid var(--border-subtle)", marginBottom: "10px" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
-                  <code style={{ fontSize: "clamp(11px,1.4vw,13px)", color: "var(--text-primary)", flex: 1, wordBreak: "break-all", lineHeight: 1.6 }}>
-                    {pixKey || "contato@despertarespiral.com"}
-                  </code>
-                  <CopyButton text={pixKey || "contato@despertarespiral.com"} />
-                </div>
-              </div>
-
-              {barCode && (
-                <div style={{ paddingTop: "10px", borderTop: "1px solid var(--border-subtle)" }}>
-                  <p className="font-label" style={{ fontSize: "8px", color: "var(--text-muted)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "6px" }}>Código copia e cola</p>
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                    <code style={{ fontSize: "11px", color: "var(--text-secondary)", flex: 1, wordBreak: "break-all", letterSpacing: "0.04em" }}>{barCode}</code>
-                    <CopyButton text={barCode} />
-                  </div>
-                </div>
+              {!user && (
+                <Link to={`/login?next=/dashboard`} style={{
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                  padding: 14, color: "var(--text-muted)", textDecoration: "none",
+                  fontFamily: "Montserrat, sans-serif", fontSize: 10,
+                  letterSpacing: "0.18em", textTransform: "uppercase",
+                  border: "1px solid rgba(198,168,112,0.25)", borderRadius: 12,
+                }}>
+                  Entrar com email da compra <ArrowRight size={12} />
+                </Link>
               )}
             </div>
-          )}
 
-          {payMethod === "credit" && (
-            <div style={{ background: "var(--bg-surface-2)", border: "1px solid rgba(164,158,208,0.20)", borderRadius: "12px", padding: "clamp(12px,2vw,16px)" }}>
-              <p className="font-label" style={{ fontSize: "8px", color: "var(--lavender)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "8px" }}>
-                Pagamento via cartão
-              </p>
-              <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.72 }}>
-                O link de pagamento seguro foi enviado para <strong style={{ color: "var(--text-primary)" }}>{buyerEmail || "seu e-mail"}</strong>. Clique no link para inserir os dados do cartão e confirmar em até 12×.
-              </p>
-            </div>
-          )}
-
-          {payMethod === "boleto" && (
-            <div style={{ background: "var(--bg-surface-2)", border: "1px solid var(--border-subtle)", borderRadius: "12px", padding: "clamp(12px,2vw,16px)" }}>
-              <p className="font-label" style={{ fontSize: "8px", color: "var(--text-muted)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "8px" }}>
-                Boleto bancário
-              </p>
-              <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.72 }}>
-                O boleto foi enviado para <strong style={{ color: "var(--text-primary)" }}>{buyerEmail || "seu e-mail"}</strong>. Pague até a data de vencimento (3 dias úteis). Acesso liberado em até 1 dia útil após compensação.
-              </p>
-            </div>
-          )}
-
-          <p style={{ fontSize: "12px", color: "var(--text-muted)", lineHeight: 1.72 }}>
-            {payMethod === "pix"
-              ? <>Após o pagamento, envie o comprovante com o número <strong style={{ color: "var(--text-primary)" }}>#{shortId}</strong> para{" "}<a href="mailto:contato@despertarespiral.com" style={{ color: "var(--gold)", textDecoration: "none" }}>contato@despertarespiral.com</a>. Acesso liberado em até 1h.</>
-              : <>Em caso de dúvidas, entre em contato com o número <strong style={{ color: "var(--text-primary)" }}>#{shortId}</strong> pelo e-mail{" "}<a href="mailto:contato@despertarespiral.com" style={{ color: "var(--gold)", textDecoration: "none" }}>contato@despertarespiral.com</a>.</>}
-          </p>
-        </div>
-
-        {/* Steps */}
-        <div style={{ width: "100%", marginBottom: "clamp(20px,3vw,32px)" }}>
-          <p className="overline" style={{ color: "var(--text-muted)", letterSpacing: "0.22em", marginBottom: "clamp(12px,2vw,18px)" }}>
-            Próximos passos
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            <StepItem num="01" icon={CheckCircle} status="done"   title="Pedido registrado" desc="Seus dados foram salvos com segurança e o pedido está aguardando pagamento." />
-            <StepItem num="02" icon={Mail}        status="active"
-              title={payMethod === "pix" ? "Efetue o pagamento via PIX" : payMethod === "credit" ? "Pague via link de cartão" : "Pague o boleto bancário"}
-              desc={payMethod === "pix" ? `Transfira para a chave PIX e envie o comprovante com o nº #${shortId}.` : payMethod === "credit" ? "Acesse o link no seu e-mail e insira os dados do cartão para confirmar." : "Abra o boleto no seu e-mail e pague em qualquer banco até o vencimento."}
-            />
-            <StepItem num="03" icon={BookOpen}    status="pending" title="Receba a confirmação" desc="Nossa equipe confirma e libera seu acesso em até 1h (dias úteis)." />
-            <StepItem num="04" icon={Award}       status="pending" title="Acesse seu curso" desc={`Entre na sua conta e comece ${productTitle} no seu ritmo.`} />
-          </div>
-        </div>
-
-        {/* CTAs */}
-        <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "10px", marginBottom: "clamp(20px,3vw,32px)" }}>
-          <Link to="/dashboard" className="btn-gold" style={{ width: "100%", justifyContent: "center" }}>
-            Ir para minha área <ArrowRight size={14} />
-          </Link>
-          <Link to="/dashboard" className="btn-outline-gold" style={{ width: "100%", justifyContent: "center" }}>
-            Acessar minha conta
-          </Link>
-        </div>
-
-        {/* Guarantees */}
-        <div style={{
-          width: "100%", display: "flex", justifyContent: "center",
-          gap: "clamp(12px,3vw,24px)", flexWrap: "wrap",
-          padding: "clamp(16px,3vw,22px)",
-          background: "var(--bg-surface-2)",
-          border: "1px solid var(--border-subtle)",
-          borderRadius: "clamp(14px,2vw,18px)", marginBottom: "clamp(28px,5vw,44px)",
-        }}>
-          {[
-            { icon: Shield,   label: "7 dias de garantia"   },
-            { icon: InfinityIcon, label: "Acesso vitalício"      },
-            { icon: Users,    label: "Comunidade exclusiva"  },
-            { icon: Clock,    label: "Suporte humanizado"    },
-          ].map(({ icon: Icon, label }) => (
-            <div key={label} style={{ display: "flex", alignItems: "center", gap: "7px" }}>
-              <Icon size={12} style={{ color: "var(--text-muted)" }} strokeWidth={1.5} />
-              <span className="font-label" style={{ fontSize: "9px", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--text-muted)" }}>{label}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Quote */}
-        <div style={{ textAlign: "center", maxWidth: "400px" }}>
-          <p className="font-display" style={{ fontSize: "clamp(18px,2.5vw,22px)", fontStyle: "italic", fontWeight: 300, color: "var(--text-secondary)", lineHeight: 1.55, marginBottom: "10px" }}>
-            "Você não está começando do zero.<br />Você está começando com tudo que já é."
-          </p>
-          <p className="overline" style={{ color: "var(--text-faint)", fontSize: "8px", letterSpacing: "0.22em" }}>
-            — Sunyan Nunes
-          </p>
-        </div>
+            <p style={{ marginTop: 32, fontSize: 12, color: "var(--text-faint)" }}>
+              Não recebeu o email em 5 minutos? Verifique a caixa de spam ou
+              {" "}<a href="mailto:contato@despertarespiral.com" style={{ color: "var(--gold)" }}>fale com a gente</a>.
+            </p>
+          </>
+        ) : order?.status === "pending" ? (
+          <>
+            <Loader2 size={48} style={{ color: "var(--gold)", animation: "spin 1s linear infinite", margin: "0 auto 24px" }} />
+            <h1 style={{ fontFamily: "Cormorant Garamond, serif", fontSize: 36, fontWeight: 300, marginBottom: 14 }}>
+              Aguardando confirmação…
+            </h1>
+            <p style={{ color: "var(--text-muted)", lineHeight: 1.7 }}>
+              Seu pedido está sendo processado. Em segundos o status atualiza.<br />
+              Se preferir, você pode fechar essa página — enviaremos um email assim que tudo estiver pronto.
+            </p>
+          </>
+        ) : (
+          <>
+            <h1 style={{ fontFamily: "Cormorant Garamond, serif", fontSize: 36, fontWeight: 300, marginBottom: 14 }}>
+              Não conseguimos confirmar
+            </h1>
+            <p style={{ color: "var(--text-muted)", lineHeight: 1.7, marginBottom: 22 }}>
+              Se você foi cobrada, em alguns minutos o status atualiza por aqui. Caso o problema persista,
+              entre em contato.
+            </p>
+            <Link to="/" style={{ color: "var(--gold)" }}>Voltar para a home</Link>
+          </>
+        )}
       </main>
 
       <style>{`
-        @keyframes pulseOpacity { 0%,100% { opacity:0.5; } 50% { opacity:1; } }
+        @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+        @keyframes bounceScale { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
       `}</style>
     </div>
   );

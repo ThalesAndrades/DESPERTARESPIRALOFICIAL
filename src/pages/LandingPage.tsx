@@ -17,6 +17,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
 import { testimonials, steps, guarantees, faqs, LANDING_STATS, COMMUNITY_STATS } from "@/constants/landingContent";
 import QuizSection from "@/components/features/QuizSection";
+import PricingSection from "@/components/features/PricingSection";
 
 /* ─────────────────────────────────────────────────────────────────
    Prefetch helpers — fire-and-forget dynamic imports on hover/focus
@@ -990,6 +991,11 @@ export default function LandingPage() {
                5 — QUIZ DIAGNÓSTICO
             ══════════════════════════════════════ */}
         <div id="section-5"><QuizSection /></div>
+
+        {/* ══════════════════════════════════════
+               5b — PRICING (Stripe-ready)
+            ══════════════════════════════════════ */}
+        <div id="section-pricing"><PricingSection /></div>
 
         {/* ══════════════════════════════════════
                6 — COMUNIDADE
