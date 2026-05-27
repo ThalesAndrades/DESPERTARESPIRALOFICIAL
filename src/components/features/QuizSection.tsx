@@ -441,7 +441,11 @@ export default function QuizSection() {
 
                   {/* Email form */}
                   {!submitted ? (
-                    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <form
+                      onSubmit={handleSubmit}
+                      data-fb-disable-text-collection="true"
+                      style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+                    >
                       <p style={{
                         fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase",
                         color: "rgba(198,168,112,0.55)", fontFamily: "Montserrat,sans-serif", marginBottom: "4px",
