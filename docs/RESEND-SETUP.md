@@ -46,7 +46,7 @@ No SQL Editor do Supabase:
 
 ```sql
 select net.http_post(
-  url := 'https://SEU-PROJETO.supabase.co/functions/v1/send-email',
+  url := 'https://dwblhkpodaabuuubloht.supabase.co/functions/v1/send-email',
   headers := '{"Content-Type":"application/json","Authorization":"Bearer SUA_ANON_KEY"}'::jsonb,
   body := '{"to":"voce@email.com","slug":"welcome","variables":{"firstName":"Sunyan"}}'::jsonb
 );
@@ -57,7 +57,7 @@ select net.http_post(
 Alternativa: chamar pelo terminal:
 
 ```sh
-curl -X POST https://SEU-PROJETO.supabase.co/functions/v1/send-email \
+curl -X POST https://dwblhkpodaabuuubloht.supabase.co/functions/v1/send-email \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer SUA_ANON_KEY" \
   -d '{"to":"voce@email.com","slug":"welcome","variables":{"firstName":"Sunyan"}}'

@@ -37,7 +37,7 @@ where slug = 'mulher-espiral';
 
 `Developers → Webhooks → + Add endpoint`:
 
-- **Endpoint URL**: `https://SEU-PROJETO.supabase.co/functions/v1/stripe-webhook`
+- **Endpoint URL**: `https://dwblhkpodaabuuubloht.supabase.co/functions/v1/stripe-webhook`
 - **Events to send**:
   - `checkout.session.completed`
   - `customer.subscription.created`
