@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { supabase } from "@/lib/supabase";
-import { MOCK_COMMUNITY_POSTS } from "@/constants/mockData";
 import { useAuth } from "@/hooks/useAuth";
 import { ArrowLeft, Heart, Send, MessageSquare, Flame, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -88,19 +87,6 @@ export default function TopicPage() {
         if (data && !error) {
           setPost(data as unknown as PostData);
           setPostLikes((data as unknown as PostData).likes_count ?? 0);
-        } else {
-          // Fallback to mock data
-          const mock = MOCK_COMMUNITY_POSTS.find((p) => p.id === id);
-          if (mock) {
-            setPost({
-              id: mock.id, title: mock.title, body: mock.body,
-              category: mock.category, is_pinned: mock.is_pinned,
-              likes_count: mock.likes, comments_count: mock.comments_count,
-              created_at: mock.created_at,
-              user_profiles: { anonymous_name: mock.author_anonymous },
-            });
-            setPostLikes(mock.likes);
-          }
         }
         setLoadingPost(false);
       });

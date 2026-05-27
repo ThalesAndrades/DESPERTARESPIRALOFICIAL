@@ -172,13 +172,13 @@ export default function ProductsPage() {
                   <BookOpen size={26} style={{ color: "var(--gold)" }} strokeWidth={1.5} />
                 </div>
                 <p className="font-display" style={{ fontSize: "24px", fontWeight: 300, color: "var(--text-primary)", marginBottom: "8px" }}>
-                  Nenhum curso ainda
+                  Em pré-lançamento
                 </p>
                 <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.82, marginBottom: "24px", maxWidth: "340px", margin: "0 auto 24px" }}>
-                  Explore nossos cursos e inicie sua jornada de autoconhecimento.
+                  O Mulher Espiral abre vagas em breve. Volte à home e entre na lista para ser avisada.
                 </p>
-                <Link to="/checkout/mulher-espiral" className="btn-gold" style={{ fontSize: "10px" }}>
-                  Conhecer cursos <ArrowRight size={14} />
+                <Link to="/" className="btn-outline-gold" style={{ fontSize: "10px" }}>
+                  Voltar para a home <ArrowRight size={14} />
                 </Link>
               </div>
             </div>
@@ -330,9 +330,9 @@ export default function ProductsPage() {
                       {p.price > 0 ? ` · R$ ${p.price.toFixed(2).replace(".", ",")}` : ""}
                     </p>
                   </div>
-                  <Link to={`/checkout/${p.slug}`} className="btn-outline-gold" style={{ padding: "9px 16px", fontSize: "8.5px", borderRadius: "12px", flexShrink: 0 }}>
-                    Acessar
-                  </Link>
+                  <span className="btn-outline-gold" style={{ padding: "9px 16px", fontSize: "8.5px", borderRadius: "12px", flexShrink: 0, opacity: 0.6, pointerEvents: "none" }}>
+                    Em breve
+                  </span>
                 </div>
               ))}
             </div>

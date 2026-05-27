@@ -271,8 +271,8 @@ export default function LessonPage() {
               Esta aula não está disponível para sua conta.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "360px", margin: "0 auto" }}>
-              <Link to={`/checkout/${product.slug as string}`} className="btn-gold" style={{ justifyContent: "center", minHeight: "54px", borderRadius: "16px", fontSize: "9px" }}>
-                Liberar acesso agora <ArrowRight size={14} />
+              <Link to="/" className="btn-gold" style={{ justifyContent: "center", minHeight: "54px", borderRadius: "16px", fontSize: "9px" }}>
+                Entrar na lista do pré-lançamento <ArrowRight size={14} />
               </Link>
               <Link to="/products" className="btn-ghost" style={{ justifyContent: "center", minHeight: "50px", borderRadius: "16px", fontSize: "9px" }}>
                 Voltar para meus cursos
@@ -386,8 +386,8 @@ export default function LessonPage() {
               Para assistir, ative seu acesso ao <strong style={{ color: "var(--text-primary)", fontWeight: 500 }}>{product.title as string}</strong>.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "360px", margin: "0 auto" }}>
-              <Link to={`/checkout/${product.slug as string}`} className="btn-gold" style={{ justifyContent: "center", minHeight: "54px", borderRadius: "16px", fontSize: "9px" }}>
-                Liberar acesso agora <ArrowRight size={14} />
+              <Link to="/" className="btn-gold" style={{ justifyContent: "center", minHeight: "54px", borderRadius: "16px", fontSize: "9px" }}>
+                Entrar na lista do pré-lançamento <ArrowRight size={14} />
               </Link>
               <Link to="/products" className="btn-ghost" style={{ justifyContent: "center", minHeight: "50px", borderRadius: "16px", fontSize: "9px" }}>
                 Voltar para meus cursos

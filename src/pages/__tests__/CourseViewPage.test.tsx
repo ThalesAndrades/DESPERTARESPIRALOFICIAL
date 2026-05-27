@@ -242,10 +242,10 @@ describe("CourseViewPage — access denied", () => {
     setupSupabaseMocks();
   });
 
-  it("renders 'Acesso necessário' overline", async () => {
+  it("renders 'Em pré-lançamento' overline", async () => {
     renderCourse();
     await waitFor(() => {
-      expect(screen.getByText("Acesso necessário")).toBeInTheDocument();
+      expect(screen.getByText("Em pré-lançamento")).toBeInTheDocument();
     });
   });
 
@@ -256,11 +256,11 @@ describe("CourseViewPage — access denied", () => {
     });
   });
 
-  it("renders 'Liberar acesso agora' CTA linking to /checkout/:slug", async () => {
+  it("renders 'Ir para a home' CTA linking to /", async () => {
     renderCourse();
     await waitFor(() => {
-      const cta = screen.getByRole("link", { name: /liberar acesso agora/i });
-      expect(cta).toHaveAttribute("href", "/checkout/mulher-espiral");
+      const cta = screen.getByRole("link", { name: /ir para a home/i });
+      expect(cta).toHaveAttribute("href", "/");
     });
   });
 
@@ -325,7 +325,7 @@ describe("CourseViewPage — access denied", () => {
 
   it("does NOT render the module accordion in access-denied view", async () => {
     renderCourse();
-    await waitFor(() => expect(screen.getByText("Acesso necessário")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("Em pré-lançamento")).toBeInTheDocument());
     // Module accordion header buttons are not rendered
     expect(screen.queryByText("Módulo 1 — O Chamado")).not.toBeInTheDocument();
   });

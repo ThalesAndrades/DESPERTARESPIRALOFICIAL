@@ -379,12 +379,12 @@ describe("LessonPage — access control", () => {
     });
   });
 
-  it("renders 'Liberar acesso agora' CTA in paywall", async () => {
+  it("renders 'Entrar na lista do pré-lançamento' CTA in paywall", async () => {
     mockUseAuth.mockReturnValue({ user: AUTH_USER_NO_ACCESS, loading: false });
     setupSupabaseMocks({ lessonRow: LESSON_VIDEO });
     renderLesson();
     await waitFor(() => {
-      expect(screen.getAllByRole("link", { name: /liberar acesso agora/i }).length).toBeGreaterThan(0);
+      expect(screen.getAllByRole("link", { name: /entrar na lista do pré-lançamento/i }).length).toBeGreaterThan(0);
     });
   });
 

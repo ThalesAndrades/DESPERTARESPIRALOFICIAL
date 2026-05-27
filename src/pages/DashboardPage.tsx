@@ -365,12 +365,12 @@ export default function DashboardPage() {
                 <div style={{ width: "60px", height: "60px", borderRadius: "50%", background: "rgba(198,168,112,0.08)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 18px" }}>
                   <BookOpen size={24} style={{ color: "var(--gold)" }} strokeWidth={1.5} />
                 </div>
-                <p className="font-display" style={{ fontSize: "24px", fontWeight: 300, color: "var(--text-primary)", marginBottom: "8px" }}>Inicie sua jornada</p>
+                <p className="font-display" style={{ fontSize: "24px", fontWeight: 300, color: "var(--text-primary)", marginBottom: "8px" }}>Em breve</p>
                 <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.75, marginBottom: "22px", maxWidth: "320px" }}>
-                  Adquira um curso e desperte o que está dentro de você.
+                  O Mulher Espiral está em pré-lançamento. Você será avisada quando as vagas abrirem.
                 </p>
-                <Link to="/checkout/mulher-espiral" className="btn-gold" style={{ fontSize: "9px", padding: "12px 28px" }}>
-                  Conhecer cursos <ArrowRight size={13} />
+                <Link to="/" className="btn-outline-gold" style={{ fontSize: "9px", padding: "12px 28px" }}>
+                  Voltar para a home <ArrowRight size={13} />
                 </Link>
               </div>
             </div>
@@ -488,15 +488,15 @@ export default function DashboardPage() {
                 <path d="M300 550C120 550 50 420 50 300C50 165 155 65 285 65C395 65 480 152 480 262C480 355 410 420 320 420C245 420 185 360 185 286C185 220 237 170 303 170C362 170 408 216 408 275C408 327 370 362 320 362C277 362 245 330 245 288C245 252 273 226 308 226C340 226 365 251 365 283C365 312 343 333 315 333"
                   stroke="var(--gold)" strokeWidth="14" strokeLinecap="round" fill="none" />
               </svg>
-              <p className="overline" style={{ color: "var(--gold)", marginBottom: "10px", fontSize: "8px" }}>Comece agora</p>
+              <p className="overline" style={{ color: "var(--gold)", marginBottom: "10px", fontSize: "8px" }}>Pré-lançamento</p>
               <h2 className="font-display" style={{ fontSize: "clamp(24px,4vw,34px)", fontWeight: 300, color: "var(--text-primary)", marginBottom: "10px", lineHeight: 1.12 }}>
-                Você chegou até aqui por um motivo.
+                A primeira turma está chegando.
               </h2>
               <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.82, marginBottom: "24px", maxWidth: "360px", margin: "0 auto 24px" }}>
-                O Mulher Espiral tem 8 módulos de autoconhecimento esperando por você.
+                As vagas para o Mulher Espiral abrem em breve. Volte à home e entre na lista para ser avisada.
               </p>
-              <Link to="/checkout/mulher-espiral" className="btn-gold" style={{ width: "100%", justifyContent: "center", fontSize: "10px" }}>
-                Quero começar <ArrowRight size={14} />
+              <Link to="/" className="btn-gold" style={{ width: "100%", justifyContent: "center", fontSize: "10px" }}>
+                Ir para a home <ArrowRight size={14} />
               </Link>
             </div>
           </div>

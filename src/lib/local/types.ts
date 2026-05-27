@@ -144,6 +144,8 @@ export interface QuizAttemptRow {
 export interface WaitlistRow {
   id: string;
   email: string;
+  name: string | null;
+  phone: string | null;
   source: string | null;
   created_at: string;
 }
