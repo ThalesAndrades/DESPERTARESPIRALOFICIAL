@@ -4,6 +4,8 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { isGateOpen, isLaunchMode } from "@/lib/launchGate";
+import { usePageTracking } from "@/hooks/usePageTracking";
+import ConsentBanner from "@/components/features/ConsentBanner";
 import LandingPage from "@/pages/LandingPage"; // static — first page, no lazy delay
 
 /* ── Prefetch helpers ── */
@@ -44,6 +46,7 @@ const CertificatePage       = React.lazy(() => import("@/pages/CertificatePage")
 const ProfilePage           = React.lazy(() => import("@/pages/ProfilePage"));
 const AccountPage            = React.lazy(() => import("@/pages/AccountPage"));
 const MapaDoPoder           = React.lazy(() => import("@/pages/MapaDoPoder"));
+const CaptionPage           = React.lazy(() => import("@/pages/CaptionPage"));
 
 /* ── Global loader — branded spiral spinner ── */
 function GlobalLoader() {
@@ -156,8 +159,10 @@ function Suspense({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  usePageTracking();
   return (
     <Suspense>
+      <ConsentBanner />
       <Routes>
         {/* Public — LandingPage is static for instant load */}
         <Route path="/"                element={<LandingPage />} />
@@ -198,6 +203,9 @@ export default function App() {
         <Route path="/admin/media"                element={<AdminRoute><AdminMediaPage /></AdminRoute>} />
         <Route path="/admin/traffic"              element={<AdminRoute><AdminTrafficPage /></AdminRoute>} />
         <Route path="/admin/events"               element={<AdminRoute><AdminEventsPage /></AdminRoute>} />
+
+        {/* Caption — landing pública para tráfego pago (Meta/Google Ads) */}
+        <Route path="/caption" element={<CaptionPage />} />
 
         {/* Mapa do Poder — ferramenta pública (acesso direto, sem QR) */}
         <Route path="/mapa-do-poder" element={<MapaDoPoder />} />
