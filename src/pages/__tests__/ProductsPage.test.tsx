@@ -202,11 +202,10 @@ describe("ProductsPage — locked products", () => {
     await waitFor(() => expect(screen.getByText(/disponíveis para acesso/i)).toBeTruthy());
   });
 
-  it("shows 'Acessar' button linking to /checkout/:slug", async () => {
+  it("shows 'Em breve' label on locked products during pre-launch", async () => {
     renderProducts();
     await waitFor(() => {
-      const link = screen.getByText("Acessar").closest("a");
-      expect(link?.getAttribute("href")).toContain("/checkout/outro-curso");
+      expect(screen.getAllByText(/em breve/i).length).toBeGreaterThan(0);
     });
   });
 
@@ -222,16 +221,16 @@ describe("ProductsPage — empty state", () => {
     mockUseAuth.mockReturnValue({ user: { ...mockUser, products: [] } });
   });
 
-  it("shows 'Nenhum curso ainda' heading", async () => {
+  it("shows 'Em pré-lançamento' heading", async () => {
     renderProducts();
-    await waitFor(() => expect(screen.getByText(/nenhum curso ainda/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/em pré-lançamento/i)).toBeTruthy());
   });
 
-  it("shows CTA link to checkout", async () => {
+  it("shows CTA link back to home", async () => {
     renderProducts();
     await waitFor(() => {
-      const link = screen.getByText(/conhecer cursos/i).closest("a");
-      expect(link?.getAttribute("href")).toContain("/checkout/mulher-espiral");
+      const link = screen.getByText(/voltar para a home/i).closest("a");
+      expect(link?.getAttribute("href")).toBe("/");
     });
   });
 

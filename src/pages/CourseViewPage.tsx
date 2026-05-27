@@ -137,16 +137,16 @@ export default function CourseViewPage() {
         <div style={{ maxWidth: "760px", margin: "0 auto", padding: "clamp(20px,4vw,32px) clamp(14px,4vw,24px) clamp(40px,6vw,80px)" }}>
           <div className="card-dark" style={{ overflow: "hidden" }}>
             <div style={{ padding: "clamp(20px,4vw,32px)" }}>
-              <p className="overline" style={{ color: "var(--gold)", marginBottom: "8px" }}>Acesso necessário</p>
+              <p className="overline" style={{ color: "var(--gold)", marginBottom: "8px" }}>Em pré-lançamento</p>
               <h1 className="font-display" style={{ fontSize: "clamp(22px,4vw,40px)", fontWeight: 300, color: "var(--text-primary)", marginBottom: "10px" }}>
                 {product.title as string}
               </h1>
               <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.85, marginBottom: "20px" }}>
-                Para ver o conteúdo completo, ative seu acesso ao curso.
+                As vagas abrem em breve. Volte à home para entrar na lista do pré-lançamento e ser avisada.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px" }}>
-                <Link to={`/checkout/${slug}`} className="btn-gold" style={{ justifyContent: "center", minHeight: "54px", borderRadius: "16px", fontSize: "9px" }}>
-                  Liberar acesso agora <Play size={13} fill="#060810" style={{ color: "#060810" }} />
+                <Link to="/" className="btn-gold" style={{ justifyContent: "center", minHeight: "54px", borderRadius: "16px", fontSize: "9px" }}>
+                  Ir para a home <Play size={13} fill="#060810" style={{ color: "#060810" }} />
                 </Link>
                 <button onClick={() => navigate("/products")} className="btn-ghost" style={{ justifyContent: "center", minHeight: "50px", borderRadius: "16px", fontSize: "9px" }}>
                   ← Voltar para meus cursos

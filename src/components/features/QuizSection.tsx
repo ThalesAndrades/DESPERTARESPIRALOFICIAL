@@ -1,13 +1,14 @@
 /**
  * QuizSection — Diagnóstico Espiral (4 perguntas)
  * Wizard animado inserido na LandingPage entre Depoimentos e Comunidade.
- * Q4 = qualificação de investimento (segmenta intenção de compra).
+ * Q4 = qualificação de investimento (segmenta intenção da lead).
  * Dispara lead.diagnostic_completed + lead.optin.pain_* via Sequenzy.
- * Redireciona para /checkout/mulher-espiral?pain=X após coleta de e-mail.
+ * Ao final grava o lead em public.launch_waitlist (pré-lançamento).
  */
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { fireEventAsync } from "@/lib/sequenzy";
+import { getAttribution } from "@/lib/analytics";
+import { supabase } from "@/lib/supabase";
 import sunyanPortrait from "@/assets/sunyan-portrait.jpg";
 
 /* ── Quiz questions ─────────────────────────────────────── */
@@ -111,34 +112,8 @@ const PAIN_RESULTS: Record<string, {
   },
 };
 
-/* ── Urgency countdown hook ──────────────────────────────── */
-function useUrgencyTimer(active: boolean) {
-  const [seconds, setSeconds] = useState(10 * 60); // 10 min
-  const interval = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    if (!active) return;
-    interval.current = setInterval(() => {
-      setSeconds((s) => {
-        if (s <= 1) {
-          clearInterval(interval.current!);
-          return 0;
-        }
-        return s - 1;
-      });
-    }, 1000);
-    return () => { if (interval.current) clearInterval(interval.current); };
-  }, [active]);
-
-  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const ss = String(seconds % 60).padStart(2, "0");
-  return { display: `${mm}:${ss}`, urgent: seconds <= 120, expired: seconds === 0 };
-}
-
 /* ── Component ───────────────────────────────────────────── */
 export default function QuizSection() {
-  const navigate = useNavigate();
-
   // step: 0–3 = questions, 4 = result
   const [step,       setStep]       = useState<0 | 1 | 2 | 3 | 4>(0);
   const [answers,    setAnswers]    = useState<string[]>([]);
@@ -146,8 +121,7 @@ export default function QuizSection() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted,  setSubmitted]  = useState(false);
   const [animating,  setAnimating]  = useState(false);
-
-  const timer = useUrgencyTimer(step === 4);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const painKey = (answers[0] ?? "proposito") as keyof typeof PAIN_RESULTS;
   const result  = PAIN_RESULTS[painKey] ?? PAIN_RESULTS.proposito;
@@ -168,7 +142,11 @@ export default function QuizSection() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    setSubmitError(null);
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setSubmitError("Confira o e-mail.");
+      return;
+    }
     setSubmitting(true);
 
     fireEventAsync("lead.diagnostic_completed", {
@@ -180,6 +158,7 @@ export default function QuizSection() {
         investment:     answers[3] ?? "",
         product_slug:   "mulher-espiral",
         completed_at:   new Date().toISOString(),
+        ...getAttribution(),
       },
     });
     fireEventAsync(result.sequenzyEvent, {
@@ -192,12 +171,23 @@ export default function QuizSection() {
       },
     });
 
-    sessionStorage.setItem("checkout_email", email);
+    const { error: insertError } = await supabase
+      .from("launch_waitlist")
+      .insert({
+        email: email.toLowerCase(),
+        name: null,
+        phone: null,
+        source: `quiz:${painKey}`,
+      });
+
+    if (insertError && !/duplicate|unique/i.test(insertError.message ?? "")) {
+      setSubmitting(false);
+      setSubmitError("Não conseguimos registrar agora. Tente novamente em instantes.");
+      return;
+    }
+
     setSubmitting(false);
     setSubmitted(true);
-
-    await new Promise((r) => setTimeout(r, 900));
-    navigate(`/checkout/mulher-espiral?pain=${painKey}`);
   }
 
   function restart() {
@@ -336,30 +326,26 @@ export default function QuizSection() {
           {step === totalQuestions && (
             <div>
 
-              {/* Urgency banner */}
               <div style={{
-                display: "flex", alignItems: "center", justifyContent: "center", gap: "12px",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
                 marginBottom: "clamp(20px,3vw,30px)",
                 padding: "10px 20px", borderRadius: "100px",
-                background: timer.urgent ? "rgba(201,80,80,0.12)" : "rgba(198,168,112,0.09)",
-                border: `1px solid ${timer.urgent ? "rgba(201,80,80,0.35)" : "rgba(198,168,112,0.28)"}`,
+                background: "rgba(198,168,112,0.09)",
+                border: "1px solid rgba(198,168,112,0.28)",
                 width: "fit-content", margin: "0 auto clamp(20px,3vw,30px)",
-                transition: "background 0.6s, border-color 0.6s",
               }}>
                 <span style={{
                   display: "inline-flex", width: "7px", height: "7px", borderRadius: "50%",
-                  background: timer.urgent ? "#e07070" : "#c6a870",
+                  background: "#c6a870",
                   flexShrink: 0,
                   animation: "quizPulse 1.8s ease-out infinite",
                 }} />
                 <span style={{
                   fontFamily: "Montserrat,sans-serif", fontSize: "9px",
                   letterSpacing: "0.18em", textTransform: "uppercase",
-                  color: timer.urgent ? "#e07070" : "var(--gold)",
+                  color: "var(--gold)",
                 }}>
-                  {timer.expired
-                    ? "Oferta encerrada"
-                    : `Oferta reservada por ${timer.display}`}
+                  Pré-lançamento — vagas limitadas
                 </span>
               </div>
 
@@ -444,7 +430,7 @@ export default function QuizSection() {
                         fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase",
                         color: "rgba(198,168,112,0.55)", fontFamily: "Montserrat,sans-serif", marginBottom: "4px",
                       }}>
-                        Receba seu caminho personalizado
+                        Entre na lista do pré-lançamento
                       </p>
                       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                         <input
@@ -470,36 +456,22 @@ export default function QuizSection() {
                         />
                         <button
                           type="submit"
-                          disabled={submitting || timer.expired}
+                          disabled={submitting}
                           className="btn-gold"
                           style={{ flexShrink: 0, minHeight: "52px", borderRadius: "14px", padding: "0 24px", fontSize: "9px" }}
                         >
-                          {submitting ? "…" : timer.expired ? "Oferta encerrada" : "Ver meu caminho →"}
+                          {submitting ? "Enviando…" : "Quero ser avisada →"}
                         </button>
                       </div>
 
-                      {/* Timer strip below form */}
-                      {!timer.expired && (
-                        <div style={{
-                          display: "flex", alignItems: "center", gap: "8px",
-                          padding: "8px 12px", borderRadius: "10px",
-                          background: timer.urgent ? "rgba(201,80,80,0.08)" : "rgba(198,168,112,0.06)",
-                          border: `1px solid ${timer.urgent ? "rgba(201,80,80,0.22)" : "rgba(198,168,112,0.16)"}`,
-                        }}>
-                          <span style={{ fontSize: "10px" }}>⏱</span>
-                          <span style={{
-                            fontSize: "11px", fontFamily: "Montserrat,sans-serif",
-                            color: timer.urgent ? "#e07070" : "rgba(198,168,112,0.70)",
-                          }}>
-                            {timer.urgent
-                              ? `Apenas ${timer.display} restantes para garantir esta oferta`
-                              : `Acesso reservado por mais ${timer.display}`}
-                          </span>
-                        </div>
+                      {submitError && (
+                        <p role="alert" style={{ fontSize: "12px", color: "#ff8a8a", fontFamily: "Montserrat,sans-serif" }}>
+                          {submitError}
+                        </p>
                       )}
 
                       <p style={{ fontSize: "11px", color: "rgba(245,240,232,0.22)", fontFamily: "Montserrat,sans-serif" }}>
-                        Sem spam. Só conteúdo que transforma.
+                        Avisamos você antes de qualquer pessoa. Sem spam.
                       </p>
                     </form>
                   ) : (
@@ -510,7 +482,7 @@ export default function QuizSection() {
                     }}>
                       <span style={{ color: "var(--sage)", fontSize: "20px" }}>✦</span>
                       <p style={{ fontSize: "14px", color: "var(--sage)", fontFamily: "Montserrat,sans-serif" }}>
-                        Redirecionando para sua jornada…
+                        Você está na lista. Vamos te avisar pelo e-mail informado.
                       </p>
                     </div>
                   )}

@@ -10,7 +10,11 @@ import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { Menu, X } from "lucide-react";
 
-export default function LandingNav() {
+interface Props {
+  onJoinWaitlist?: () => void;
+}
+
+export default function LandingNav({ onJoinWaitlist }: Props = {}) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen]         = useState(false);
   const { user }                = useAuth();
@@ -119,9 +123,14 @@ export default function LandingNav() {
               >
                 Entrar
               </a>
-              <Link to="/checkout/mulher-espiral" className="btn-gold" style={{ padding: "10px 22px", fontSize: "9px", minHeight: "40px" }}>
-                Começar
-              </Link>
+              <button
+                type="button"
+                onClick={onJoinWaitlist}
+                className="btn-gold"
+                style={{ padding: "10px 22px", fontSize: "9px", minHeight: "40px", border: "none", cursor: "pointer" }}
+              >
+                Pré-lançamento
+              </button>
             </>
           )}
         </div>
@@ -214,9 +223,14 @@ export default function LandingNav() {
                   style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", minHeight: "52px" }}>
                   Entrar
                 </Link>
-                <Link to="/checkout/mulher-espiral" onClick={() => setOpen(false)} className="btn-gold" style={{ width: "100%", fontSize: "9px" }}>
-                  Começar jornada
-                </Link>
+                <button
+                  type="button"
+                  onClick={() => { setOpen(false); onJoinWaitlist?.(); }}
+                  className="btn-gold"
+                  style={{ width: "100%", fontSize: "9px", border: "none", cursor: "pointer" }}
+                >
+                  Pré-lançamento
+                </button>
               </>
             )}
           </div>

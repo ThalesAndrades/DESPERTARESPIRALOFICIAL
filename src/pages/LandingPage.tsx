@@ -15,17 +15,16 @@ import sunyanPortrait     from "@/assets/sunyan-portrait.jpg";
 import mockupAtualizado   from "@/assets/mockup-atualizado.png";
 import { useTheme } from "@/hooks/useTheme";
 import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
-import { testimonials, steps, guarantees, faqs, LANDING_STATS, COMMUNITY_STATS } from "@/constants/landingContent";
+import { steps, guarantees, faqs } from "@/constants/landingContent";
 import QuizSection from "@/components/features/QuizSection";
-import PricingSection from "@/components/features/PricingSection";
+import WaitlistModal from "@/components/features/WaitlistModal";
 
 /* ─────────────────────────────────────────────────────────────────
    Prefetch helpers — fire-and-forget dynamic imports on hover/focus
    so the JS chunk is already in the browser cache when the user
    clicks. Vite deduplicates repeated import() calls by URL.
 ───────────────────────────────────────────────────────────────── */
-const prefetchLogin    = () => import("@/pages/LoginPage").catch(() => {});
-const prefetchCheckout = () => import("@/pages/CheckoutPage").catch(() => {});
+const prefetchLogin = () => import("@/pages/LoginPage").catch(() => {});
 
 /* ─────────────────────────────────────────────────────────────────
    Scroll progress bar
@@ -230,6 +229,13 @@ export default function LandingPage() {
   const { theme }   = useTheme();
   const isLight     = theme === "light";
 
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const [waitlistSource, setWaitlistSource] = useState("landing");
+  const openWaitlist = useCallback((source: string) => {
+    setWaitlistSource(source);
+    setWaitlistOpen(true);
+  }, []);
+
   useScrollProgress(progressRef);
   useParallax();
   useReveal();
@@ -422,7 +428,7 @@ export default function LandingPage() {
           ))}
         </div>
 
-        <LandingNav />
+        <LandingNav onJoinWaitlist={() => openWaitlist("nav")} />
 
         {/* ══════════════════════════════════════
                0 — HERO (Parallax Imersivo)
@@ -685,17 +691,14 @@ export default function LandingPage() {
                 </p>
 
                 <div className="animate-fade-up delay-400" style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "360px", marginBottom: "clamp(18px,2.5vw,26px)" }}>
-                  {/* Primary CTA — prefetch CheckoutPage on hover/focus */}
-                  <Link
-                    to="/checkout/mulher-espiral"
+                  <button
+                    type="button"
+                    onClick={() => openWaitlist("hero")}
                     className="btn-gold"
-                    style={{ justifyContent: "center", minHeight: "58px", borderRadius: "18px" }}
-                    onMouseEnter={prefetchCheckout}
-                    onFocus={prefetchCheckout}
+                    style={{ justifyContent: "center", minHeight: "58px", borderRadius: "18px", width: "100%", border: "none", cursor: "pointer" }}
                   >
-                    Quero começar minha jornada <ArrowRight size={15} />
-                  </Link>
-                  {/* Secondary CTA — prefetch LoginPage on hover/focus */}
+                    Quero entrar no pré-lançamento <ArrowRight size={15} />
+                  </button>
                   <Link
                     to="/login"
                     className="btn-outline-gold"
@@ -751,22 +754,22 @@ export default function LandingPage() {
           <div aria-hidden="true" style={{ position: "absolute", inset: 0, opacity: isLight ? 0.03 : 0.015, backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`, pointerEvents: "none" }} />
           <div style={{ maxWidth: "960px", margin: "0 auto", position: "relative", zIndex: 1 }}>
             <div className="reveal" style={{ textAlign: "center", marginBottom: "clamp(32px,5vw,56px)" }}>
-              <div style={{ display: "flex", justifyContent: "center", gap: "4px", marginBottom: "12px" }}>
-                {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="var(--gold)" style={{ color: "var(--gold)" }} />)}
-              </div>
-              <p className="font-display" style={{
-                fontSize: "clamp(17px,2.4vw,24px)", fontStyle: "italic",
+              <p className="overline" style={{ color: "var(--gold)", marginBottom: "14px" }}>Primeira turma</p>
+              <h2 className="font-display text-balance" style={{
+                fontSize: "clamp(22px,3vw,32px)", fontStyle: "italic",
                 color: "var(--text-secondary)", fontWeight: 300,
-                maxWidth: "560px", margin: "0 auto", lineHeight: 1.5,
+                maxWidth: "640px", margin: "0 auto", lineHeight: 1.4,
               }}>
-                "A experiência mais transformadora que já vivi."
+                Estamos preparando o ambiente para receber as primeiras mulheres do Método Espiral.
+              </h2>
+              <p style={{ marginTop: 18, fontSize: "clamp(13px,1.5vw,15px)", color: "var(--text-muted)", lineHeight: 1.8, maxWidth: 540, marginInline: "auto" }}>
+                Deixe seu contato e seja avisada antes de qualquer pessoa quando as vagas abrirem.
               </p>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "clamp(4px,2vw,16px)" }} className="sm:grid-cols-4">
-              <Stat value={LANDING_STATS.students} label="Mulheres na jornada" delay="reveal-delay-1" />
-              <Stat value={LANDING_STATS.recommendation} label="Recomendam o método" delay="reveal-delay-2" />
-              <Stat value="8" label="Módulos transformadores" delay="reveal-delay-3" />
-              <Stat value={`${LANDING_STATS.rating} ★`} label="Avaliação média" delay="reveal-delay-4" />
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "clamp(4px,2vw,16px)" }} className="sm:grid-cols-3">
+              <Stat value="8" label="Módulos da jornada" delay="reveal-delay-1" />
+              <Stat value="Vitalício" label="Acesso ao conteúdo" delay="reveal-delay-2" />
+              <Stat value="7 dias" label="Garantia incondicional" delay="reveal-delay-3" />
             </div>
           </div>
 
@@ -805,14 +808,14 @@ export default function LandingPage() {
               <p style={{ fontSize: "clamp(14px,1.6vw,16px)", color: "var(--text-secondary)", lineHeight: 1.92, marginBottom: "32px" }}>
                 Cada volta representa um nível mais profundo de consciência. Não é linearidade — é aprofundamento. Você volta ao mesmo ponto, mas sempre mais inteira.
               </p>
-              <Link
-                to="/checkout/mulher-espiral"
+              <button
+                type="button"
+                onClick={() => openWaitlist("metodo")}
                 className="btn-outline-gold"
-                onMouseEnter={prefetchCheckout}
-                onFocus={prefetchCheckout}
+                style={{ background: "transparent", cursor: "pointer" }}
               >
-                Conhecer o método <ArrowUpRight size={13} />
-              </Link>
+                Quero saber mais <ArrowUpRight size={13} />
+              </button>
             </div>
             <div className="reveal-right">
               {steps.map((step, i) => (
@@ -897,21 +900,18 @@ export default function LandingPage() {
                   </div>
                   <div style={{ display: "flex", alignItems: "flex-end", gap: "16px", justifyContent: "space-between", flexWrap: "wrap", rowGap: "12px" }}>
                     <div>
-                      <p className="overline" style={{ color: "rgba(245,240,232,0.32)", marginBottom: "4px", fontSize: "8px" }}>Investimento</p>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                        <p className="font-display" style={{ fontSize: "clamp(32px,4vw,46px)", color: "#c6a870", fontWeight: 300, lineHeight: 1 }}>R$ 997</p>
-                        <p style={{ fontSize: "13px", color: "rgba(245,240,232,0.28)", textDecoration: "line-through" }}>R$ 1.997</p>
-                      </div>
-                      <p className="font-label" style={{ fontSize: "9px", color: "rgba(140,170,150,0.78)", letterSpacing: "0.12em", marginTop: "4px" }}>ou 12× de R$ 97,10</p>
+                      <p className="overline" style={{ color: "rgba(245,240,232,0.32)", marginBottom: "4px", fontSize: "8px" }}>Status</p>
+                      <p className="font-display" style={{ fontSize: "clamp(26px,3vw,36px)", color: "#c6a870", fontWeight: 300, lineHeight: 1.05, fontStyle: "italic" }}>Pré-lançamento</p>
+                      <p className="font-label" style={{ fontSize: "9px", color: "rgba(140,170,150,0.78)", letterSpacing: "0.12em", marginTop: "6px" }}>Inscrições limitadas — vagas para a primeira turma</p>
                     </div>
-                    <Link
-                      to="/checkout/mulher-espiral"
+                    <button
+                      type="button"
+                      onClick={() => openWaitlist("product-card")}
                       className="btn-gold"
-                      onMouseEnter={prefetchCheckout}
-                      onFocus={prefetchCheckout}
+                      style={{ cursor: "pointer", border: "none" }}
                     >
-                      Quero começar <ArrowRight size={14} />
-                    </Link>
+                      Entrar na lista <ArrowRight size={14} />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -951,39 +951,38 @@ export default function LandingPage() {
           <div data-parallax="0.06" style={{ position: "absolute", left: "-16px", bottom: "-24px", pointerEvents: "none" }} aria-hidden="true">
             <SectionSpiral3D size={90} height={250} opacity={isLight ? 0.18 : 0.22} color={isLight ? "#7a3248" : "#8c4a5e"} emissive="#4a1828" speed={0.0003} lightBg={isLight} />
           </div>
-          <div style={{ position: "relative", maxWidth: "1100px", margin: "0 auto" }}>
-            <div style={{ textAlign: "center", marginBottom: "clamp(36px,6vw,64px)" }}>
-              <p className="overline reveal" style={{ color: "var(--gold)", marginBottom: "16px" }}>Transformações reais</p>
-              <h2 className="font-display text-balance reveal reveal-delay-1" style={{ fontSize: "clamp(26px,5vw,58px)", fontWeight: 300, color: "var(--text-primary)" }}>
-                Mulheres que percorreram a espiral
-              </h2>
-              <div style={{ display: "flex", alignItems: "center", gap: "16px", justifyContent: "center", marginTop: "20px" }}>
-                <div style={{ height: "1px", width: "40px", background: "var(--border-subtle)" }} />
-                <span style={{ color: "var(--gold)", fontSize: "10px" }}>◆</span>
-                <div style={{ height: "1px", width: "40px", background: "var(--border-subtle)" }} />
-              </div>
-            </div>
-            <div className="grid md:grid-cols-3" style={{ gap: "clamp(12px,2vw,18px)" }}>
-              {testimonials.map((t, i) => (
-                <div key={i} className={`card-dark reveal reveal-delay-${i + 1}`} style={{
-                  padding: "clamp(20px,3vw,34px)", marginTop: i === 1 ? "clamp(0px,2vw,28px)" : "0",
-                  display: "flex", flexDirection: "column",
+          <div style={{ position: "relative", maxWidth: "780px", margin: "0 auto", textAlign: "center" }}>
+            <p className="overline reveal" style={{ color: "var(--gold)", marginBottom: "18px" }}>Para quem é</p>
+            <h2 className="font-display text-balance reveal reveal-delay-1" style={{ fontSize: "clamp(26px,5vw,52px)", fontWeight: 300, color: "var(--text-primary)", marginBottom: 20 }}>
+              Você está pronta para essa jornada se…
+            </h2>
+            <ul className="reveal reveal-delay-2" style={{
+              listStyle: "none", padding: 0, margin: "32px 0 0",
+              display: "grid", gap: 14, textAlign: "left",
+            }}>
+              {[
+                "Sente que algo precisa mudar mas não consegue nomear o quê.",
+                "Quer um caminho gentil, sem fórmulas mágicas nem urgência de performance.",
+                "Procura um espaço seguro de mulheres no mesmo movimento.",
+                "Tem disponibilidade para se dedicar 20-40 minutos por dia, no seu ritmo.",
+              ].map((line) => (
+                <li key={line} style={{
+                  display: "flex", alignItems: "flex-start", gap: 14,
+                  padding: "16px 20px",
+                  background: "rgba(198,168,112,0.04)",
+                  border: "1px solid rgba(198,168,112,0.18)",
+                  borderRadius: 14,
                 }}>
-                  <div style={{ display: "flex", gap: "3px", marginBottom: "18px" }}>
-                    {[...Array(5)].map((_, s) => <Star key={s} size={11} fill="var(--gold)" style={{ color: "var(--gold)" }} />)}
-                  </div>
-                  <p className="font-display" style={{ fontSize: "clamp(15px,1.8vw,17px)", color: "var(--text-secondary)", lineHeight: 1.70, fontStyle: "italic", fontWeight: 300, flex: 1, marginBottom: "20px" }}>"{t.text}"</p>
-                  <hr className="divider-gold" style={{ marginBottom: "18px" }} />
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                    <div style={{ width: "34px", height: "34px", borderRadius: "50%", background: "rgba(172,128,142,0.15)", color: "var(--rose)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", fontFamily: "Montserrat,sans-serif", fontWeight: 500, flexShrink: 0 }}>{t.name.charAt(0)}</div>
-                    <div>
-                      <p style={{ fontSize: "13px", color: "var(--text-primary)", fontWeight: 500 }}>{t.name}</p>
-                      <p className="font-label" style={{ fontSize: "9px", color: "var(--text-faint)", letterSpacing: "0.12em", textTransform: "uppercase" }}>{t.detail}</p>
-                    </div>
-                  </div>
-                </div>
+                  <span style={{
+                    width: 22, height: 22, borderRadius: "50%",
+                    background: "rgba(198,168,112,0.18)", color: "var(--gold)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 12, flexShrink: 0, marginTop: 1,
+                  }}>✦</span>
+                  <span style={{ fontSize: "clamp(14px,1.5vw,15.5px)", color: "var(--text-secondary)", lineHeight: 1.65 }}>{line}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
 
@@ -991,11 +990,6 @@ export default function LandingPage() {
                5 — QUIZ DIAGNÓSTICO
             ══════════════════════════════════════ */}
         <div id="section-5"><QuizSection /></div>
-
-        {/* ══════════════════════════════════════
-               5b — PRICING (Stripe-ready)
-            ══════════════════════════════════════ */}
-        <div id="section-pricing"><PricingSection /></div>
 
         {/* ══════════════════════════════════════
                6 — COMUNIDADE
@@ -1048,7 +1042,11 @@ export default function LandingPage() {
               border: "1px solid rgba(81,72,152,0.30)",
               background: "rgba(81,72,152,0.08)", overflow: "hidden",
             }}>
-              {COMMUNITY_STATS.map(({ value, label }, i, arr) => (
+              {[
+                { value: "Anônimo", label: "Identidade preservada" },
+                { value: "Privada", label: "Acesso só de alunas" },
+                { value: "Em breve", label: "Abertura na 1ª turma" },
+              ].map(({ value, label }, i, arr) => (
                 <div key={label} style={{
                   flex: "1 1 0", minWidth: 0, padding: "clamp(16px,2.5vw,28px) clamp(12px,2vw,24px)",
                   textAlign: "center", borderRight: i < arr.length - 1 ? "1px solid rgba(81,72,152,0.20)" : "none",
@@ -1087,52 +1085,55 @@ export default function LandingPage() {
                     </div>
                   ))}
                 </div>
-                <Link
-                  to="/checkout/mulher-espiral"
+                <button
+                  type="button"
+                  onClick={() => openWaitlist("comunidade")}
                   className="btn-gold"
-                  style={{ fontSize: "10px" }}
-                  onMouseEnter={prefetchCheckout}
-                  onFocus={prefetchCheckout}
+                  style={{ fontSize: "10px", cursor: "pointer", border: "none" }}
                 >
-                  Entrar para a comunidade <ArrowRight size={14} />
-                </Link>
+                  Reservar minha vaga <ArrowRight size={14} />
+                </button>
               </div>
 
-              {/* Feed */}
-              <div className="reveal-right" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {/* Right column: the promise of the community */}
+              <div className="reveal-right" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px", padding: "0 2px" }}>
-                  <p style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(164,158,208,0.55)", fontFamily: "Montserrat,sans-serif" }}>Feed da comunidade</p>
-                  <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#8caa96", animation: "communityPulse 2s ease-out infinite", display: "block" }} />
-                    <span style={{ fontSize: "9px", color: "rgba(140,170,150,0.70)", fontFamily: "Montserrat,sans-serif" }}>ao vivo</span>
-                  </span>
+                  <p style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(164,158,208,0.55)", fontFamily: "Montserrat,sans-serif" }}>O que você vai encontrar</p>
                 </div>
-                {testimonials.map((t, i) => (
-                  <div key={i} style={{
+                {[
+                  { title: "Conquistas", body: "Espaço para celebrar pequenos e grandes movimentos da jornada." },
+                  { title: "Desabafo", body: "Um lugar para falar do que machuca sem ser julgada." },
+                  { title: "Dicas & práticas", body: "Trocas reais entre quem está percorrendo o mesmo caminho." },
+                  { title: "Dúvidas", body: "Apoio da comunidade e da Sunyan quando o caminho ficar nublado." },
+                ].map((card) => (
+                  <div key={card.title} style={{
                     background: "rgba(255,255,255,0.032)", border: "1px solid rgba(255,255,255,0.055)",
                     borderRadius: "clamp(12px,1.5vw,16px)", padding: "clamp(14px,2vw,20px)",
                   }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                      <div style={{ width: "30px", height: "30px", borderRadius: "50%", flexShrink: 0, background: "rgba(198,168,112,0.12)", border: "1px solid rgba(198,168,112,0.30)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <span style={{ fontSize: "12px", color: "var(--gold)", fontFamily: "Montserrat,sans-serif", fontWeight: 600 }}>{t.name.charAt(0)}</span>
-                      </div>
-                      <p style={{ fontSize: "12px", color: "rgba(245,240,232,0.75)", fontFamily: "Montserrat,sans-serif", fontWeight: 500 }}>{t.name}</p>
-                    </div>
-                    <p style={{ fontSize: "clamp(12px,1.4vw,14px)", color: "rgba(245,240,232,0.62)", lineHeight: 1.72, fontFamily: "Montserrat,sans-serif" }}>{t.text}</p>
+                    <p style={{
+                      fontSize: "10px", letterSpacing: "0.22em", textTransform: "uppercase",
+                      color: "rgba(164,158,208,0.90)", fontFamily: "Montserrat,sans-serif",
+                      marginBottom: 8,
+                    }}>{card.title}</p>
+                    <p style={{ fontSize: "clamp(12px,1.4vw,14px)", color: "rgba(245,240,232,0.62)", lineHeight: 1.72, fontFamily: "Montserrat,sans-serif" }}>{card.body}</p>
                   </div>
                 ))}
                 <div style={{ borderRadius: "clamp(12px,1.5vw,16px)", border: "1px dashed rgba(81,72,152,0.35)", padding: "clamp(16px,2vw,22px)", textAlign: "center", background: "rgba(81,72,152,0.05)" }}>
-                  <p style={{ fontSize: "clamp(13px,1.4vw,14px)", color: "rgba(245,240,232,0.40)", fontFamily: "Montserrat,sans-serif", marginBottom: "12px", lineHeight: 1.6 }}>
-                    Sua voz também pertence aqui.
+                  <p style={{ fontSize: "clamp(13px,1.4vw,14px)", color: "rgba(245,240,232,0.55)", fontFamily: "Montserrat,sans-serif", marginBottom: "12px", lineHeight: 1.6 }}>
+                    A comunidade abre junto com a primeira turma.
                   </p>
-                  <Link
-                    to="/checkout/mulher-espiral"
-                    style={{ display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "10px", color: "rgba(164,158,208,0.90)", letterSpacing: "0.18em", textTransform: "uppercase", fontFamily: "Montserrat,sans-serif", fontWeight: 500, textDecoration: "none" }}
-                    onMouseEnter={prefetchCheckout}
-                    onFocus={prefetchCheckout}
+                  <button
+                    type="button"
+                    onClick={() => openWaitlist("comunidade-feed")}
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "10px",
+                      color: "rgba(164,158,208,0.90)", letterSpacing: "0.18em", textTransform: "uppercase",
+                      fontFamily: "Montserrat,sans-serif", fontWeight: 500, textDecoration: "none",
+                      background: "transparent", border: "none", cursor: "pointer", padding: 0,
+                    }}
                   >
-                    Fazer parte da comunidade <ArrowRight size={12} />
-                  </Link>
+                    Quero ser avisada <ArrowRight size={12} />
+                  </button>
                 </div>
               </div>
             </div>
@@ -1174,21 +1175,25 @@ export default function LandingPage() {
                 "Não sou guru. Sou uma companheira de jornada que já percorreu o caminho e voltou para te mostrar que é possível."
               </p>
               <div style={{ display: "flex", gap: "clamp(8px,1.5vw,12px)", flexWrap: "wrap", marginBottom: "clamp(20px,3vw,32px)" }}>
-                {[["1.2k","alunas"],["4.9","avaliação"],["97%","recomendam"]].map(([val, lbl]) => (
-                  <div key={lbl} className="card-dark" style={{ padding: "clamp(12px,2vw,16px) clamp(14px,2vw,18px)", textAlign: "center", flex: "1 1 80px" }}>
-                    <p className="font-display" style={{ fontSize: "clamp(20px,2.5vw,28px)", color: "var(--gold)", fontWeight: 300, lineHeight: 1 }}>{val}</p>
+                {[
+                  { val: "8+ anos", lbl: "conduzindo jornadas" },
+                  { val: "Online", lbl: "100% remoto" },
+                  { val: "Português", lbl: "conteúdo em pt-BR" },
+                ].map(({ val, lbl }) => (
+                  <div key={lbl} className="card-dark" style={{ padding: "clamp(12px,2vw,16px) clamp(14px,2vw,18px)", textAlign: "center", flex: "1 1 90px" }}>
+                    <p className="font-display" style={{ fontSize: "clamp(18px,2.2vw,24px)", color: "var(--gold)", fontWeight: 300, lineHeight: 1 }}>{val}</p>
                     <p className="font-label" style={{ fontSize: "8px", color: "var(--text-muted)", letterSpacing: "0.15em", textTransform: "uppercase", marginTop: "5px" }}>{lbl}</p>
                   </div>
                 ))}
               </div>
-              <Link
-                to="/checkout/mulher-espiral"
+              <button
+                type="button"
+                onClick={() => openWaitlist("sunyan")}
                 className="btn-gold"
-                onMouseEnter={prefetchCheckout}
-                onFocus={prefetchCheckout}
+                style={{ cursor: "pointer", border: "none" }}
               >
-                Quero aprender com Sunyan <ArrowRight size={14} />
-              </Link>
+                Quero ser avisada na abertura <ArrowRight size={14} />
+              </button>
             </div>
           </div>
         </section>
@@ -1255,15 +1260,14 @@ export default function LandingPage() {
               Não é coincidência. É reconhecimento.
             </p>
             <div className="reveal reveal-delay-4" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
-              <Link
-                to="/checkout/mulher-espiral"
+              <button
+                type="button"
+                onClick={() => openWaitlist("cta-final")}
                 className="btn-gold"
-                style={{ padding: "17px clamp(32px,5vw,60px)", fontSize: "10px", width: "100%", maxWidth: "440px", justifyContent: "center" }}
-                onMouseEnter={prefetchCheckout}
-                onFocus={prefetchCheckout}
+                style={{ padding: "17px clamp(32px,5vw,60px)", fontSize: "10px", width: "100%", maxWidth: "440px", justifyContent: "center", cursor: "pointer", border: "none" }}
               >
-                Quero começar minha jornada <ArrowRight size={15} />
-              </Link>
+                Quero entrar no pré-lançamento <ArrowRight size={15} />
+              </button>
             </div>
             <div className="reveal reveal-delay-5" style={{ display: "flex", justifyContent: "center", gap: "clamp(12px,3vw,24px)", marginTop: "clamp(24px,3vw,36px)", flexWrap: "wrap" }}>
               {guarantees.map(({ label }) => (
@@ -1335,6 +1339,7 @@ export default function LandingPage() {
           </div>
         </footer>
       </div>
+      <WaitlistModal open={waitlistOpen} source={waitlistSource} onClose={() => setWaitlistOpen(false)} />
     </>
   );
 }

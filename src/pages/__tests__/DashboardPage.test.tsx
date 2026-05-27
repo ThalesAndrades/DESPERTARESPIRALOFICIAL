@@ -208,21 +208,22 @@ describe("DashboardPage — empty state (no products)", () => {
     mockUseAuth.mockReturnValue({ user: { ...mockUser, products: [] }, loading: false });
   });
 
-  it("shows 'Inicie sua jornada' heading", async () => {
+  it("shows pre-launch state instead of upsell", async () => {
     renderDashboard();
-    await waitFor(() => expect(screen.getByText(/inicie sua jornada/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getAllByText(/em breve/i).length).toBeGreaterThan(0));
   });
 
-  it("shows upsell 'Você chegou até aqui' text", async () => {
+  it("shows upsell 'A primeira turma está chegando' text", async () => {
     renderDashboard();
-    await waitFor(() => expect(screen.getByText(/você chegou até aqui/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/a primeira turma está chegando/i)).toBeTruthy());
   });
 
-  it("shows CTA button linking to checkout", async () => {
+  it("shows CTA links pointing to home", async () => {
     renderDashboard();
     await waitFor(() => {
-      const links = screen.getAllByText(/conhecer cursos|quero começar/i);
+      const links = screen.getAllByRole("link", { name: /voltar para a home|ir para a home/i });
       expect(links.length).toBeGreaterThan(0);
+      links.forEach((l) => expect(l).toHaveAttribute("href", "/"));
     });
   });
 

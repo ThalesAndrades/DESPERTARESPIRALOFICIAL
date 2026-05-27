@@ -133,18 +133,11 @@ export default function RegisterPage() {
             Ao criar sua conta, você receberá um nome anônimo exclusivo para participar da comunidade com total segurança.
           </p>
           <div className="card-dark" style={{ padding: "20px 22px" }}>
-            <div style={{ display: "flex", gap: "3px", marginBottom: "12px" }}>
-              {[...Array(5)].map((_, i) => (
-                <svg key={i} width="10" height="10" viewBox="0 0 12 12" fill="var(--gold)">
-                  <path d="M6 1l1.33 2.7L10.5 4.18l-2.25 2.19.53 3.09L6 7.95 3.22 9.46l.53-3.09L1.5 4.18l3.17-.48z" />
-                </svg>
-              ))}
-            </div>
-            <p className="font-display" style={{ fontSize: "16px", color: "var(--text-secondary)", fontStyle: "italic", fontWeight: 300, lineHeight: 1.68, marginBottom: "14px" }}>
-              "Esse método mudou a forma como eu me relaciono comigo mesma."
+            <p className="font-label" style={{ fontSize: "9px", color: "var(--gold)", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "10px" }}>
+              Método Espiral
             </p>
-            <p className="font-label" style={{ fontSize: "9px", color: "var(--lavender)", letterSpacing: "0.15em", textTransform: "uppercase" }}>
-              Lua Crescente · Mulher Espiral
+            <p className="font-display" style={{ fontSize: "16px", color: "var(--text-secondary)", fontStyle: "italic", fontWeight: 300, lineHeight: 1.68 }}>
+              Um caminho de volta para si, no seu ritmo.
             </p>
           </div>
         </div>

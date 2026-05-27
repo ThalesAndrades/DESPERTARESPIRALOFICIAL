@@ -449,14 +449,11 @@ create policy "admin_read_waitlist" on public.launch_waitlist for select
   using (exists (select 1 from public.user_profiles p where p.id = auth.uid() and p.role = 'admin'));
 
 -- ──────────────────────────────────────────────────────────────────
--- SEED — produtos iniciais (atualize stripe_price_id depois de criar no Stripe)
+-- SEED — produto inicial (atualize stripe_price_id depois de criar no Stripe)
 -- ──────────────────────────────────────────────────────────────────
 insert into public.products (slug, title, subtitle, description, price, is_active, sort_order)
 values
   ('mulher-espiral', 'Mulher Espiral', 'Método de Reconexão e Cura',
    'Uma jornada guiada de autoconhecimento feminino com aulas práticas, reflexões e integrações simples para o dia a dia.',
-   497.00, true, 1),
-  ('despertar-das-emocoes', 'Despertar das Emoções', 'Inteligência Emocional Feminina',
-   'Um percurso leve e objetivo para reconhecer emoções, compreender padrões e responder com mais presença no cotidiano.',
-   247.00, true, 2)
+   497.00, true, 1)
 on conflict (slug) do nothing;
