@@ -3,6 +3,7 @@ import React from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
+import { isGateOpen, isLaunchMode } from "@/lib/launchGate";
 import LandingPage from "@/pages/LandingPage"; // static — first page, no lazy delay
 
 /* ── Prefetch helpers ── */
@@ -82,6 +83,16 @@ function GlobalLoader() {
   );
 }
 
+/**
+ * LaunchGate — em produção, esconde toda a área autenticada/checkout/admin
+ * a menos que o usuário tenha digitado o código no botão "?" do footer.
+ * Em DEV ou se o gate estiver aberto, deixa passar normalmente.
+ */
+function LaunchGate({ children }: { children: React.ReactNode }) {
+  if (isLaunchMode() && !isGateOpen()) return <Navigate to="/" replace />;
+  return <>{children}</>;
+}
+
 /* ── Route guards ── */
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -97,6 +108,7 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
     return () => clearTimeout(timer);
   }, [user]);
 
+  if (isLaunchMode() && !isGateOpen()) return <Navigate to="/" replace />;
   if (loading) return <GlobalLoader />;
   if (!user) {
     const full = `${location.pathname}${location.search}${location.hash}`;
@@ -108,6 +120,7 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 
 function AdminRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
+  if (isLaunchMode() && !isGateOpen()) return <Navigate to="/" replace />;
   if (loading) return <GlobalLoader />;
   if (!user)               return <Navigate to="/login" replace />;
   if (user.role !== "admin") return <Navigate to="/dashboard" replace />;
@@ -148,12 +161,12 @@ export default function App() {
       <Routes>
         {/* Public — LandingPage is static for instant load */}
         <Route path="/"                element={<LandingPage />} />
-        <Route path="/login"           element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
-        <Route path="/register"        element={<PublicOnlyRoute><RegisterPage /></PublicOnlyRoute>} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password"  element={<ResetPasswordPage />} />
-        <Route path="/checkout/:slug"  element={<CheckoutPage />} />
-        <Route path="/obrigado"        element={<ThankYouPage />} />
+        <Route path="/login"           element={<LaunchGate><PublicOnlyRoute><LoginPage /></PublicOnlyRoute></LaunchGate>} />
+        <Route path="/register"        element={<LaunchGate><PublicOnlyRoute><RegisterPage /></PublicOnlyRoute></LaunchGate>} />
+        <Route path="/forgot-password" element={<LaunchGate><ForgotPasswordPage /></LaunchGate>} />
+        <Route path="/reset-password"  element={<LaunchGate><ResetPasswordPage /></LaunchGate>} />
+        <Route path="/checkout/:slug"  element={<LaunchGate><CheckoutPage /></LaunchGate>} />
+        <Route path="/obrigado"        element={<LaunchGate><ThankYouPage /></LaunchGate>} />
         <Route path="/privacidade"     element={<PrivacyPolicyPage />} />
         <Route path="/termos"          element={<TermsOfUsePage />} />
         {/* Redirects */}

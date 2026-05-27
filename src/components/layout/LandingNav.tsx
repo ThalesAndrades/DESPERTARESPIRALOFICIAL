@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SpiralLogo from "./SpiralLogo";
 import { useAuth } from "@/hooks/useAuth";
+import { useLaunchGate } from "@/hooks/useLaunchGate";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { Menu, X } from "lucide-react";
 
@@ -18,6 +19,8 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen]         = useState(false);
   const { user }                = useAuth();
+  const { gateOpen, launchMode } = useLaunchGate();
+  const showAuthEntry            = !launchMode || gateOpen;
   const navigate                = useNavigate();
 
   useEffect(() => {
@@ -105,7 +108,7 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
         {/* Desktop actions */}
         <div className="hidden md:flex" style={{ alignItems: "center", gap: "14px", flexShrink: 0 }}>
           <ThemeToggle size="sm" />
-          {user ? (
+          {user && showAuthEntry ? (
             <button
               onClick={() => navigate(user.role === "admin" ? "/admin" : "/dashboard")}
               className="btn-gold"
@@ -115,14 +118,16 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
             </button>
           ) : (
             <>
-              <a
-                href="/login"
-                style={linkStyle}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--gold)")}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--nav-link)")}
-              >
-                Entrar
-              </a>
+              {showAuthEntry && (
+                <a
+                  href="/login"
+                  style={linkStyle}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--gold)")}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--nav-link)")}
+                >
+                  Entrar
+                </a>
+              )}
               <button
                 type="button"
                 onClick={onJoinWaitlist}
@@ -209,7 +214,7 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
 
           {/* CTAs */}
           <div style={{ paddingTop: "12px", display: "flex", flexDirection: "column", gap: "10px" }}>
-            {user ? (
+            {user && showAuthEntry ? (
               <button
                 onClick={() => { navigate(user.role === "admin" ? "/admin" : "/dashboard"); setOpen(false); }}
                 className="btn-gold"
@@ -219,10 +224,12 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
               </button>
             ) : (
               <>
-                <Link to="/login" onClick={() => setOpen(false)}
-                  style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", minHeight: "52px" }}>
-                  Entrar
-                </Link>
+                {showAuthEntry && (
+                  <Link to="/login" onClick={() => setOpen(false)}
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", minHeight: "52px" }}>
+                    Entrar
+                  </Link>
+                )}
                 <button
                   type="button"
                   onClick={() => { setOpen(false); onJoinWaitlist?.(); }}

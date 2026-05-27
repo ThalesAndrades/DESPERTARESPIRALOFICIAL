@@ -18,6 +18,8 @@ import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
 import { steps, guarantees, faqs, testimonials } from "@/constants/landingContent";
 import QuizSection from "@/components/features/QuizSection";
 import WaitlistModal from "@/components/features/WaitlistModal";
+import AdminAccessButton from "@/components/features/AdminAccessButton";
+import { useLaunchGate } from "@/hooks/useLaunchGate";
 
 /* ─────────────────────────────────────────────────────────────────
    Prefetch helpers — fire-and-forget dynamic imports on hover/focus
@@ -228,6 +230,8 @@ export default function LandingPage() {
   const heroRef     = useRef<HTMLElement>(null);
   const { theme }   = useTheme();
   const isLight     = theme === "light";
+  const { gateOpen, launchMode } = useLaunchGate();
+  const showAuthEntry = !launchMode || gateOpen;
 
   const [waitlistOpen, setWaitlistOpen] = useState(false);
   const [waitlistSource, setWaitlistSource] = useState("landing");
@@ -1294,14 +1298,14 @@ export default function LandingPage() {
                 <p className="font-label" style={{ fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-faint)" }}>por Sunyan Nunes</p>
               </div>
               <nav aria-label="Footer navigation" style={{ display: "flex", gap: "clamp(14px,2.5vw,24px)", flexWrap: "wrap" }}>
-                {[
+                {([
                   ["Método", "#section-2"],
                   ["Jornadas", "#section-3"],
                   ["Comunidade", "#section-6"],
                   ["Privacidade", "/privacidade"],
                   ["Termos", "/termos"],
-                  ["Entrar", "/login"],
-                ].map(([label, href]) =>
+                  ...(showAuthEntry ? [["Entrar", "/login"]] : []),
+                ] as Array<[string, string]>).map(([label, href]) =>
                   href.startsWith("#") ? (
                     <a
                       key={label}
@@ -1333,9 +1337,12 @@ export default function LandingPage() {
               <p className="font-label" style={{ fontSize: "8px", color: "var(--text-faint)", letterSpacing: "0.18em", textTransform: "uppercase" }}>
                 © {new Date().getFullYear()} Despertar Espiral — Todos os direitos reservados.
               </p>
-              <p className="font-label" style={{ fontSize: "8px", color: "var(--text-faint)", letterSpacing: "0.14em" }}>
-                CNPJ · Sunyan Nunes · São Paulo, Brasil
-              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <p className="font-label" style={{ fontSize: "8px", color: "var(--text-faint)", letterSpacing: "0.14em" }}>
+                  CNPJ · Sunyan Nunes · São Paulo, Brasil
+                </p>
+                <AdminAccessButton />
+              </div>
             </div>
           </div>
         </footer>
