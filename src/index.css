@@ -179,6 +179,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+    -webkit-tap-highlight-color: transparent;
     transition: background-color 0.35s ease, color 0.28s ease;
     overflow-x: hidden;
     min-height: 100dvh;
@@ -195,6 +197,8 @@
     line-height: 1.05;
     letter-spacing: -0.02em;
     text-rendering: optimizeLegibility;
+    text-wrap: balance;
+    font-feature-settings: "kern" 1, "liga" 1, "dlig" 1;
   }
 
   h3 {
