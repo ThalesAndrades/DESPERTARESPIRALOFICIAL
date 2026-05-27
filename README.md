@@ -8,7 +8,9 @@ Roda 100% no navegador: dados são persistidos em `localStorage`, autenticação
 
 - **Produção**: `despertarespiral.com`
 - **Fluxo**: push em `main` → GitHub Actions builda → publica em branch `production` → Hostinger Git Auto Deploy puxa → ar
-- **Guia completo**: [`docs/DEPLOY.md`](docs/DEPLOY.md)
+- **Checklist Hostinger** (configuração inicial): [`docs/HOSTINGER-CHECKLIST.md`](docs/HOSTINGER-CHECKLIST.md)
+- **Guia técnico de deploy**: [`docs/DEPLOY.md`](docs/DEPLOY.md)
+- **Plano de ação ponta-a-ponta** (Supabase, pagamentos, emails, etc.): [`docs/PLANO-DE-ACAO.md`](docs/PLANO-DE-ACAO.md)
 
 ## Stack
 
