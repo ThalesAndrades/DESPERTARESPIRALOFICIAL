@@ -8,6 +8,7 @@
 import { useState } from "react";
 import { fireEventAsync } from "@/lib/sequenzy";
 import { Events, getAttribution, sha256, track } from "@/lib/analytics";
+import { buildWaitlistPayload } from "@/lib/waitlistPayload";
 import { supabase } from "@/lib/supabase";
 import sunyanPortrait from "@/assets/sunyan-portrait.jpg";
 
@@ -175,12 +176,10 @@ export default function QuizSection() {
 
     const { error: insertError } = await supabase
       .from("launch_waitlist")
-      .insert({
-        email: email.toLowerCase(),
-        name: null,
-        phone: null,
+      .insert(buildWaitlistPayload({
+        email,
         source: `quiz:${painKey}`,
-      });
+      }));
 
     if (insertError && !/duplicate|unique/i.test(insertError.message ?? "")) {
       setSubmitting(false);

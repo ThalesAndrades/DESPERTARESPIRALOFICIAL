@@ -39,6 +39,7 @@ const AdminOrdersPage       = React.lazy(() => import("@/pages/admin/AdminOrders
 const AdminCommunityPage    = React.lazy(() => import("@/pages/admin/AdminCommunityPage"));
 const AdminSocialPage       = React.lazy(() => import("@/pages/admin/AdminSocialPage"));
 const AdminCRMPage          = React.lazy(() => import("@/pages/admin/AdminCRMPage"));
+const AdminWaitlistPage     = React.lazy(() => import("@/pages/admin/AdminWaitlistPage"));
 const AdminMediaPage        = React.lazy(() => import("@/pages/admin/AdminMediaPage"));
 const AdminTrafficPage      = React.lazy(() => import("@/pages/admin/AdminTrafficPage"));
 const AdminEventsPage       = React.lazy(() => import("@/pages/admin/AdminEventsPage"));
@@ -203,6 +204,7 @@ export default function App() {
         <Route path="/admin/media"                element={<AdminRoute><AdminMediaPage /></AdminRoute>} />
         <Route path="/admin/traffic"              element={<AdminRoute><AdminTrafficPage /></AdminRoute>} />
         <Route path="/admin/events"               element={<AdminRoute><AdminEventsPage /></AdminRoute>} />
+        <Route path="/admin/waitlist"             element={<AdminRoute><AdminWaitlistPage /></AdminRoute>} />
 
         {/* Caption — landing pública para tráfego pago (Meta/Google Ads) */}
         <Route path="/caption" element={<CaptionPage />} />
