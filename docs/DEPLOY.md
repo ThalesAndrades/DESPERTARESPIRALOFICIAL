@@ -3,7 +3,7 @@
 Este projeto usa **dois passos**:
 
 1. **GitHub Actions** builda em push para `main` e publica os arquivos prontos numa branch `production`.
-2. **Hostinger Cloud (Git Auto Deploy)** puxa essa branch para o `public_html` do `despertarespiral.com.br`.
+2. **Hostinger Cloud (Git Auto Deploy)** puxa essa branch para o `public_html` do `despertarespiral.com`.
 
 Você só configura uma vez. Depois é só `git push` → deploy automático.
 
@@ -27,7 +27,7 @@ Hostinger detecta push na branch monitorada
 Arquivos chegam em /public_html/
      │
      ▼
-despertarespiral.com.br no ar
+despertarespiral.com no ar
 ```
 
 A branch `production` é **descartável** — sempre reflete o último build. Não edite nem faça PR contra ela.
@@ -48,7 +48,7 @@ A branch `production` é **descartável** — sempre reflete o último build. N�
 
 ### 2.3. Git Auto Deploy
 
-1. **Websites** → `despertarespiral.com.br` → **Advanced** → **Git**
+1. **Websites** → `despertarespiral.com` → **Advanced** → **Git**
 2. Clique em **Create repository**
 3. Preencha:
    - **Repository URL**: `https://github.com/ThalesAndrades/DESPERTARESPIRALOFICIAL.git`
@@ -99,7 +99,7 @@ Se um dia adicionar uma variável `VITE_*`, configure-a no workflow `.github/wor
 - name: Build (produção)
   run: npm run build
   env:
-    VITE_SITE_URL: https://despertarespiral.com.br
+    VITE_SITE_URL: https://despertarespiral.com
     VITE_MINHA_NOVA: ${{ secrets.VITE_MINHA_NOVA }}
 ```
 
@@ -143,7 +143,7 @@ Provável: workflow falhou. Veja **Actions** no GitHub.
 `.htaccess` não foi pra `public_html`. Confirme:
 
 ```sh
-curl -I https://despertarespiral.com.br/dashboard
+curl -I https://despertarespiral.com/dashboard
 # Deve retornar 200, não 404
 ```
 
@@ -156,7 +156,7 @@ Se 404: o `.htaccess` não chegou. Verifique no FTP do Hostinger se `/public_htm
 ### HTTPS não funciona
 
 - SSL ainda provisionando (espere 10 min)
-- DNS não propagou (use `dig despertarespiral.com.br` pra checar)
+- DNS não propagou (use `dig despertarespiral.com` pra checar)
 - Force renovação em **SSL/Security → Force HTTPS**
 
 ---

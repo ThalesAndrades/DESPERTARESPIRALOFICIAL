@@ -263,7 +263,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
   const [hydrated,   setHydrated]   = useState(false);
   const containerRef  = useRef<HTMLDivElement>(null);
   /* Placeholder email used for anonymous tracking before lead capture */
-  const trackEmail    = useRef(`anon_mapa_${Date.now()}@despertarespiral.com.br`);
+  const trackEmail    = useRef(`anon_mapa_${Date.now()}@despertarespiral.com`);
 
   /* ── Access check + hidratação do localStorage ── */
   useEffect(() => {
@@ -372,7 +372,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
       return;
     }
     setSubmitting(true);
-    const finalEmail = email.trim() || `evento_${Date.now()}@despertarespiral.com.br`;
+    const finalEmail = email.trim() || `evento_${Date.now()}@despertarespiral.com`;
     /* Update tracking email to real email if provided */
     if (email.trim()) trackEmail.current = email.trim();
 
@@ -1173,7 +1173,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
               "Você é o mapa. Você é o poder."
             </p>
             <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "rgba(198,168,112,0.55)" }}>
-              despertarespiral.com.br/mapa-do-poder
+              despertarespiral.com/mapa-do-poder
             </p>
           </div>
         </div>
@@ -1311,8 +1311,8 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
         }}>
           {/* QR code via API */}
           <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://despertarespiral.com.br/mapa-do-poder&color=04060f&bgcolor=ffffff&margin=2"
-            alt="QR Code — despertarespiral.com.br/mapa-do-poder"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://despertarespiral.com/mapa-do-poder&color=04060f&bgcolor=ffffff&margin=2"
+            alt="QR Code — despertarespiral.com/mapa-do-poder"
             width="200" height="200"
             loading="lazy"
             style={{ display: "block", borderRadius: "8px" }}
@@ -1322,7 +1322,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
               Acesse sempre
             </p>
             <p style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "16px", color: "#04060f", fontWeight: 500, letterSpacing: "0.02em" }}>
-              despertarespiral.com.br/mapa-do-poder
+              despertarespiral.com/mapa-do-poder
             </p>
           </div>
         </div>
@@ -1341,7 +1341,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
         {/* Final CTA */}
         <div style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%", maxWidth: "400px", animation: "fadeUp 0.6s ease 1.0s both" }}>
           <a
-            href="https://despertarespiral.com.br"
+            href="https://despertarespiral.com"
             target="_blank" rel="noopener noreferrer"
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
@@ -1372,7 +1372,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                 setPhone("");
                 /* Reset flags so events fire again on next completion */
                 finishedFired.current = false;
-                trackEmail.current = `anon_mapa_${Date.now()}@despertarespiral.com.br`;
+                trackEmail.current = `anon_mapa_${Date.now()}@despertarespiral.com`;
               }}
             style={{
               padding: "14px 24px", background: "transparent",

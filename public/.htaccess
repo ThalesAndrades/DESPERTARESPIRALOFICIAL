@@ -8,7 +8,7 @@
 AddDefaultCharset UTF-8
 
 # ─────────────────────────────────────────────────────────────
-# HTTPS + www → raiz (canônico: https://despertarespiral.com.br/)
+# HTTPS + www → raiz (canônico: https://despertarespiral.com/)
 # ─────────────────────────────────────────────────────────────
 <IfModule mod_rewrite.c>
   RewriteEngine On
@@ -110,7 +110,7 @@ AddDefaultCharset UTF-8
 
   # CORS — só permite mesmo domínio (ajuste se for usar CDN externo)
   <FilesMatch "\.(woff2?|ttf|otf|eot)$">
-    Header set Access-Control-Allow-Origin "https://despertarespiral.com.br"
+    Header set Access-Control-Allow-Origin "https://despertarespiral.com"
   </FilesMatch>
 </IfModule>
 

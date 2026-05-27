@@ -288,7 +288,7 @@ export default function CheckoutPage() {
                 </div>
               ) : (
                 <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.7 }}>
-                  Realize o PIX para: <strong style={{ color: "var(--text-primary)" }}>contato@despertarespiral.com.br</strong><br />
+                  Realize o PIX para: <strong style={{ color: "var(--text-primary)" }}>contato@despertarespiral.com</strong><br />
                   Envie o comprovante com <strong style={{ color: "var(--gold)" }}>#{successData.orderId.slice(0, 8).toUpperCase()}</strong> para o mesmo e-mail.
                 </p>
               )}

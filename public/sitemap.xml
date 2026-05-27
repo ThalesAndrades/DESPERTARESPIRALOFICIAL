@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://despertarespiral.com.br/</loc>
+    <loc>https://despertarespiral.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://despertarespiral.com.br/privacidade</loc>
+    <loc>https://despertarespiral.com/privacidade</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://despertarespiral.com.br/termos</loc>
+    <loc>https://despertarespiral.com/termos</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://despertarespiral.com.br/login</loc>
+    <loc>https://despertarespiral.com/login</loc>
     <changefreq>monthly</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://despertarespiral.com.br/register</loc>
+    <loc>https://despertarespiral.com/register</loc>
     <changefreq>monthly</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://despertarespiral.com.br/checkout/mulher-espiral</loc>
+    <loc>https://despertarespiral.com/checkout/mulher-espiral</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://despertarespiral.com.br/mapa-do-poder</loc>
+    <loc>https://despertarespiral.com/mapa-do-poder</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -88,7 +88,7 @@ export const MOCK_ORDERS: Order[] = [
 ];
 
 export const MOCK_ADMIN_USERS: User[] = [
-  { id: "u1", name: "Sunyan Nunes", email: "sunyan@despertarespiral.com.br", role: "admin", anonymous_name: "Sunyan", created_at: "2026-01-01T00:00:00Z", products: ["mulher-espiral", "despertar-das-emocoes"] },
+  { id: "u1", name: "Sunyan Nunes", email: "sunyan@despertarespiral.com", role: "admin", anonymous_name: "Sunyan", created_at: "2026-01-01T00:00:00Z", products: ["mulher-espiral", "despertar-das-emocoes"] },
   { id: "u2", name: "Maria Clara", email: "maria.clara@provedor.com.br", role: "member", anonymous_name: "Lua Crescente", created_at: "2026-04-01T10:00:00Z", products: ["mulher-espiral"] },
   { id: "u3", name: "Ana Beatriz", email: "ana.beatriz@provedor.com.br", role: "member", anonymous_name: "Rosa do Deserto", created_at: "2026-04-05T15:30:00Z", products: ["despertar-das-emocoes"] },
   { id: "u4", name: "Júlia Santos", email: "julia.santos@provedor.com.br", role: "member", anonymous_name: "Violeta Silvestre", created_at: "2026-04-13T08:00:00Z", products: [] },
