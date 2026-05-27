@@ -146,6 +146,7 @@ export interface WaitlistRow {
   email: string;
   name: string | null;
   phone: string | null;
+  message: string | null;
   source: string | null;
   created_at: string;
 }

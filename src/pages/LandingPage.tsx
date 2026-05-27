@@ -15,9 +15,11 @@ import sunyanPortrait     from "@/assets/sunyan-portrait.jpg";
 import mockupAtualizado   from "@/assets/mockup-atualizado.png";
 import { useTheme } from "@/hooks/useTheme";
 import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
-import { steps, guarantees, faqs } from "@/constants/landingContent";
+import { steps, guarantees, faqs, testimonials } from "@/constants/landingContent";
 import QuizSection from "@/components/features/QuizSection";
 import WaitlistModal from "@/components/features/WaitlistModal";
+import AdminAccessButton from "@/components/features/AdminAccessButton";
+import { useLaunchGate } from "@/hooks/useLaunchGate";
 
 /* ─────────────────────────────────────────────────────────────────
    Prefetch helpers — fire-and-forget dynamic imports on hover/focus
@@ -228,6 +230,8 @@ export default function LandingPage() {
   const heroRef     = useRef<HTMLElement>(null);
   const { theme }   = useTheme();
   const isLight     = theme === "light";
+  const { gateOpen, launchMode } = useLaunchGate();
+  const showAuthEntry = !launchMode || gateOpen;
 
   const [waitlistOpen, setWaitlistOpen] = useState(false);
   const [waitlistSource, setWaitlistSource] = useState("landing");
@@ -951,38 +955,39 @@ export default function LandingPage() {
           <div data-parallax="0.06" style={{ position: "absolute", left: "-16px", bottom: "-24px", pointerEvents: "none" }} aria-hidden="true">
             <SectionSpiral3D size={90} height={250} opacity={isLight ? 0.18 : 0.22} color={isLight ? "#7a3248" : "#8c4a5e"} emissive="#4a1828" speed={0.0003} lightBg={isLight} />
           </div>
-          <div style={{ position: "relative", maxWidth: "780px", margin: "0 auto", textAlign: "center" }}>
-            <p className="overline reveal" style={{ color: "var(--gold)", marginBottom: "18px" }}>Para quem é</p>
-            <h2 className="font-display text-balance reveal reveal-delay-1" style={{ fontSize: "clamp(26px,5vw,52px)", fontWeight: 300, color: "var(--text-primary)", marginBottom: 20 }}>
-              Você está pronta para essa jornada se…
-            </h2>
-            <ul className="reveal reveal-delay-2" style={{
-              listStyle: "none", padding: 0, margin: "32px 0 0",
-              display: "grid", gap: 14, textAlign: "left",
-            }}>
-              {[
-                "Sente que algo precisa mudar mas não consegue nomear o quê.",
-                "Quer um caminho gentil, sem fórmulas mágicas nem urgência de performance.",
-                "Procura um espaço seguro de mulheres no mesmo movimento.",
-                "Tem disponibilidade para se dedicar 20-40 minutos por dia, no seu ritmo.",
-              ].map((line) => (
-                <li key={line} style={{
-                  display: "flex", alignItems: "flex-start", gap: 14,
-                  padding: "16px 20px",
-                  background: "rgba(198,168,112,0.04)",
-                  border: "1px solid rgba(198,168,112,0.18)",
-                  borderRadius: 14,
+          <div style={{ position: "relative", maxWidth: "1100px", margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: "clamp(36px,6vw,64px)" }}>
+              <p className="overline reveal" style={{ color: "var(--gold)", marginBottom: "16px" }}>Transformações reais</p>
+              <h2 className="font-display text-balance reveal reveal-delay-1" style={{ fontSize: "clamp(26px,5vw,58px)", fontWeight: 300, color: "var(--text-primary)" }}>
+                Mulheres que percorreram a espiral
+              </h2>
+              <div style={{ display: "flex", alignItems: "center", gap: "16px", justifyContent: "center", marginTop: "20px" }}>
+                <div style={{ height: "1px", width: "40px", background: "var(--border-subtle)" }} />
+                <span style={{ color: "var(--gold)", fontSize: "10px" }}>◆</span>
+                <div style={{ height: "1px", width: "40px", background: "var(--border-subtle)" }} />
+              </div>
+            </div>
+            <div className="grid md:grid-cols-3" style={{ gap: "clamp(12px,2vw,18px)" }}>
+              {testimonials.map((t, i) => (
+                <div key={i} className={`card-dark reveal reveal-delay-${i + 1}`} style={{
+                  padding: "clamp(20px,3vw,34px)", marginTop: i === 1 ? "clamp(0px,2vw,28px)" : "0",
+                  display: "flex", flexDirection: "column",
                 }}>
-                  <span style={{
-                    width: 22, height: 22, borderRadius: "50%",
-                    background: "rgba(198,168,112,0.18)", color: "var(--gold)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 12, flexShrink: 0, marginTop: 1,
-                  }}>✦</span>
-                  <span style={{ fontSize: "clamp(14px,1.5vw,15.5px)", color: "var(--text-secondary)", lineHeight: 1.65 }}>{line}</span>
-                </li>
+                  <div style={{ display: "flex", gap: "3px", marginBottom: "18px" }}>
+                    {[...Array(5)].map((_, s) => <Star key={s} size={11} fill="var(--gold)" style={{ color: "var(--gold)" }} />)}
+                  </div>
+                  <p className="font-display" style={{ fontSize: "clamp(15px,1.8vw,17px)", color: "var(--text-secondary)", lineHeight: 1.70, fontStyle: "italic", fontWeight: 300, flex: 1, marginBottom: "20px" }}>"{t.text}"</p>
+                  <hr className="divider-gold" style={{ marginBottom: "18px" }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{ width: "34px", height: "34px", borderRadius: "50%", background: "rgba(172,128,142,0.15)", color: "var(--rose)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", fontFamily: "Montserrat,sans-serif", fontWeight: 500, flexShrink: 0 }}>{t.name.charAt(0)}</div>
+                    <div>
+                      <p style={{ fontSize: "13px", color: "var(--text-primary)", fontWeight: 500 }}>{t.name}</p>
+                      <p className="font-label" style={{ fontSize: "9px", color: "var(--text-faint)", letterSpacing: "0.12em", textTransform: "uppercase" }}>{t.detail}</p>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </section>
 
@@ -1293,14 +1298,14 @@ export default function LandingPage() {
                 <p className="font-label" style={{ fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-faint)" }}>por Sunyan Nunes</p>
               </div>
               <nav aria-label="Footer navigation" style={{ display: "flex", gap: "clamp(14px,2.5vw,24px)", flexWrap: "wrap" }}>
-                {[
+                {([
                   ["Método", "#section-2"],
                   ["Jornadas", "#section-3"],
                   ["Comunidade", "#section-6"],
                   ["Privacidade", "/privacidade"],
                   ["Termos", "/termos"],
-                  ["Entrar", "/login"],
-                ].map(([label, href]) =>
+                  ...(showAuthEntry ? [["Entrar", "/login"]] : []),
+                ] as Array<[string, string]>).map(([label, href]) =>
                   href.startsWith("#") ? (
                     <a
                       key={label}
@@ -1332,9 +1337,12 @@ export default function LandingPage() {
               <p className="font-label" style={{ fontSize: "8px", color: "var(--text-faint)", letterSpacing: "0.18em", textTransform: "uppercase" }}>
                 © {new Date().getFullYear()} Despertar Espiral — Todos os direitos reservados.
               </p>
-              <p className="font-label" style={{ fontSize: "8px", color: "var(--text-faint)", letterSpacing: "0.14em" }}>
-                CNPJ · Sunyan Nunes · São Paulo, Brasil
-              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <p className="font-label" style={{ fontSize: "8px", color: "var(--text-faint)", letterSpacing: "0.14em" }}>
+                  CNPJ · Sunyan Nunes · São Paulo, Brasil
+                </p>
+                <AdminAccessButton />
+              </div>
             </div>
           </div>
         </footer>

@@ -21,6 +21,7 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,6 +54,7 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
     const cleanName = name.trim();
     const cleanEmail = email.trim().toLowerCase();
     const cleanPhone = phone.trim();
+    const cleanMessage = message.trim();
 
     if (!cleanName) {
       setError("Conte como podemos te chamar.");
@@ -69,6 +71,7 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
       email: cleanEmail,
       name: cleanName,
       phone: cleanPhone || null,
+      message: cleanMessage || null,
       source,
     };
 
@@ -266,6 +269,18 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
                   autoComplete="tel"
                   placeholder="(00) 00000-0000"
                   style={inputStyle}
+                />
+              </label>
+
+              <label style={fieldLabel}>
+                <span>O que te trouxe até aqui? <em style={{ color: "var(--text-faint)", fontStyle: "normal" }}>(opcional)</em></span>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  rows={3}
+                  maxLength={500}
+                  placeholder="Conte rapidamente o que está te chamando para essa jornada"
+                  style={{ ...inputStyle, resize: "vertical", minHeight: 80, fontFamily: "Inter, system-ui, sans-serif" }}
                 />
               </label>
 
