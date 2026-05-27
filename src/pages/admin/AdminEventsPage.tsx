@@ -683,11 +683,11 @@ export default function AdminEventsPage() {
             Página rastreada:
           </span>
           <a
-            href="https://despertarespiral.com.br/mapa"
+            href="https://despertarespiral.com/mapa"
             target="_blank" rel="noopener noreferrer"
             style={{ fontSize: "11px", color: "var(--gold)", fontFamily: "Montserrat, sans-serif", textDecoration: "none", display: "flex", alignItems: "center", gap: "3px" }}
           >
-            despertarespiral.com.br/mapa
+            despertarespiral.com/mapa
             <ChevronRight size={10} />
           </a>
           <span style={{ fontSize: "9px", color: "var(--text-faint)", marginLeft: "4px" }}>

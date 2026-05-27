@@ -1210,12 +1210,12 @@ export default function LandingPage() {
                 Ainda tem dúvidas? Fale com a gente.
               </p>
               <a
-                href="mailto:contato@despertarespiral.com.br"
+                href="mailto:contato@despertarespiral.com"
                 className="btn-outline-gold"
                 rel="noopener noreferrer"
                 style={{ display: "inline-flex" }}
               >
-                contato@despertarespiral.com.br
+                contato@despertarespiral.com
               </a>
             </div>
           </div>
@@ -1315,7 +1315,7 @@ export default function LandingPage() {
                   )
                 )}
               </nav>
-              <p className="font-label" style={{ fontSize: "9px", color: "var(--text-faint)", letterSpacing: "0.12em" }}>contato@despertarespiral.com.br</p>
+              <p className="font-label" style={{ fontSize: "9px", color: "var(--text-faint)", letterSpacing: "0.12em" }}>contato@despertarespiral.com</p>
             </div>
             <hr className="divider-gold" style={{ margin: "clamp(24px,4vw,40px) 0 clamp(20px,3vw,28px)" }} />
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "12px" }}>
