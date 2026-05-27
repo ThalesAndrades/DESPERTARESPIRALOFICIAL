@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import { supabase } from "@/lib/supabase";
 import { fireEventAsync } from "@/lib/sequenzy";
 import { Events, getAttribution, sha256, track } from "@/lib/analytics";
+import { buildWaitlistPayload } from "@/lib/waitlistPayload";
 import { Loader2, X, CheckCircle2 } from "lucide-react";
 
 interface Props {
@@ -68,13 +69,13 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
 
     setLoading(true);
     const attribution = getAttribution();
-    const payload = {
+    const payload = buildWaitlistPayload({
       email: cleanEmail,
       name: cleanName,
-      phone: cleanPhone || null,
-      message: cleanMessage || null,
+      phone: cleanPhone,
+      message: cleanMessage,
       source,
-    };
+    });
 
     const { error: insertError } = await supabase
       .from("launch_waitlist")

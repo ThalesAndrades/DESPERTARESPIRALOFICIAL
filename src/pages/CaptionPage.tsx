@@ -16,6 +16,7 @@ import {
   ARCHETYPES, CAPTION_QUESTIONS, computeArchetype, type Archetype,
 } from "@/constants/captionQuiz";
 import { Events, getAttribution, sha256, track } from "@/lib/analytics";
+import { buildWaitlistPayload } from "@/lib/waitlistPayload";
 import { fireEventAsync } from "@/lib/sequenzy";
 import { supabase } from "@/lib/supabase";
 import LandingNav from "@/components/layout/LandingNav";
@@ -111,13 +112,13 @@ export default function CaptionPage() {
 
     const { error: insertError } = await supabase
       .from("launch_waitlist")
-      .insert({
+      .insert(buildWaitlistPayload({
         email: cleanEmail,
         name: cleanName,
         phone: cleanPhone,
         message: `Arquétipo: ${archetype}`,
         source: `caption:${archetype}`,
-      });
+      }));
 
     if (insertError && !/duplicate|unique/i.test(insertError.message ?? "")) {
       setLoading(false);

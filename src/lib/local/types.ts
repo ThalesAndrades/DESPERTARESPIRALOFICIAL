@@ -148,6 +148,17 @@ export interface WaitlistRow {
   phone: string | null;
   message: string | null;
   source: string | null;
+  utm_source: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+  utm_term: string | null;
+  utm_content: string | null;
+  gclid: string | null;
+  fbclid: string | null;
+  ttclid: string | null;
+  referrer: string | null;
+  user_agent: string | null;
+  landing_path: string | null;
   created_at: string;
 }
 
