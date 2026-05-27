@@ -249,7 +249,11 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
               Guardo um cantinho pra você e te aviso antes de qualquer pessoa quando o Mulher Espiral abrir. Sem ruído, só o que importa.
             </p>
 
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <form
+              onSubmit={handleSubmit}
+              data-fb-disable-text-collection="true"
+              style={{ display: "flex", flexDirection: "column", gap: 12 }}
+            >
               <label style={fieldLabel}>
                 <span>Seu nome</span>
                 <input

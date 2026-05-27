@@ -489,7 +489,11 @@ function Reveal({
           rituais, perguntas pra meditar e prioridade quando o Mulher Espiral abrir.
         </p>
 
-        <form onSubmit={onSubmit} style={{ display: "grid", gap: 12, maxWidth: 460, margin: "0 auto" }}>
+        <form
+          onSubmit={onSubmit}
+          data-fb-disable-text-collection="true"
+          style={{ display: "grid", gap: 12, maxWidth: 460, margin: "0 auto" }}
+        >
           <FieldInput
             label="Seu nome" value={name} onChange={setName}
             placeholder="Como você gosta de ser chamada"
