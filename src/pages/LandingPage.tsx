@@ -19,6 +19,7 @@ import { steps, guarantees, faqs, testimonials } from "@/constants/landingConten
 import QuizSection from "@/components/features/QuizSection";
 import WaitlistModal from "@/components/features/WaitlistModal";
 import AdminAccessButton from "@/components/features/AdminAccessButton";
+import WhatsAppFAB from "@/components/features/WhatsAppFAB";
 import { useLaunchGate } from "@/hooks/useLaunchGate";
 
 /* ─────────────────────────────────────────────────────────────────
@@ -1350,6 +1351,7 @@ export default function LandingPage() {
         </footer>
       </div>
       <WaitlistModal open={waitlistOpen} source={waitlistSource} onClose={() => setWaitlistOpen(false)} />
+      <WhatsAppFAB surface="landing" />
     </>
   );
 }

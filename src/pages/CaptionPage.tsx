@@ -22,6 +22,7 @@ import { sendEmailAsync } from "@/lib/email";
 import { fireEventAsync } from "@/lib/sequenzy";
 import { supabase } from "@/lib/supabase";
 import LandingNav from "@/components/layout/LandingNav";
+import WhatsAppFAB from "@/components/features/WhatsAppFAB";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_MIN = 10;
@@ -236,6 +237,7 @@ export default function CaptionPage() {
 
         </section>
       </main>
+      <WhatsAppFAB surface="caption" />
     </>
   );
 }
