@@ -1,4 +1,5 @@
 import { Component, type ReactNode } from "react";
+import { captureException } from "@/lib/sentry";
 
 interface Props { children: ReactNode; fallback?: ReactNode; }
 interface State { hasError: boolean; error: Error | null; }
@@ -11,6 +12,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: { componentStack: string }) {
+    captureException(error, { componentStack: info.componentStack });
     if (import.meta.env.DEV) {
       console.error("[ErrorBoundary]", error, info.componentStack);
     }
