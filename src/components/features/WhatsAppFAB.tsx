@@ -61,6 +61,7 @@ export default function WhatsAppFAB({ surface }: Props) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-label="Falar com Sunyan no WhatsApp"
+      data-wa-fab=""
       style={{
         position: "fixed",
         right: "clamp(14px,3vw,28px)",
@@ -86,8 +87,20 @@ export default function WhatsAppFAB({ surface }: Props) {
         background: "rgba(255,255,255,0.18)",
         display: "inline-flex", alignItems: "center", justifyContent: "center",
         flexShrink: 0,
+        position: "relative",
       }}>
         <MessageCircle size={15} strokeWidth={2} />
+        {!hovered && (
+          <span
+            aria-hidden="true"
+            style={{
+              position: "absolute", inset: -4,
+              borderRadius: "50%",
+              border: "2px solid rgba(255,255,255,0.55)",
+              animation: "waPulse 2.2s ease-out infinite",
+            }}
+          />
+        )}
       </span>
       <span
         style={{

@@ -31,7 +31,7 @@ export default function AdminAccessButton() {
     e.preventDefault();
     if (tryOpenGate(code)) {
       setOpen(false);
-      navigate("/login");
+      navigate("/admin");
     } else {
       setError("Código inválido.");
     }

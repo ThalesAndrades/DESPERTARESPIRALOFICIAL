@@ -49,7 +49,6 @@ vi.mock("sonner", () => ({
 
 const mockSendOtp            = vi.fn();
 const mockVerifyOtpAndRegister = vi.fn();
-const mockLoginWithGoogle    = vi.fn();
 
 vi.mock("@/hooks/useAuth", () => ({
   useAuth: () => ({
@@ -57,7 +56,6 @@ vi.mock("@/hooks/useAuth", () => ({
     loading:               false,
     sendOtp:               mockSendOtp,
     verifyOtpAndRegister:  mockVerifyOtpAndRegister,
-    loginWithGoogle:       mockLoginWithGoogle,
     loginWithPassword:     vi.fn(),
     logout:                vi.fn(),
     refreshUser:           vi.fn(),
@@ -116,11 +114,6 @@ describe("RegisterPage Step 1 — rendering", () => {
   it("renders send OTP button", () => {
     renderRegister();
     expect(screen.getByRole("button", { name: /enviar código de verificação/i })).toBeInTheDocument();
-  });
-
-  it("renders Google OAuth button", () => {
-    renderRegister();
-    expect(screen.getByRole("button", { name: /continuar com google/i })).toBeInTheDocument();
   });
 
   it("renders link to /login", () => {
@@ -237,28 +230,6 @@ describe("RegisterPage Step 1 — sendOtp failure", () => {
       // Step 1 form is still visible
       expect(screen.queryByPlaceholderText("• • • •")).not.toBeInTheDocument();
       expect(screen.getByPlaceholderText("Seu nome")).toBeInTheDocument();
-    });
-  });
-});
-
-describe("RegisterPage Step 1 — Google OAuth", () => {
-  beforeEach(() => vi.clearAllMocks());
-
-  it("calls loginWithGoogle('/dashboard') when Google button is clicked", async () => {
-    mockLoginWithGoogle.mockResolvedValue({});
-    const user = userEvent.setup();
-    renderRegister();
-    await user.click(screen.getByRole("button", { name: /continuar com google/i }));
-    expect(mockLoginWithGoogle).toHaveBeenCalledWith("/dashboard");
-  });
-
-  it("shows error toast if Google login fails", async () => {
-    mockLoginWithGoogle.mockResolvedValue({ error: "Google bloqueado." });
-    const user = userEvent.setup();
-    renderRegister();
-    await user.click(screen.getByRole("button", { name: /continuar com google/i }));
-    await waitFor(() => {
-      expect(mockToastError).toHaveBeenCalledWith("Google bloqueado.");
     });
   });
 });

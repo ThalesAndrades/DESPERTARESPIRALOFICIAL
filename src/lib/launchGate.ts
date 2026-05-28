@@ -7,6 +7,10 @@
  * discreto no rodapé da home. Em desenvolvimento (vite dev), tudo permanece
  * liberado.
  *
+ * Quando o gate está aberto e não há usuário autenticado pelo Supabase, o
+ * `useAuth` injeta um usuário admin de bypass — assim a Sunyan entra direto
+ * pelo código, sem precisar de email/senha. Veja src/hooks/useAuth.tsx.
+ *
  * Token: salvo em localStorage; persiste entre sessões para o admin não
  * precisar redigitar o código a cada visita.
  */
@@ -37,6 +41,14 @@ export function isGateOpen(): boolean {
   if (cached !== null) return cached;
   cached = readStorage();
   return cached;
+}
+
+/**
+ * True quando o gate libera acesso admin sem login real. O front trata como
+ * "admin bypass" — entra na área protegida com user mock.
+ */
+export function isAdminBypass(): boolean {
+  return isGateOpen();
 }
 
 /** Tenta abrir o gate com um código. Retorna true se aceito. */
