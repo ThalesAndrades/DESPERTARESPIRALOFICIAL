@@ -17,30 +17,43 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import {
   BarChart3, Calendar, Loader2, RefreshCw, Sparkles,
-  TrendingUp, Tag, Compass,
+  TrendingUp, Tag, Compass, Mail,
 } from "lucide-react";
 import type { WaitlistRow } from "@/lib/local/types";
+
+interface EngagementRow {
+  slug: string;
+  sent_count: number;
+  opened_count: number;
+  clicked_count: number;
+  bounced_count: number;
+  complained_count: number;
+  open_rate_pct: number;
+  click_through_rate_pct: number;
+}
 
 const MAX_ROWS = 5000;
 const DAY = 86400_000;
 
 export default function AdminConversionPage() {
   const [rows, setRows] = useState<WaitlistRow[]>([]);
+  const [engagement, setEngagement] = useState<EngagementRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("launch_waitlist")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(MAX_ROWS);
+    const [{ data: leads, error }, { data: eng }] = await Promise.all([
+      supabase.from("launch_waitlist").select("*")
+        .order("created_at", { ascending: false }).limit(MAX_ROWS),
+      supabase.from("email_engagement_summary").select("*"),
+    ]);
     if (error) {
       toast.error("Não consegui carregar as métricas.");
       setLoading(false);
       return;
     }
-    setRows((data ?? []) as WaitlistRow[]);
+    setRows((leads ?? []) as WaitlistRow[]);
+    setEngagement((eng ?? []) as EngagementRow[]);
     setLoading(false);
   };
 
@@ -147,6 +160,15 @@ export default function AdminConversionPage() {
                 </Card>
               )}
             </div>
+
+            {/* Engagement de email */}
+            {engagement.length > 0 && (
+              <div style={{ marginTop: 22 }}>
+                <Card title="Engajamento dos emails do drip" icon={Mail}>
+                  <EngagementTable rows={engagement} />
+                </Card>
+              </div>
+            )}
           </>
         )}
       </div>
@@ -267,6 +289,59 @@ function BarList({ items }: { items: Group[] }) {
     </div>
   );
 }
+
+const SLUG_LABELS: Record<string, string> = {
+  "drip-1-origem":         "1 · Por que escrevi",
+  "drip-2-reconhecer":     "2 · Reconhecer",
+  "drip-3-corpo":          "3 · O corpo guarda",
+  "drip-4-comunidade":     "4 · Comunidade",
+  "drip-5-prelancamento":  "5 · Em breve",
+};
+
+function EngagementTable({ rows }: { rows: EngagementRow[] }) {
+  return (
+    <div style={{ overflowX: "auto", marginTop: 6 }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13, minWidth: 540 }}>
+        <thead>
+          <tr style={{ color: "var(--text-muted)" }}>
+            <th style={th}>Email</th>
+            <th style={{ ...th, textAlign: "right" }}>Enviados</th>
+            <th style={{ ...th, textAlign: "right" }}>Abertura</th>
+            <th style={{ ...th, textAlign: "right" }}>Cliques</th>
+            <th style={{ ...th, textAlign: "right" }}>Bounce/Spam</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.slug} style={{ borderTop: "1px solid var(--border-subtle)" }}>
+              <td style={td}>{SLUG_LABELS[r.slug] ?? r.slug}</td>
+              <td style={{ ...td, textAlign: "right", color: "var(--text-primary)" }}>{r.sent_count}</td>
+              <td style={{ ...td, textAlign: "right" }}>
+                <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>{r.open_rate_pct}%</span>
+                <span style={{ color: "var(--text-faint)", marginLeft: 6, fontSize: 11 }}>({r.opened_count})</span>
+              </td>
+              <td style={{ ...td, textAlign: "right" }}>
+                <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>{r.click_through_rate_pct}%</span>
+                <span style={{ color: "var(--text-faint)", marginLeft: 6, fontSize: 11 }}>({r.clicked_count})</span>
+              </td>
+              <td style={{ ...td, textAlign: "right", color: r.bounced_count + r.complained_count > 0 ? "#e07a90" : "var(--text-faint)" }}>
+                {r.bounced_count + r.complained_count}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+const th: React.CSSProperties = {
+  textAlign: "left", padding: "10px 12px", fontWeight: 500, fontSize: 10,
+  letterSpacing: "0.18em", textTransform: "uppercase",
+};
+const td: React.CSSProperties = {
+  padding: "12px", color: "var(--text-secondary)", verticalAlign: "top",
+};
 
 function Loader() {
   return (

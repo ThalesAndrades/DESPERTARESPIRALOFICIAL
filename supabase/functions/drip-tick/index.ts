@@ -47,7 +47,10 @@ async function fetchPending(supabaseUrl: string, serviceKey: string): Promise<Dr
   return (await r.json()) as DripJob[];
 }
 
-async function markSent(supabaseUrl: string, serviceKey: string, id: string): Promise<void> {
+async function markSent(
+  supabaseUrl: string, serviceKey: string,
+  id: string, resendEmailId: string | null,
+): Promise<void> {
   await fetch(`${supabaseUrl}/rest/v1/email_drip_jobs?id=eq.${id}`, {
     method: "PATCH",
     headers: {
@@ -56,7 +59,11 @@ async function markSent(supabaseUrl: string, serviceKey: string, id: string): Pr
       "Content-Type": "application/json",
       Prefer: "return=minimal",
     },
-    body: JSON.stringify({ sent_at: new Date().toISOString(), error_message: null }),
+    body: JSON.stringify({
+      sent_at: new Date().toISOString(),
+      error_message: null,
+      resend_email_id: resendEmailId,
+    }),
   });
 }
 
@@ -79,7 +86,9 @@ async function markError(
   });
 }
 
-async function sendOne(resendKey: string, job: DripJob): Promise<{ ok: true } | { ok: false; error: string }> {
+async function sendOne(
+  resendKey: string, job: DripJob,
+): Promise<{ ok: true; id: string | null } | { ok: false; error: string }> {
   const { subject, html } = renderTemplate(job.slug, {
     firstName: job.first_name ?? "",
   });
@@ -95,13 +104,22 @@ async function sendOne(resendKey: string, job: DripJob): Promise<{ ok: true } | 
       to: [job.lead_email],
       subject,
       html,
+      tags: [
+        { name: "slug", value: job.slug },
+        { name: "campaign", value: "drip" },
+      ],
     }),
   });
 
   if (!resp.ok) {
     return { ok: false, error: `${resp.status} ${await resp.text()}` };
   }
-  return { ok: true };
+  try {
+    const data = await resp.json() as { id?: string };
+    return { ok: true, id: data.id ?? null };
+  } catch {
+    return { ok: true, id: null };
+  }
 }
 
 Deno.serve(async (req) => {
@@ -131,7 +149,7 @@ Deno.serve(async (req) => {
     try {
       const result = await sendOne(resendKey, job);
       if (result.ok) {
-        await markSent(supabaseUrl, serviceKey, job.id);
+        await markSent(supabaseUrl, serviceKey, job.id, result.id);
         sent += 1;
       } else {
         await markError(supabaseUrl, serviceKey, job.id, job.attempts, result.error);
