@@ -14,6 +14,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle2, ArrowRight, Sparkles, Mail, Users, Share2, Check } from "lucide-react";
 import LandingNav from "@/components/layout/LandingNav";
+import WhatsAppFAB from "@/components/features/WhatsAppFAB";
 import { ARCHETYPES, type Archetype } from "@/constants/captionQuiz";
 import { Events, track } from "@/lib/analytics";
 import { supabase } from "@/lib/supabase";
@@ -244,6 +245,7 @@ export default function WaitlistThankYouPage() {
           </div>
         </section>
       </main>
+      <WhatsAppFAB surface="recebido" />
     </>
   );
 }
