@@ -7,7 +7,9 @@ export type TemplateSlug =
   | "checkout-abandonado"
   | "quiz-aprovado"
   | "curso-concluido"
-  | "reset-senha";
+  | "reset-senha"
+  | "waitlist-welcome"
+  | "caption-result";
 
 const SITE_URL = Deno.env.get("SITE_URL") ?? "https://despertarespiral.com";
 
@@ -122,6 +124,35 @@ const TEMPLATES: Record<TemplateSlug, (v: Record<string, string>) => Template> =
       p("Você (ou alguém) pediu para redefinir sua senha. Se foi você, clique no botão abaixo:") +
       button("{{resetUrl}}", "Redefinir senha") +
       p("Se não foi você, ignore este email — sua conta segue segura.") +
+      sig(),
+      v,
+    )),
+  }),
+
+  "waitlist-welcome": (v) => ({
+    subject: `${v.firstName ?? "Olá"}, recebi com carinho — sua espera começa aqui ✦`,
+    html: shell("Bem-vinda à lista de espera", interp(
+      h1("Que bom te ter por aqui, {{firstName}} ✦") +
+      p("Eu sou Sunyan e quero te dizer: você acabou de me encontrar no momento certo.") +
+      p("Você está oficialmente na lista de espera de <strong>Mulher Espiral</strong> — o método que escrevi pra mulheres que estão prontas pra voltar pra dentro, sem fórmula mágica nem urgência de performance.") +
+      p("Nas próximas semanas vou te mandar, com calma, algumas reflexões e práticas que preparam o caminho. Quando as portas abrirem, você é uma das primeiras a saber — e tem prioridade nas vagas.") +
+      p("Se sentir vontade, responde esse email. Eu leio de verdade.") +
+      sig(),
+      v,
+    )),
+  }),
+
+  "caption-result": (v) => ({
+    subject: `${v.firstName ?? "Você"} é ${v.archetypeName ?? "uma força viva"} ✦`,
+    html: shell("Seu Poder Feminino", interp(
+      h1("Você é {{archetypeName}} ✦") +
+      p("<em>{{archetypeTagline}}</em>") +
+      p("{{archetypeDescription}}") +
+      p("<strong>O que está pedindo pra ser despertado em você:</strong>") +
+      p("{{archetypeShadow}}") +
+      p("<strong>Uma prática pra começar hoje:</strong>") +
+      p("{{archetypePractice}}") +
+      p("Quando o <strong>Mulher Espiral</strong> abrir, você é uma das primeiras a saber. Esse método foi escrito pra acolher mulheres como você — e o seu arquétipo é o ponto de partida do caminho.") +
       sig(),
       v,
     )),

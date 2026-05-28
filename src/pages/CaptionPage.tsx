@@ -10,13 +10,15 @@
  * complete_quiz, generate_lead, join_waitlist (Meta/TikTok), Subscribe.
  */
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowRight, CheckCircle2, Loader2, Sparkles } from "lucide-react";
+import { ArrowRight, Loader2, Sparkles } from "lucide-react";
 import {
   ARCHETYPES, CAPTION_QUESTIONS, computeArchetype, type Archetype,
 } from "@/constants/captionQuiz";
 import { Events, getAttribution, sha256, track } from "@/lib/analytics";
 import { buildWaitlistPayload } from "@/lib/waitlistPayload";
+import { sendEmailAsync } from "@/lib/email";
 import { fireEventAsync } from "@/lib/sequenzy";
 import { supabase } from "@/lib/supabase";
 import LandingNav from "@/components/layout/LandingNav";
@@ -24,9 +26,10 @@ import LandingNav from "@/components/layout/LandingNav";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_MIN = 10;
 
-type Stage = "intro" | "quiz" | "form" | "done";
+type Stage = "intro" | "quiz" | "form";
 
 export default function CaptionPage() {
+  const navigate = useNavigate();
   const [stage, setStage] = useState<Stage>("intro");
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -58,10 +61,7 @@ export default function CaptionPage() {
     if (stage === "quiz" && step === 0) {
       track(Events.StartQuiz, { quiz: "poder-feminino" }, "analytics");
     }
-    if (stage === "done" && profile) {
-      track("view_archetype_result", { archetype: profile.key }, "analytics");
-    }
-  }, [stage, step, profile]);
+  }, [stage, step]);
 
   function start() {
     setStage("quiz");
@@ -127,10 +127,28 @@ export default function CaptionPage() {
       return;
     }
 
+    const firstName = cleanName.split(" ")[0];
+    const profileNow = ARCHETYPES[archetype];
+
     fireEventAsync("caption.archetype_completed", {
       email: cleanEmail,
-      firstName: cleanName.split(" ")[0],
+      firstName,
       properties: { archetype, phone: cleanPhone, ...attribution },
+    });
+
+    sendEmailAsync({
+      to: cleanEmail,
+      template: {
+        slug: "caption-result",
+        variables: {
+          firstName,
+          archetypeName: profileNow.name,
+          archetypeTagline: profileNow.tagline,
+          archetypeDescription: profileNow.description,
+          archetypeShadow: profileNow.shadow,
+          archetypePractice: profileNow.practice,
+        },
+      },
     });
 
     const emailHash = await sha256(cleanEmail);
@@ -151,7 +169,7 @@ export default function CaptionPage() {
     track(Events.Subscribe, baseParams, "marketing");
 
     setLoading(false);
-    setStage("done");
+    navigate(`/recebido?archetype=${archetype}&name=${encodeURIComponent(firstName)}`);
   }
 
   return (
@@ -216,7 +234,6 @@ export default function CaptionPage() {
             />
           )}
 
-          {stage === "done" && profile && <Done profile={profile} name={name} />}
         </section>
       </main>
     </>
@@ -536,52 +553,6 @@ function Reveal({
             Cuidamos do seu cadastro · LGPD · Sem spam
           </p>
         </form>
-      </div>
-    </div>
-  );
-}
-
-/* ───────────────────────────────────────────────────────────── DONE ── */
-function Done({ profile, name }: { profile: typeof ARCHETYPES[Archetype]; name: string }) {
-  const firstName = name.trim().split(" ")[0];
-  return (
-    <div style={{ textAlign: "center", animation: "captionFade .5s ease both" }}>
-      <div style={{
-        width: 72, height: 72, margin: "0 auto 22px",
-        borderRadius: "50%",
-        background: "rgba(72,187,120,0.15)",
-        color: "#48bb78",
-        display: "flex", alignItems: "center", justifyContent: "center",
-      }}>
-        <CheckCircle2 size={36} strokeWidth={1.4} />
-      </div>
-
-      <h1 className="font-display text-balance" style={{
-        fontSize: "clamp(28px,5vw,46px)", fontWeight: 300, lineHeight: 1.1,
-        marginBottom: 14,
-      }}>
-        Recebi com carinho{firstName ? `, ${firstName}` : ""}.
-      </h1>
-      <p style={{
-        fontSize: "clamp(15px,1.8vw,17px)", color: "var(--text-secondary)",
-        lineHeight: 1.75, maxWidth: 480, margin: "0 auto 30px",
-      }}>
-        O aprofundamento da sua <strong style={{ color: "var(--gold)", fontWeight: 500 }}>{profile.name}</strong> já
-        está a caminho do seu e-mail. Dá uma olhada nos próximos minutos — às vezes ele se esconde na aba de promoções.
-      </p>
-
-      <div style={{
-        padding: 22, maxWidth: 460, margin: "0 auto",
-        background: "var(--bg-elevated)", border: "1px solid var(--border-soft)",
-        borderRadius: 14, textAlign: "left",
-      }}>
-        <p className="font-label" style={{
-          fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase",
-          color: "var(--gold)", marginBottom: 10,
-        }}>Pratique hoje</p>
-        <p style={{ fontSize: 14.5, color: "var(--text-secondary)", lineHeight: 1.7 }}>
-          {profile.practice}
-        </p>
       </div>
     </div>
   );
