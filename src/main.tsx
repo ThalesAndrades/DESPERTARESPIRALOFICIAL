@@ -8,7 +8,11 @@ import App from "./App";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { bootstrapAnalytics, captureAttribution, installScrollTracker } from "@/lib/analytics";
+import { initSentry } from "@/lib/sentry";
 import "./index.css";
+
+/* ── Error tracking primeiro (pra capturar problemas dos próximos passos) ── */
+initSentry();
 
 /* ── UTM attribution + analytics providers — on first load ── */
 captureAttribution();
