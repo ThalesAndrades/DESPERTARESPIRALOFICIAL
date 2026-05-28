@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { fireEventAsync } from "@/lib/sequenzy";
 import { Events, getAttribution, sha256, track } from "@/lib/analytics";
 import { buildWaitlistPayload } from "@/lib/waitlistPayload";
+import { sendEmailAsync } from "@/lib/email";
 import { Loader2, X, CheckCircle2 } from "lucide-react";
 
 interface Props {
@@ -88,13 +89,20 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
       return;
     }
 
+    const firstName = cleanName.split(" ")[0];
+
     fireEventAsync("waitlist.joined", {
       email: cleanEmail,
-      firstName: cleanName.split(" ")[0],
+      firstName,
       properties: {
         source,
         ...attribution,
       },
+    });
+
+    sendEmailAsync({
+      to: cleanEmail,
+      template: { slug: "waitlist-welcome", variables: { firstName } },
     });
 
     // Tracking: lead + waitlist (analytics e marketing pixels).
@@ -199,24 +207,45 @@ export default function WaitlistModal({ open, onClose, source = "landing" }: Pro
             <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.65, marginBottom: 22 }}>
               Guardei o seu cantinho. Quando o Mulher Espiral abrir, você é uma das primeiras a saber — direto no seu e-mail, sem ruído.
             </p>
-            <button
-              onClick={onClose}
-              style={{
-                padding: "12px 28px",
-                background: "var(--gold)",
-                color: "#04060f",
-                border: "none",
-                borderRadius: 10,
-                fontFamily: "Montserrat, sans-serif",
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-              }}
-            >
-              Voltar pro site
-            </button>
+            <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+              <a
+                href={`/recebido${name.trim() ? `?name=${encodeURIComponent(name.trim().split(" ")[0])}` : ""}`}
+                style={{
+                  padding: "12px 28px",
+                  background: "var(--gold)",
+                  color: "#04060f",
+                  border: "none",
+                  borderRadius: 10,
+                  fontFamily: "Montserrat, sans-serif",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  display: "inline-block",
+                }}
+              >
+                Ver próximos passos →
+              </a>
+              <button
+                onClick={onClose}
+                style={{
+                  padding: "12px 22px",
+                  background: "transparent",
+                  color: "var(--text-secondary)",
+                  border: "1px solid var(--border-soft)",
+                  borderRadius: 10,
+                  fontFamily: "Montserrat, sans-serif",
+                  fontSize: 10,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  cursor: "pointer",
+                }}
+              >
+                Voltar pro site
+              </button>
+            </div>
           </div>
         ) : (
           <>
