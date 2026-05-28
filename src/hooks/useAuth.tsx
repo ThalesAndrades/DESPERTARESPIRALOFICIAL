@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, createContext, useContext } from "react";
+import { closeGate, isGateOpen, onGateChange } from "@/lib/launchGate";
 import { supabase, type User } from "@/lib/supabase";
 import { fireEventAsync } from "@/lib/sequenzy";
 import { sendEmailAsync } from "@/lib/email";
@@ -411,6 +412,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     setUser(null); // clear immediately so UI responds instantly
     clearCache();
+    // Fecha o gate de pré-lançamento se estava aberto via bypass,
+    // pra Sunyan precisar redigitar o código se quiser voltar.
+    closeGate();
     await supabase.auth.signOut();
   };
 
@@ -435,9 +439,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+/** User mock usado quando o gate de pré-lançamento está aberto e ninguém
+ *  está autenticado pelo Supabase — Sunyan entra direto pelo código 190900
+ *  sem precisar de email/senha. Marcado com `id: "bypass-admin"` pra ficar
+ *  identificável em logs e analytics. */
+const BYPASS_ADMIN: AuthUser = {
+  id: "bypass-admin",
+  email: "admin@despertarespiral.local",
+  name: "Sunyan",
+  role: "admin",
+  anonymous_name: "Sunyan",
+  products: [],
+};
+
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (ctx) return ctx;
-  if (import.meta.env.DEV) throw new Error("useAuth must be used within AuthProvider");
-  return fallbackAuth;
+  const base = ctx ?? fallbackAuth;
+  const [gateOpen, setGateOpen] = useState<boolean>(() => isGateOpen());
+
+  useEffect(() => onGateChange(() => setGateOpen(isGateOpen())), []);
+
+  // Sem usuário autenticado e gate aberto → entra como admin de bypass.
+  if (!base.user && !base.loading && gateOpen) {
+    return { ...base, user: BYPASS_ADMIN };
+  }
+  return base;
 }

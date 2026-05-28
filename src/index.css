@@ -1158,11 +1158,29 @@ input:-webkit-autofill:focus {
 /* ═══════════════════════════════════════════════════════════════════
    REDUCED MOTION
 ═══════════════════════════════════════════════════════════════════ */
+/* WhatsApp FAB pulse — chama atenção sutil sem ser irritante */
+@keyframes waPulse {
+  0%   { transform: scale(1);   opacity: 0.75; }
+  70%  { transform: scale(1.7); opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* Scroll suave por âncora respeitando o nav fixo (68px) */
+section[id^="section-"] {
+  scroll-margin-top: 80px;
+}
+
+/* Esconde o FAB no print pra não vazar nas exportações */
+@media print {
+  [data-wa-fab] { display: none !important; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .spiral-outer, .spiral-inner, .animate-float, .animate-glow,
   .btn-gold, .btn-outline-gold, .card-lift { animation: none !important; transition: none !important; }
   .reveal, .reveal-left, .reveal-right { opacity: 1 !important; transform: none !important; transition: none !important; }
   [data-parallax] { transform: none !important; }
+  [data-wa-fab] span span { animation: none !important; }
   .skeleton::after { animation: none !important; }
   .section-label-live::before { animation: none !important; }
 }

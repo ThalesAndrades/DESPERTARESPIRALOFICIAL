@@ -48,14 +48,12 @@ vi.mock("sonner", () => ({
 
 // Core: mock useAuth
 const mockLoginWithPassword = vi.fn();
-const mockLoginWithGoogle   = vi.fn();
 
 vi.mock("@/hooks/useAuth", () => ({
   useAuth: () => ({
     user:               null,
     loading:            false,
     loginWithPassword:  mockLoginWithPassword,
-    loginWithGoogle:    mockLoginWithGoogle,
     sendOtp:            vi.fn(),
     verifyOtpAndRegister: vi.fn(),
     logout:             vi.fn(),
@@ -101,11 +99,6 @@ describe("LoginPage — rendering", () => {
   it("renders the submit button with correct label", () => {
     renderLogin();
     expect(screen.getByRole("button", { name: /entrar com e-mail/i })).toBeInTheDocument();
-  });
-
-  it("renders Google OAuth button", () => {
-    renderLogin();
-    expect(screen.getByRole("button", { name: /continuar com google/i })).toBeInTheDocument();
   });
 
   it("renders link to /register", () => {
@@ -272,27 +265,3 @@ describe("LoginPage — failed login", () => {
   });
 });
 
-describe("LoginPage — Google OAuth", () => {
-  beforeEach(() => vi.clearAllMocks());
-
-  it("calls loginWithGoogle when Google button is clicked", async () => {
-    mockLoginWithGoogle.mockResolvedValue({});
-    const user = userEvent.setup();
-    renderLogin();
-
-    await user.click(screen.getByRole("button", { name: /continuar com google/i }));
-    expect(mockLoginWithGoogle).toHaveBeenCalled();
-  });
-
-  it("shows error toast if Google login fails", async () => {
-    mockLoginWithGoogle.mockResolvedValue({ error: "Popup bloqueado." });
-    const user = userEvent.setup();
-    renderLogin();
-
-    await user.click(screen.getByRole("button", { name: /continuar com google/i }));
-
-    await waitFor(() => {
-      expect(mockToastError).toHaveBeenCalledWith("Popup bloqueado.");
-    });
-  });
-});

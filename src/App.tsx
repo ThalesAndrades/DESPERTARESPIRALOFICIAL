@@ -148,7 +148,7 @@ function PublicOnlyRoute({ children }: { children: React.ReactNode }) {
     prefetchRegister();
   }, []);
 
-  if (!loading && user) return <Navigate to="/dashboard" replace />;
+  if (!loading && user) return <Navigate to={user.role === "admin" ? "/admin" : "/dashboard"} replace />;
   return <>{children}</>;
 }
 
