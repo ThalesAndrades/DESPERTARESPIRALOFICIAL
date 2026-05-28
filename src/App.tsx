@@ -49,6 +49,7 @@ const AccountPage            = React.lazy(() => import("@/pages/AccountPage"));
 const MapaDoPoder           = React.lazy(() => import("@/pages/MapaDoPoder"));
 const CaptionPage           = React.lazy(() => import("@/pages/CaptionPage"));
 const WaitlistThankYouPage  = React.lazy(() => import("@/pages/WaitlistThankYouPage"));
+const SharePage             = React.lazy(() => import("@/pages/SharePage"));
 
 /* ── Global loader — branded spiral spinner ── */
 function GlobalLoader() {
@@ -208,8 +209,10 @@ export default function App() {
         <Route path="/admin/waitlist"             element={<AdminRoute><AdminWaitlistPage /></AdminRoute>} />
 
         {/* Caption — landing pública para tráfego pago (Meta/Google Ads) */}
-        <Route path="/caption"  element={<CaptionPage />} />
-        <Route path="/recebido" element={<WaitlistThankYouPage />} />
+        <Route path="/caption"             element={<CaptionPage />} />
+        <Route path="/recebido"            element={<WaitlistThankYouPage />} />
+        <Route path="/share"               element={<SharePage />} />
+        <Route path="/share/:archetype"    element={<SharePage />} />
 
         {/* Mapa do Poder — ferramenta pública (acesso direto, sem QR) */}
         <Route path="/mapa-do-poder" element={<MapaDoPoder />} />
