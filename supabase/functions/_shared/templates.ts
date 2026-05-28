@@ -228,6 +228,8 @@ const TEMPLATES: Record<TemplateSlug, (v: Record<string, string>) => Template> =
       h1("{{firstName}}, está chegando.") +
       p("Nessas duas semanas que eu te escrevi, você foi conhecendo um pouco do que sustenta esse método. Talvez você tenha lido todos os emails. Talvez tenha guardado pra um momento mais calmo. Tudo bem.") +
       p("O que importa é que <strong>nas próximas semanas o Mulher Espiral abre</strong> — e você, como uma das primeiras inscritas na lista, vai receber o convite antes de qualquer pessoa. Com prioridade nas vagas e condição especial de pré-venda.") +
+      p("Pra não perder o momento, deixei uma página com a contagem regressiva da abertura — você pode até adicionar ao seu calendário:") +
+      button(`${SITE_URL}/abrir`, "Ver contagem regressiva") +
       p("Antes disso, eu queria te deixar mais uma pergunta — e te convidar a respondê-la com calma, talvez nos próximos dias:") +
       p("<em>O que você espera dessa jornada? O que você gostaria que estivesse diferente em você, daqui a alguns meses?</em>") +
       p("Não é pra me responder — é pra você. Anota num caderno, num bilhete, num post-it na geladeira. Quanto mais clara está a intenção, mais o caminho se desenha.") +
