@@ -12,7 +12,7 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useSearchParams } from "react-router-dom";
-import { CheckCircle2, ArrowRight, Sparkles, Mail, Users } from "lucide-react";
+import { CheckCircle2, ArrowRight, Sparkles, Mail, Users, Share2, Check } from "lucide-react";
 import LandingNav from "@/components/layout/LandingNav";
 import { ARCHETYPES, type Archetype } from "@/constants/captionQuiz";
 import { Events, track } from "@/lib/analytics";
@@ -29,6 +29,27 @@ export default function WaitlistThankYouPage() {
   const profile = isArchetype(archetypeKey) ? ARCHETYPES[archetypeKey] : null;
 
   const [count, setCount] = useState<number | null>(null);
+  const [shared, setShared] = useState(false);
+
+  async function handleShare() {
+    if (!profile) return;
+    const shareUrl = `${window.location.origin}/share/${profile.key}`;
+    const text = `Sou ${profile.name} — descobri meu Poder Feminino no teste do Despertar Espiral.`;
+    track("share_click", { archetype: profile.key }, "analytics");
+
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share({ title: profile.name, text, url: shareUrl });
+        setShared(true);
+      } catch { /* user cancelou — sem erro */ }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(`${text} ${shareUrl}`);
+      setShared(true);
+      setTimeout(() => setShared(false), 2400);
+    } catch { /* clipboard bloqueado — ignora */ }
+  }
 
   useEffect(() => {
     track("view_thank_you", { surface: "waitlist", archetype: profile?.key ?? null }, "analytics");
@@ -141,9 +162,28 @@ export default function WaitlistThankYouPage() {
                 fontSize: "clamp(22px,3.5vw,30px)", fontWeight: 300,
                 lineHeight: 1.1, marginBottom: 4,
               }}>{profile.name}</h2>
-              <p style={{ fontSize: 14, fontStyle: "italic", color: "var(--text-secondary)" }}>
+              <p style={{ fontSize: 14, fontStyle: "italic", color: "var(--text-secondary)", marginBottom: 18 }}>
                 {profile.tagline}
               </p>
+              <button
+                type="button"
+                onClick={handleShare}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "11px 22px",
+                  background: "transparent",
+                  border: "1px solid var(--gold)",
+                  color: "var(--gold)",
+                  borderRadius: 999,
+                  fontFamily: "Montserrat, sans-serif", fontSize: 10,
+                  letterSpacing: "0.18em", textTransform: "uppercase",
+                  cursor: "pointer", transition: "background .2s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(198,168,112,0.10)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+              >
+                {shared ? <><Check size={13} /> Link copiado</> : <><Share2 size={13} /> Compartilhar meu resultado</>}
+              </button>
             </div>
           )}
 
