@@ -103,6 +103,27 @@ export default function AdminLeadDetailPage() {
     })();
   }, [id]);
 
+  async function requeueDrip(jobId: string) {
+    const { error } = await supabase
+      .from("email_drip_jobs")
+      .update({
+        send_at: new Date().toISOString(),
+        error_message: null,
+        attempts: 0,
+      })
+      .eq("id", jobId);
+    if (error) {
+      toast.error("Não consegui reenfileirar o email.");
+      return;
+    }
+    setDrips((prev) => prev.map((d) =>
+      d.id === jobId
+        ? { ...d, send_at: new Date().toISOString(), error_message: null, attempts: 0 }
+        : d,
+    ));
+    toast.success("Reenfileirado — o drip-tick pega na próxima rodada (≤ 15 min).");
+  }
+
   async function saveNotes() {
     if (!lead) return;
     const trimmed = notes.trim();
@@ -320,6 +341,20 @@ export default function AdminLeadDetailPage() {
                       {d.error_message && ` · erro: ${d.error_message.slice(0, 60)}…`}
                     </p>
                   </div>
+                  {!d.sent_at && d.error_message && (
+                    <button
+                      type="button"
+                      onClick={() => requeueDrip(d.id)}
+                      style={{
+                        padding: "6px 12px", fontSize: 10, letterSpacing: "0.16em",
+                        textTransform: "uppercase", borderRadius: 999, cursor: "pointer",
+                        background: "transparent", border: "1px solid var(--gold)",
+                        color: "var(--gold)", fontFamily: "Montserrat,sans-serif",
+                      }}
+                    >
+                      Reenviar
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
