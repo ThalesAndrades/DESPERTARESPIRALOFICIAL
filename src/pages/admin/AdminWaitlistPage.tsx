@@ -5,6 +5,7 @@
  * tabela responsiva (cards em mobile) e export CSV completo da seleção.
  */
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import AdminLayout from "@/components/layout/AdminLayout";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
@@ -178,7 +179,11 @@ export default function AdminWaitlistPage() {
                   {filtered.map((r) => (
                     <tr key={r.id} style={{ borderTop: "1px solid var(--border-subtle)" }}>
                       <Td>{formatDate(r.created_at)}</Td>
-                      <Td>{r.name ?? <span style={{ color: "var(--text-faint)" }}>—</span>}</Td>
+                      <Td>
+                        <Link to={`/admin/lead/${r.id}`} style={{ color: "var(--text-primary)", textDecoration: "none", fontWeight: 500 }}>
+                          {r.name ?? <span style={{ color: "var(--text-faint)" }}>—</span>}
+                        </Link>
+                      </Td>
                       <Td>
                         <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
                           <a href={`mailto:${r.email}`} style={{ color: "var(--gold)", textDecoration: "none" }}>{r.email}</a>
@@ -209,12 +214,12 @@ export default function AdminWaitlistPage() {
             {/* Mobile cards */}
             <div className="md:hidden">
               {filtered.map((r) => (
-                <div key={r.id} style={{ padding: 16, borderTop: "1px solid var(--border-subtle)" }}>
+                <Link key={r.id} to={`/admin/lead/${r.id}`} style={{ display: "block", padding: 16, borderTop: "1px solid var(--border-subtle)", textDecoration: "none", color: "inherit" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
                     <span style={{ fontWeight: 500, color: "var(--text-primary)" }}>{r.name ?? r.email}</span>
                     <span style={{ fontSize: 11, color: "var(--text-faint)" }}>{formatDate(r.created_at)}</span>
                   </div>
-                  <a href={`mailto:${r.email}`} style={{ color: "var(--gold)", textDecoration: "none", fontSize: 13 }}>{r.email}</a>
+                  <div style={{ color: "var(--gold)", fontSize: 13 }}>{r.email}</div>
                   {r.phone && <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 2 }}>{r.phone}</div>}
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 10 }}>
                     {r.source && <Badge>{r.source}</Badge>}
@@ -225,7 +230,7 @@ export default function AdminWaitlistPage() {
                       "{r.message}"
                     </p>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
           </div>
