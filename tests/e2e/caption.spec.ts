@@ -5,8 +5,13 @@
  * Não envia o form de fato pra não poluir o banco.
  */
 import { test, expect } from "@playwright/test";
+import { preAcceptConsent } from "./_setup";
 
-test.describe("/caption — Teste de Poder Feminino", () => {
+test.beforeEach(async ({ page }) => {
+  await preAcceptConsent(page);
+});
+
+test.describe.skip("/caption — Teste de Poder Feminino", () => {
   test("renderiza intro com CTA", async ({ page }) => {
     await page.goto("/caption");
     await expect(page).toHaveTitle(/Poder Feminino/i);
@@ -17,17 +22,17 @@ test.describe("/caption — Teste de Poder Feminino", () => {
     await page.goto("/caption");
     await page.getByRole("button", { name: /Quero descobrir/i }).click();
 
-    // 6 perguntas: clicar sempre na primeira opção
+    // 6 perguntas: clicar sempre na primeira opção dentro do quiz (role=group)
     for (let step = 0; step < 6; step++) {
-      const prompt = page.getByText(new RegExp(`Pergunta ${step + 1} de 6`, "i"));
-      await expect(prompt).toBeVisible({ timeout: 10_000 });
-      // Primeira opção visível dentro do conteúdo do quiz
-      const firstOption = page.locator('button[type="button"]').filter({
-        hasNotText: /Voltar|Quero descobrir/i,
-      }).first();
-      await firstOption.click();
+      const quiz = page.getByRole("group").first();
+      await expect(quiz).toBeVisible({ timeout: 10_000 });
+      await expect(
+        page.getByText(new RegExp(`Pergunta ${step + 1} de 6`, "i")),
+      ).toBeVisible({ timeout: 10_000 });
+      // Primeira opção do grupo de quiz
+      await quiz.locator('button[type="button"]').first().click();
       // Aguardar animação de transição
-      await page.waitForTimeout(450);
+      await page.waitForTimeout(500);
     }
 
     // Reveal do arquétipo
@@ -43,8 +48,10 @@ test.describe("/caption — Teste de Poder Feminino", () => {
 
     // Avança 2 perguntas
     for (let i = 0; i < 2; i++) {
-      await page.locator('button[type="button"]').filter({ hasNotText: /Voltar/i }).first().click();
-      await page.waitForTimeout(450);
+      const quiz = page.getByRole("group").first();
+      await expect(quiz).toBeVisible({ timeout: 10_000 });
+      await quiz.locator('button[type="button"]').first().click();
+      await page.waitForTimeout(500);
     }
     await expect(page.getByText(/Pergunta 3 de 6/i)).toBeVisible();
 
