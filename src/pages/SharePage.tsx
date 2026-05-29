@@ -21,7 +21,12 @@ function isArchetype(v: string | undefined): v is Archetype {
 }
 
 const SITE_URL = (import.meta.env.VITE_SITE_URL as string | undefined) ?? "https://despertarespiral.com";
-const OG_BASE = `${SITE_URL}/og-image.jpg`;
+const OG_FALLBACK = `${SITE_URL}/og-image.jpg`;
+
+function ogImageFor(archetype: Archetype | null): { url: string; type: string } {
+  if (!archetype) return { url: OG_FALLBACK, type: "image/jpeg" };
+  return { url: `${SITE_URL}/og/${archetype}.svg`, type: "image/svg+xml" };
+}
 
 export default function SharePage() {
   const { archetype } = useParams<{ archetype: string }>();
@@ -43,6 +48,7 @@ export default function SharePage() {
     ? `${profile.description.slice(0, 180)}… Faça o teste e descubra qual é a sua força feminina mais viva agora.`
     : "Em 2 minutos, descubra qual é o seu arquétipo de poder feminino. Por Sunyan Nunes.";
   const shareUrl = profile ? `${SITE_URL}/share/${profile.key}` : `${SITE_URL}/share`;
+  const og = ogImageFor(profile?.key ?? null);
 
   return (
     <>
@@ -54,15 +60,20 @@ export default function SharePage() {
         <meta property="og:url" content={shareUrl} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content={OG_BASE} />
+        <meta property="og:image" content={og.url} />
+        <meta property="og:image:type" content={og.type} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={title} />
+        {/* Fallback PNG-friendly: alguns crawlers preferem JPG */}
+        {profile && <meta property="og:image" content={OG_FALLBACK} />}
         <meta property="og:site_name" content="Despertar Espiral" />
         <meta property="og:locale" content="pt_BR" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={OG_BASE} />
+        <meta name="twitter:image" content={og.url} />
+        <meta name="twitter:image:alt" content={title} />
       </Helmet>
 
       <main style={{
