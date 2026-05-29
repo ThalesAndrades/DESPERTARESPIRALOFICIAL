@@ -22,6 +22,7 @@ export default function AdminWaitlistPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch]   = useState("");
   const [sourceFilter, setSourceFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "contacted">("all");
 
   const load = async () => {
     setLoading(true);
@@ -51,15 +52,18 @@ export default function AdminWaitlistPage() {
     const q = search.trim().toLowerCase();
     return rows.filter((r) => {
       if (sourceFilter !== "all" && r.source !== sourceFilter) return false;
+      if (statusFilter === "contacted" && !r.contacted_at) return false;
+      if (statusFilter === "pending"   &&  r.contacted_at) return false;
       if (!q) return true;
       return (
         r.email.toLowerCase().includes(q) ||
         (r.name?.toLowerCase().includes(q) ?? false) ||
         (r.phone?.toLowerCase().includes(q) ?? false) ||
-        (r.utm_campaign?.toLowerCase().includes(q) ?? false)
+        (r.utm_campaign?.toLowerCase().includes(q) ?? false) ||
+        (r.notes?.toLowerCase().includes(q) ?? false)
       );
     });
-  }, [rows, search, sourceFilter]);
+  }, [rows, search, sourceFilter, statusFilter]);
 
   const stats = useMemo(() => {
     const now = Date.now();
@@ -148,6 +152,19 @@ export default function AdminWaitlistPage() {
           >
             <option value="all">Todas as origens</option>
             {sources.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as "all" | "pending" | "contacted")}
+            style={{
+              minWidth: 180, padding: "11px 14px",
+              background: "var(--bg-elevated)", color: "var(--text-primary)",
+              border: "1px solid var(--border-soft)", borderRadius: 10, fontSize: 14,
+            }}
+          >
+            <option value="all">Contactadas + pendentes</option>
+            <option value="pending">Ainda não contactadas</option>
+            <option value="contacted">Já contactadas</option>
           </select>
         </div>
 
