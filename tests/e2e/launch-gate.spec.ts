@@ -3,7 +3,7 @@
  * o que dá pra testar com a build de DEV:
  *   - o botão "?" do footer abre o modal de código admin
  *   - código errado mostra erro
- *   - código `190900` libera e navega para /login
+ *   - código `190900` libera e navega para /admin
  *
  * Em prod (preview), com `import.meta.env.DEV=false`, este teste pode
  * rodar setando manualmente o localStorage antes da página carregar.
@@ -32,7 +32,7 @@ test.describe("Launch gate — acesso admin", () => {
     await expect(dialog.getByText(/Código inválido/i)).toBeVisible();
   });
 
-  test("código correto libera e leva ao /login", async ({ page }) => {
+  test("código correto libera e leva para área admin", async ({ page }) => {
     await page.goto("/");
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.getByRole("button", { name: /Acesso administrativo/i }).click();
@@ -41,7 +41,7 @@ test.describe("Launch gate — acesso admin", () => {
     await dialog.locator('input[type="password"]').fill("190900");
     await dialog.getByRole("button", { name: /Confirmar/i }).click();
 
-    await page.waitForURL(/\/login$/);
-    await expect(page).toHaveURL(/\/login$/);
+    await page.waitForURL(/\/admin/);
+    await expect(page).toHaveURL(/\/admin/);
   });
 });

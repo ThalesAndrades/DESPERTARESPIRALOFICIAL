@@ -1,0 +1,81 @@
+name: E2E
+
+# Roda os testes Playwright em PRs contra main e quando push em main.
+# Os specs cobrem os caminhos críticos pré-tráfego (waitlist, /caption,
+# launch gate admin). Em falha, o relatório HTML é anexado como artefato.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    name: Playwright E2E
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: pw-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright browsers (chromium only)
+        if: steps.pw-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps (cache hit)
+        if: steps.pw-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Run E2E tests
+        # Playwright sobe o dev server da landing automaticamente
+        # (ver webServer em playwright.config.ts) — não precisa de
+        # build separado, deploy.yml já cobre.
+        run: npx playwright test --project=chromium --reporter=list
+        env:
+          CI: "true"
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "## ✅ E2E verde" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ E2E falhou" >> $GITHUB_STEP_SUMMARY
+            echo "Baixe o relatório \`playwright-report-${{ github.run_id }}\` em Artefatos pra ver screenshots e traces." >> $GITHUB_STEP_SUMMARY
+          fi
