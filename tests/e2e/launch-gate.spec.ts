@@ -15,7 +15,7 @@ test.beforeEach(async ({ page }) => {
   await preAcceptConsent(page);
 });
 
-test.describe.skip("Launch gate — acesso admin", () => {
+test.describe("Launch gate — acesso admin", () => {
   test("botão ? do footer abre modal de código", async ({ page }) => {
     await page.goto("/");
     // O footer é a última seção; rolar até lá

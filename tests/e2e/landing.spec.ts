@@ -9,7 +9,7 @@ test.beforeEach(async ({ page }) => {
   await preAcceptConsent(page);
 });
 
-test.describe.skip("Landing principal", () => {
+test.describe("Landing principal", () => {
   test("renderiza hero e CTA principal", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveTitle(/Despertar Espiral/i);
@@ -39,7 +39,9 @@ test.describe.skip("Landing principal", () => {
 
     const dialog = page.getByRole("dialog");
     await dialog.getByPlaceholder(/Como você gosta de ser chamada/i).fill("Maria");
-    await dialog.getByPlaceholder(/o que você abre todo dia/i).fill("nao-eh-email");
+    // "test@incomplete" passa pela validação HTML5 do input type=email
+    // (tem @), mas falha no nosso EMAIL_RE (precisa de "." após o @).
+    await dialog.getByPlaceholder(/o que você abre todo dia/i).fill("test@incomplete");
     await dialog.getByRole("button", { name: /Quero entrar na lista/i }).click();
 
     await expect(dialog.getByText(/Confere o e-mail/i)).toBeVisible();
