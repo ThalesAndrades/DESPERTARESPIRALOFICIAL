@@ -9,6 +9,11 @@
  * rodar setando manualmente o localStorage antes da página carregar.
  */
 import { test, expect } from "@playwright/test";
+import { preAcceptConsent } from "./_setup";
+
+test.beforeEach(async ({ page }) => {
+  await preAcceptConsent(page);
+});
 
 test.describe("Launch gate — acesso admin", () => {
   test("botão ? do footer abre modal de código", async ({ page }) => {
