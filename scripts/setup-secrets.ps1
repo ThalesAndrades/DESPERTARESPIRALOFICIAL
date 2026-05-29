@@ -65,9 +65,29 @@ Set-SupabaseSecret -Name "RESEND_API_KEY" `
     -Description "API key do Resend (resend.com -> API Keys)" `
     -Example "re_..."
 
+Set-SupabaseSecret -Name "RESEND_WEBHOOK_SECRET" `
+    -Description "Signing secret do webhook do Resend (Dashboard -> Webhooks -> /resend-webhook)" `
+    -Example "whsec_..."
+
 Set-SupabaseSecret -Name "SITE_URL" `
     -Description "URL publica do site (usada em redirects e links de email)" `
     -Example "https://despertarespiral.com"
+
+Set-SupabaseSecret -Name "META_CAPI_ACCESS_TOKEN" `
+    -Description "Token de acesso da API de Conversoes da Meta (Eventos Manager -> Configuracoes -> API de Conversoes)" `
+    -Example "EAA..."
+
+Set-SupabaseSecret -Name "META_PIXEL_ID" `
+    -Description "ID do Pixel da Meta (default 630846701068684, pode pular)" `
+    -Example "630846701068684"
+
+Set-SupabaseSecret -Name "META_TEST_EVENT_CODE" `
+    -Description "(Opcional) Codigo de teste do Pixel, usar SOMENTE em QA, NAO em producao" `
+    -Example "TEST00000"
+
+Set-SupabaseSecret -Name "DRIP_TICK_TOKEN" `
+    -Description "Segredo aleatorio para o cron caller do drip-tick. Gere com 'openssl rand -hex 32'" `
+    -Example "(64 chars hex)"
 
 Write-Host ""
 Write-Host "Secrets atualmente setados:" -ForegroundColor Cyan
