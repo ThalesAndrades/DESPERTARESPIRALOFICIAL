@@ -1,16 +1,37 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard
+Disallow: /perfil
+Disallow: /conta
+Disallow: /community
+Disallow: /products
+Disallow: /checkout/
+Disallow: /obrigado
+Disallow: /recebido
+Disallow: /reset-password
+Disallow: /forgot-password
+
 User-agent: Googlebot
 Allow: /
+Disallow: /admin/
 
-User-agent: Bingbot
+User-agent: GPTBot
 Allow: /
 
-User-agent: Twitterbot
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
+User-agent: Twitterbot
 Allow: /
 
 Sitemap: https://despertarespiral.com/sitemap.xml

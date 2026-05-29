@@ -1305,6 +1305,7 @@ export default function LandingPage() {
                   ["Método", "#section-2"],
                   ["Jornadas", "#section-3"],
                   ["Comunidade", "#section-6"],
+                  ["Sobre", "/sobre"],
                   ["Privacidade", "/privacidade"],
                   ["Termos", "/termos"],
                   ...(showAuthEntry ? [["Entrar", "/login"]] : []),
