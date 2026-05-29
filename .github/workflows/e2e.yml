@@ -51,11 +51,16 @@ jobs:
         if: steps.pw-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
 
+      - name: Build (para que o vite preview sirva o dist em CI)
+        run: npm run build
+        env:
+          VITE_SITE_URL: http://localhost:5173
+          NODE_ENV: production
+
       - name: Run E2E tests
-        # Playwright sobe o dev server da landing automaticamente
-        # (ver webServer em playwright.config.ts) — não precisa de
-        # build separado, deploy.yml já cobre.
-        run: npx playwright test --project=chromium --reporter=list
+        # Playwright sobe `npm run preview` (vite serve dist/) em CI —
+        # comportamento determinístico, sem HMR. Ver playwright.config.ts.
+        run: npx playwright test --project=chromium
         env:
           CI: "true"
 
