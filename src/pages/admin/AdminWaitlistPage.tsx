@@ -11,7 +11,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import {
   Search, Download, Loader2, RefreshCw, Inbox, Users as UsersIcon,
-  Sparkles, Calendar,
+  Sparkles, Calendar, UserCheck, NotebookPen,
 } from "lucide-react";
 import type { WaitlistRow } from "@/lib/local/types";
 
@@ -180,8 +180,14 @@ export default function AdminWaitlistPage() {
                     <tr key={r.id} style={{ borderTop: "1px solid var(--border-subtle)" }}>
                       <Td>{formatDate(r.created_at)}</Td>
                       <Td>
-                        <Link to={`/admin/lead/${r.id}`} style={{ color: "var(--text-primary)", textDecoration: "none", fontWeight: 500 }}>
+                        <Link to={`/admin/lead/${r.id}`} style={{ color: "var(--text-primary)", textDecoration: "none", fontWeight: 500, display: "inline-flex", alignItems: "center", gap: 6 }}>
                           {r.name ?? <span style={{ color: "var(--text-faint)" }}>—</span>}
+                          {r.contacted_at && (
+                            <UserCheck size={11} style={{ color: "var(--sage)" }} aria-label="Contactada" />
+                          )}
+                          {r.notes && (
+                            <NotebookPen size={11} style={{ color: "var(--gold)" }} aria-label="Com notas" />
+                          )}
                         </Link>
                       </Td>
                       <Td>

@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import {
   ArrowLeft, Mail, MessageCircle, Calendar, Tag, ExternalLink,
   CheckCircle2, Clock, AlertCircle, MousePointerClick, MailOpen,
-  XCircle, Loader2,
+  XCircle, Loader2, NotebookPen, UserCheck,
 } from "lucide-react";
 import type { WaitlistRow } from "@/lib/local/types";
 
@@ -59,6 +59,9 @@ export default function AdminLeadDetailPage() {
   const [drips, setDrips] = useState<DripJob[]>([]);
   const [events, setEvents] = useState<EmailEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [notes, setNotes] = useState("");
+  const [savingNotes, setSavingNotes] = useState(false);
+  const [markingContacted, setMarkingContacted] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -80,6 +83,7 @@ export default function AdminLeadDetailPage() {
         return;
       }
       setLead(leadRow as WaitlistRow);
+      setNotes((leadRow as WaitlistRow).notes ?? "");
 
       const [dripsRes, eventsRes] = await Promise.all([
         supabase.from("email_drip_jobs")
@@ -98,6 +102,41 @@ export default function AdminLeadDetailPage() {
       setLoading(false);
     })();
   }, [id]);
+
+  async function saveNotes() {
+    if (!lead) return;
+    const trimmed = notes.trim();
+    if ((lead.notes ?? "") === trimmed) return; // sem mudança
+    setSavingNotes(true);
+    const { error } = await supabase
+      .from("launch_waitlist")
+      .update({ notes: trimmed || null })
+      .eq("id", lead.id);
+    setSavingNotes(false);
+    if (error) {
+      toast.error("Não consegui salvar as notas.");
+      return;
+    }
+    setLead({ ...lead, notes: trimmed || null });
+    toast.success("Notas salvas.");
+  }
+
+  async function toggleContacted() {
+    if (!lead) return;
+    setMarkingContacted(true);
+    const next = lead.contacted_at ? null : new Date().toISOString();
+    const { error } = await supabase
+      .from("launch_waitlist")
+      .update({ contacted_at: next })
+      .eq("id", lead.id);
+    setMarkingContacted(false);
+    if (error) {
+      toast.error("Não consegui atualizar.");
+      return;
+    }
+    setLead({ ...lead, contacted_at: next });
+    toast.success(next ? "Marcada como contactada." : "Marca de contato removida.");
+  }
 
   const whatsappUrl = useMemo(() => {
     if (!lead?.phone) return null;
@@ -189,7 +228,53 @@ export default function AdminLeadDetailPage() {
               </p>
             </div>
           )}
+
+          {/* Marcador de atendida */}
+          <div style={{ marginTop: 14, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={toggleContacted}
+              disabled={markingContacted}
+              style={{
+                ...actionBtn,
+                background: lead.contacted_at ? "rgba(140,170,150,0.16)" : "var(--bg-surface)",
+                borderColor: lead.contacted_at ? "var(--sage)" : "var(--border-soft)",
+                color: lead.contacted_at ? "var(--sage)" : "var(--text-primary)",
+                cursor: markingContacted ? "default" : "pointer",
+                opacity: markingContacted ? 0.7 : 1,
+              }}
+            >
+              <UserCheck size={13} /> {lead.contacted_at ? `Contactada em ${formatDateTime(lead.contacted_at)}` : "Marcar como contactada"}
+            </button>
+          </div>
         </div>
+
+        {/* Notas internas */}
+        <Section title="Notas internas" icon={NotebookPen}>
+          <textarea
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            onBlur={saveNotes}
+            rows={4}
+            placeholder="Anote o que descobriu sobre ela, próximos passos, o que conversaram no WhatsApp…"
+            style={{
+              width: "100%",
+              padding: "12px 14px",
+              background: "var(--bg-surface)",
+              color: "var(--text-primary)",
+              border: "1px solid var(--border-soft)",
+              borderRadius: 10,
+              fontSize: 14, lineHeight: 1.6,
+              fontFamily: "Inter, system-ui, sans-serif",
+              outline: "none",
+              resize: "vertical",
+              minHeight: 100,
+            }}
+          />
+          <p style={{ marginTop: 6, fontSize: 11, color: "var(--text-faint)" }}>
+            {savingNotes ? "Salvando…" : "Salvo automaticamente quando você sai do campo."}
+          </p>
+        </Section>
 
         {/* Attribution */}
         <Section title="De onde veio" icon={Tag}>

@@ -159,6 +159,8 @@ export interface WaitlistRow {
   referrer: string | null;
   user_agent: string | null;
   landing_path: string | null;
+  notes: string | null;
+  contacted_at: string | null;
   created_at: string;
 }
 
