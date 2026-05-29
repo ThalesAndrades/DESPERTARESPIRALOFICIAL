@@ -324,18 +324,31 @@ function Quiz({
 }) {
   const q = CAPTION_QUESTIONS[step];
   return (
-    <div style={{ animation: "captionFade .42s ease both" }} key={q.id}>
-      <p className="font-label" style={{
-        fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase",
-        color: "var(--gold)", marginBottom: 14, textAlign: "center",
-      }}>
+    <div
+      role="group"
+      aria-labelledby={`q-${q.id}`}
+      style={{ animation: "captionFade .42s ease both" }}
+      key={q.id}
+    >
+      <p
+        className="font-label"
+        aria-label={`Pergunta ${step + 1} de ${total}`}
+        style={{
+          fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase",
+          color: "var(--gold)", marginBottom: 14, textAlign: "center",
+        }}
+      >
         Pergunta {step + 1} de {total}
       </p>
 
-      <h2 className="font-display text-balance" style={{
-        fontSize: "clamp(26px,4.5vw,42px)", fontWeight: 300, lineHeight: 1.18,
-        textAlign: "center", marginBottom: q.subtitle ? 10 : 28,
-      }}>
+      <h2
+        id={`q-${q.id}`}
+        className="font-display text-balance"
+        style={{
+          fontSize: "clamp(26px,4.5vw,42px)", fontWeight: 300, lineHeight: 1.18,
+          textAlign: "center", marginBottom: q.subtitle ? 10 : 28,
+        }}
+      >
         {q.prompt}
       </h2>
       {q.subtitle && (

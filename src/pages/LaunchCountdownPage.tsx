@@ -121,12 +121,18 @@ export default function LaunchCountdownPage() {
 
           {snap && !snap.finished && (
             <>
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, minmax(0,1fr))",
-                gap: "clamp(8px,2vw,18px)",
-                maxWidth: 640, margin: "0 auto clamp(32px,4vw,48px)",
-              }}>
+              <div
+                role="timer"
+                aria-live="polite"
+                aria-atomic="true"
+                aria-label={`Faltam ${snap.days} dias, ${snap.hours} horas, ${snap.minutes} minutos e ${snap.seconds} segundos`}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, minmax(0,1fr))",
+                  gap: "clamp(8px,2vw,18px)",
+                  maxWidth: 640, margin: "0 auto clamp(32px,4vw,48px)",
+                }}
+              >
                 <CountCell value={snap.days}    label="dias" />
                 <CountCell value={snap.hours}   label="horas" />
                 <CountCell value={snap.minutes} label="minutos" />
@@ -237,6 +243,7 @@ function CountCell({ value, label }: { value: number; label: string }) {
     >
       <p
         className="font-display"
+        aria-hidden="true"
         style={{
           fontSize: "clamp(34px,6vw,68px)", fontWeight: 300, lineHeight: 1,
           color: "var(--text-primary)",
@@ -247,6 +254,7 @@ function CountCell({ value, label }: { value: number; label: string }) {
       </p>
       <p
         className="font-label"
+        aria-hidden="true"
         style={{
           fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase",
           color: "var(--text-muted)", marginTop: 8,
@@ -254,6 +262,7 @@ function CountCell({ value, label }: { value: number; label: string }) {
       >
         {label}
       </p>
+      <span className="sr-only">{`${value} ${label}`}</span>
     </div>
   );
 }
