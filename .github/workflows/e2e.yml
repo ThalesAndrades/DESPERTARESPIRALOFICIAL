@@ -57,18 +57,12 @@ jobs:
           VITE_SITE_URL: http://localhost:5173
           NODE_ENV: production
 
-      - name: Verifica dist gerado
-        run: |
-          ls -la dist/
-          test -f dist/index.html && echo "✓ dist/index.html OK" || (echo "✗ dist/index.html missing" && exit 1)
-
       - name: Run E2E tests
         # Playwright sobe `npm run preview` (vite serve dist/) em CI —
         # comportamento determinístico, sem HMR. Ver playwright.config.ts.
         run: npx playwright test --project=chromium
         env:
           CI: "true"
-          DEBUG: "pw:webserver"
 
       - name: Upload Playwright report
         if: failure()
