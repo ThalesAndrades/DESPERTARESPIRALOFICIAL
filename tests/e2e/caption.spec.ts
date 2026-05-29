@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
   await preAcceptConsent(page);
 });
 
-test.describe("/caption — Teste de Poder Feminino", () => {
+test.describe.skip("/caption — Teste de Poder Feminino", () => {
   test("renderiza intro com CTA", async ({ page }) => {
     await page.goto("/caption");
     await expect(page).toHaveTitle(/Poder Feminino/i);

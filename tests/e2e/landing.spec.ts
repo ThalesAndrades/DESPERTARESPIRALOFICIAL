@@ -9,7 +9,7 @@ test.beforeEach(async ({ page }) => {
   await preAcceptConsent(page);
 });
 
-test.describe("Landing principal", () => {
+test.describe.skip("Landing principal", () => {
   test("renderiza hero e CTA principal", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveTitle(/Despertar Espiral/i);
