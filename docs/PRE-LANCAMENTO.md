@@ -182,15 +182,61 @@ Resend webhook persiste open/click/bounce    /admin/conversao agrega
 
 ---
 
-## 10. Comandos úteis
+## 10. Sequência de deploy de produção
+
+Faça **uma vez** quando for ativar tudo:
 
 ```bash
-# Aplicar migrations
+# 1. Conecte o CLI ao projeto Supabase
+npx supabase link --project-ref <PROJECT_REF>
+
+# 2. Aplique todas as migrations
 npx supabase db push
 
-# Deploy de uma função
-npx supabase functions deploy send-email
+# 3. Sete todos os secrets das Edge Functions (interativo, oculto)
+bash scripts/setup-secrets.sh         # Mac/Linux
+# ou no Windows:
+.\scripts\setup-secrets.ps1
 
+# 4. Deploy de todas as Edge Functions
+npx supabase functions deploy send-email
+npx supabase functions deploy stripe-checkout
+npx supabase functions deploy stripe-portal
+npx supabase functions deploy stripe-webhook  --no-verify-jwt
+npx supabase functions deploy meta-capi
+npx supabase functions deploy drip-tick
+npx supabase functions deploy resend-webhook  --no-verify-jwt
+
+# 5. Agende o cron do drip
+# Abra scripts/schedule-drip-cron.sql, substitua <PROJECT_REF> e <DRIP_TICK_TOKEN>,
+# e cole no SQL Editor do Supabase (Dashboard → SQL).
+
+# 6. Configure os 3 webhooks externos:
+#    - Stripe Dashboard → Webhooks: https://<ref>.functions.supabase.co/stripe-webhook
+#    - Resend Dashboard → Webhooks: https://<ref>.functions.supabase.co/resend-webhook
+#    - Meta Eventos Manager → API de Conversões: https://<ref>.functions.supabase.co/meta-capi
+
+# 7. Configure as envs do front no Vercel/Netlify/Hostinger (ver seção 1).
+
+# 8. Mergeie main → branch production é publicada automaticamente pelo workflow Deploy.
+```
+
+## 11. Smoke check pós-deploy
+
+Roda em 30 segundos e diz se tudo está respondendo:
+
+```bash
+SITE_URL=https://despertarespiral.com \
+SUPABASE_FUNCTIONS_URL=https://<PROJECT_REF>.functions.supabase.co \
+DRIP_TICK_TOKEN=<seu-token> \
+bash scripts/smoke-check.sh
+```
+
+Saída esperada: ✓ verde em todas as páginas públicas, OG cards e Edge Functions. Qualquer ✗ vermelho indica o endpoint específico que precisa de atenção.
+
+## 12. Comandos do dia-a-dia
+
+```bash
 # Ver secrets configurados (sem mostrar valores)
 npx supabase secrets list
 
@@ -206,11 +252,14 @@ npm run build && npm run preview
 
 # Push deploy (após qualquer merge em main, Hostinger puxa branch production)
 git push origin main
+
+# Logs de uma Edge Function em tempo real
+npx supabase functions logs drip-tick --follow
 ```
 
 ---
 
-## 11. Em caso de incidente
+## 13. Em caso de incidente
 
 | Sintoma | Onde olhar primeiro |
 |---|---|
