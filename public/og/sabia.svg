@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Você é A Sábia — A que conhece a si mesma · Despertar Espiral">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="40%" r="80%">
+      <stop offset="0%" stop-color="#6b8eaa"/>
+      <stop offset="60%" stop-color="#3d566e"/>
+      <stop offset="100%" stop-color="#26354a"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e0c98a"/>
+      <stop offset="100%" stop-color="#9a7c3e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <text x="600" y="180" text-anchor="middle" font-family="Georgia, 'Cormorant Garamond', serif" font-size="220" fill="rgba(255,255,255,0.95)">✧</text>
+  <text x="600" y="305" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="20" letter-spacing="14" fill="url(#gold)">VOCÊ É</text>
+  <text x="600" y="410" text-anchor="middle" font-family="Georgia, 'Cormorant Garamond', serif" font-style="italic" font-size="110" font-weight="300" fill="#ffffff">A Sábia</text>
+  <text x="600" y="465" text-anchor="middle" font-family="Georgia, 'Cormorant Garamond', serif" font-style="italic" font-size="32" fill="rgba(255,255,255,0.85)">A que conhece a si mesma</text>
+  <text x="600" y="585" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="16" letter-spacing="10" fill="url(#gold)">DESPERTAR ESPIRAL · TESTE DE PODER FEMININO</text>
+</svg>
