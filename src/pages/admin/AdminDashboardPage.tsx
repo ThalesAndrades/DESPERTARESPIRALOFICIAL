@@ -2,15 +2,16 @@
  * AdminDashboardPage — Painel geral da administração
  * Dados reais do Supabase: pedidos, alunos, produtos, receita
  */
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import AdminLayout from "@/components/layout/AdminLayout";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/lib/supabase";
+import { useCountdown } from "@/hooks/useCountdown";
 import {
   Users, ShoppingBag, BookOpen, TrendingUp,
   CheckCircle, Clock, AlertCircle, ArrowRight,
-  Package, MessageSquare,
+  Package, MessageSquare, Inbox, Calendar, BarChart3,
 } from "lucide-react";
 
 interface DashStats {
@@ -20,6 +21,8 @@ interface DashStats {
   totalRevenue: number;
   totalProducts: number;
   totalPosts: number;
+  waitlistTotal: number;
+  waitlistLast7: number;
 }
 
 interface RecentOrder {
@@ -49,18 +52,32 @@ const statCard = (label: string, value: string | number, icon: React.ElementType
 };
 
 export default function AdminDashboardPage() {
-  const [stats, setStats]   = useState<DashStats>({ totalMembers: 0, paidOrders: 0, pendingOrders: 0, totalRevenue: 0, totalProducts: 0, totalPosts: 0 });
+  const [stats, setStats]   = useState<DashStats>({
+    totalMembers: 0, paidOrders: 0, pendingOrders: 0, totalRevenue: 0,
+    totalProducts: 0, totalPosts: 0, waitlistTotal: 0, waitlistLast7: 0,
+  });
   const [orders, setOrders] = useState<RecentOrder[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const launchDate = useMemo(() => {
+    const raw = import.meta.env.VITE_LAUNCH_DATE as string | undefined;
+    if (!raw) return null;
+    const d = new Date(raw);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }, []);
+  const countdown = useCountdown(launchDate);
+
   useEffect(() => {
+    const sevenDaysAgo = new Date(Date.now() - 7 * 86400_000).toISOString();
     Promise.all([
       supabase.from("user_profiles").select("id", { count: "exact", head: true }).eq("role", "member"),
       supabase.from("orders").select("id,status,amount,email,created_at,product_id,products(title)").order("created_at", { ascending: false }).limit(10),
       supabase.from("orders").select("amount").eq("status", "paid"),
       supabase.from("products").select("id", { count: "exact", head: true }).eq("is_active", true),
       supabase.from("community_posts").select("id", { count: "exact", head: true }).eq("is_visible", true),
-    ]).then(([members, ordersRes, allPaidRes, products, posts]) => {
+      supabase.from("launch_waitlist").select("id", { count: "exact", head: true }),
+      supabase.from("launch_waitlist").select("id", { count: "exact", head: true }).gte("created_at", sevenDaysAgo),
+    ]).then(([members, ordersRes, allPaidRes, products, posts, waitlistAll, waitlist7]) => {
       const allOrders = (ordersRes.data ?? []) as RecentOrder[];
       const paid = allOrders.filter((o) => o.status === "paid");
       const pending = allOrders.filter((o) => o.status === "pending");
@@ -75,6 +92,8 @@ export default function AdminDashboardPage() {
         totalRevenue:  revenue,
         totalProducts: products.count ?? 0,
         totalPosts:    posts.count ?? 0,
+        waitlistTotal: waitlistAll.count ?? 0,
+        waitlistLast7: waitlist7.count ?? 0,
       });
       setOrders(allOrders.slice(0, 8));
       setLoading(false);
@@ -126,8 +145,40 @@ export default function AdminDashboardPage() {
         </p>
       </div>
 
+      {/* ── Countdown da abertura (só aparece se VITE_LAUNCH_DATE estiver setado) ── */}
+      {countdown && !countdown.finished && (
+        <div className="card-dark reveal" style={{
+          padding: "clamp(18px,3vw,24px)",
+          marginBottom: "clamp(16px,3vw,24px)",
+          background: "linear-gradient(135deg, rgba(198,168,112,0.12) 0%, rgba(172,128,142,0.08) 100%)",
+          border: "1px solid rgba(198,168,112,0.30)",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          flexWrap: "wrap", gap: 14,
+        }}>
+          <div>
+            <p className="font-label" style={{ fontSize: 9, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 6 }}>
+              Faltam para a abertura
+            </p>
+            <p className="font-display" style={{ fontSize: "clamp(22px,3vw,30px)", fontWeight: 300, color: "var(--text-primary)", lineHeight: 1 }}>
+              {countdown.days}d {String(countdown.hours).padStart(2, "0")}h {String(countdown.minutes).padStart(2, "0")}m
+            </p>
+          </div>
+          <Link to="/abrir" style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            padding: "10px 18px", border: "1px solid var(--gold)",
+            borderRadius: 999, color: "var(--gold)", textDecoration: "none",
+            fontFamily: "Montserrat,sans-serif", fontSize: 10,
+            letterSpacing: "0.18em", textTransform: "uppercase",
+          }}>
+            Ver página <ArrowRight size={12} />
+          </Link>
+        </div>
+      )}
+
       {/* ── Stats grid ── */}
       <div className="grid grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(10px,2vw,16px)", marginBottom: "clamp(24px,4vw,36px)" }}>
+        {statCard("Lista de espera",     stats.waitlistTotal, Inbox,        "var(--gold)")}
+        {statCard("Inscritas (7 dias)",  stats.waitlistLast7, Calendar,     "var(--gold)")}
         {statCard("Membros ativos",      stats.totalMembers,  Users,        "var(--lavender)")}
         {statCard("Pedidos pagos",       stats.paidOrders,    CheckCircle,  "var(--sage)")}
         {statCard("Aguardando pagamento",stats.pendingOrders, Clock,        "var(--gold)")}
@@ -137,12 +188,14 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* ── Quick links ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "10px", marginBottom: "clamp(24px,4vw,36px)" }}>
+      <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: "10px", marginBottom: "clamp(24px,4vw,36px)" }}>
         {[
-          { label: "Usuários",   href: "/admin/users",     icon: Users,       badge: stats.totalMembers },
-          { label: "Produtos",   href: "/admin/products",  icon: BookOpen,    badge: stats.totalProducts },
-          { label: "Pedidos",    href: "/admin/orders",    icon: ShoppingBag, badge: stats.pendingOrders > 0 ? `${stats.pendingOrders} pend.` : "Ver" },
-          { label: "Comunidade", href: "/admin/community", icon: MessageSquare, badge: "Moderar" },
+          { label: "Lista de espera", href: "/admin/waitlist",  icon: Inbox,       badge: `${stats.waitlistTotal} inscritas` },
+          { label: "Conversões",      href: "/admin/conversao", icon: BarChart3,   badge: "Análise" },
+          { label: "Usuários",        href: "/admin/users",     icon: Users,       badge: stats.totalMembers },
+          { label: "Produtos",        href: "/admin/products",  icon: BookOpen,    badge: stats.totalProducts },
+          { label: "Pedidos",         href: "/admin/orders",    icon: ShoppingBag, badge: stats.pendingOrders > 0 ? `${stats.pendingOrders} pend.` : "Ver" },
+          { label: "Comunidade",      href: "/admin/community", icon: MessageSquare, badge: "Moderar" },
         ].map(({ label, href, icon: Icon, badge }) => (
           <Link key={href} to={href} style={{ textDecoration: "none" }}>
             <div className="card-dark" style={{ padding: "16px", display: "flex", alignItems: "center", gap: "12px", cursor: "pointer", transition: "border-color 0.2s" }}>
