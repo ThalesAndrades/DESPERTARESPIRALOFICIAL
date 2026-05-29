@@ -52,6 +52,7 @@ const CaptionPage           = React.lazy(() => import("@/pages/CaptionPage"));
 const WaitlistThankYouPage  = React.lazy(() => import("@/pages/WaitlistThankYouPage"));
 const SharePage             = React.lazy(() => import("@/pages/SharePage"));
 const LaunchCountdownPage   = React.lazy(() => import("@/pages/LaunchCountdownPage"));
+const SobrePage             = React.lazy(() => import("@/pages/SobrePage"));
 
 /* ── Global loader — branded spiral spinner ── */
 function GlobalLoader() {
@@ -217,6 +218,7 @@ export default function App() {
         <Route path="/share"               element={<SharePage />} />
         <Route path="/share/:archetype"    element={<SharePage />} />
         <Route path="/abrir"               element={<LaunchCountdownPage />} />
+        <Route path="/sobre"               element={<SobrePage />} />
 
         {/* Mapa do Poder — ferramenta pública (acesso direto, sem QR) */}
         <Route path="/mapa-do-poder" element={<MapaDoPoder />} />
