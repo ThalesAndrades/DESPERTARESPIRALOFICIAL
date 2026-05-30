@@ -12,6 +12,7 @@ import {
 } from "@/components/layout/LazyDecorative";
 import mulherEspiralHero from "@/assets/mulher-espiral-hero-new.jpg";
 import sunyanPortrait     from "@/assets/sunyan-portrait.jpg";
+import mockupAtualizado   from "@/assets/mockup-atualizado.png";
 import mapaPoderHero      from "@/assets/mapa-poder-hero.jpg";
 import { useTheme } from "@/hooks/useTheme";
 import { ArrowRight, ArrowUpRight, Star, ChevronDown, Sparkles, Clock, ShieldCheck } from "lucide-react";
@@ -179,189 +180,6 @@ function Orb({ color, x, y, size, blur, opacity }: {
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   LaptopReveal — MacBook que abre conforme o usuário rola
-   Premium scroll-driven 3D animation. Mostra a ferramenta (Mapa do
-   Poder) na tela quando totalmente aberto.
-───────────────────────────────────────────────────────────────── */
-function LaptopReveal({ progress, isLight }: { progress: number; isLight: boolean }) {
-  // progress: 0 = fechado (tela rebatida sobre o teclado), 1 = totalmente aberto
-  const eased = progress < 1 ? 1 - Math.pow(1 - progress, 3) : 1;
-  const rotation = -100 + 100 * eased;
-  const screenOpacity = Math.max(0, (progress - 0.35) / 0.5);
-
-  const bezel  = isLight ? "#1a1a22" : "#0a0a14";
-  const frame  = isLight ? "#c5c8d0" : "#33384a";
-  const base   = isLight
-    ? "linear-gradient(180deg, #e5e8ec 0%, #b8bcc6 60%, #888d9a 100%)"
-    : "linear-gradient(180deg, #3a3f52 0%, #252938 60%, #14171f 100%)";
-
-  return (
-    <div style={{
-      perspective: "1400px",
-      width: "100%", maxWidth: "560px", margin: "0 auto",
-      filter: "drop-shadow(0 36px 64px rgba(0,0,0,0.34)) drop-shadow(0 6px 18px rgba(198,168,112,0.08))",
-    }}>
-      {/* Tela — gira em torno da base (bottom edge) */}
-      <div style={{
-        transformOrigin: "50% 100%",
-        transform: `rotateX(${rotation}deg)`,
-        transition: "transform 60ms linear",
-        position: "relative",
-        aspectRatio: "16 / 10",
-        background: bezel,
-        borderRadius: "10px 10px 4px 4px",
-        padding: "12px 12px 18px",
-        boxShadow: `inset 0 1px 0 ${isLight ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)"}, 0 2px 0 ${frame}`,
-        willChange: "transform",
-      }}>
-        {/* Camera notch */}
-        <div aria-hidden="true" style={{
-          position: "absolute", top: "4px", left: "50%", transform: "translateX(-50%)",
-          width: "44px", height: "5px",
-          background: bezel,
-          borderRadius: "0 0 5px 5px",
-        }}>
-          <div style={{
-            position: "absolute", top: "1px", left: "50%", transform: "translateX(-50%)",
-            width: "3px", height: "3px", borderRadius: "50%",
-            background: "#101015",
-          }} />
-        </div>
-
-        {/* Screen content — Mapa do Poder preview */}
-        <div style={{
-          width: "100%", height: "100%",
-          background: "linear-gradient(135deg, #0a0d1e 0%, #1a0f24 50%, #0a0d1e 100%)",
-          borderRadius: "4px",
-          overflow: "hidden",
-          position: "relative",
-          opacity: screenOpacity,
-          transition: "opacity 320ms ease",
-        }}>
-          {/* Glow */}
-          <div aria-hidden="true" style={{
-            position: "absolute", inset: 0,
-            background: "radial-gradient(ellipse 70% 60% at 50% 40%, rgba(198,168,112,0.18) 0%, transparent 65%)",
-          }} />
-
-          {/* App chrome — top bar */}
-          <div style={{
-            position: "absolute", top: 0, left: 0, right: 0, height: "8%",
-            display: "flex", alignItems: "center", gap: "5px",
-            padding: "0 12px",
-            background: "rgba(7,9,21,0.4)",
-            borderBottom: "1px solid rgba(198,168,112,0.10)",
-          }}>
-            <div style={{ display: "flex", gap: "3px" }}>
-              {["#ff5f57","#febc2e","#28c840"].map((c) => (
-                <div key={c} style={{ width: "5px", height: "5px", borderRadius: "50%", background: c }} />
-              ))}
-            </div>
-            <div style={{ flex: 1, textAlign: "center", fontFamily: "Manrope, system-ui, sans-serif", fontSize: "6px", letterSpacing: "0.16em", color: "rgba(198,168,112,0.65)" }}>
-              despertarespiral.com/mapa-do-poder
-            </div>
-          </div>
-
-          {/* Conteúdo principal */}
-          <div style={{
-            position: "absolute", top: "8%", left: 0, right: 0, bottom: 0,
-            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-            padding: "0 8%", textAlign: "center",
-            gap: "clamp(4px, 1vw, 8px)",
-          }}>
-            {/* Selo */}
-            <div style={{
-              padding: "3px 9px", borderRadius: "100px",
-              background: "rgba(198,168,112,0.15)",
-              border: "1px solid rgba(198,168,112,0.32)",
-              fontFamily: "Manrope, system-ui, sans-serif",
-              fontSize: "6.5px", letterSpacing: "0.22em",
-              textTransform: "uppercase", color: "#c6a870",
-              fontWeight: 600,
-            }}>
-              Etapa 3 de 8
-            </div>
-
-            {/* Heading */}
-            <h3 style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "clamp(13px,2.4vw,21px)",
-              fontStyle: "italic", fontWeight: 300,
-              color: "#f5f0e8", lineHeight: 1.06,
-              margin: 0, letterSpacing: "-0.018em",
-            }}>
-              Qual é a sua{" "}
-              <span style={{
-                background: "linear-gradient(135deg, #c6a870 0%, #dac394 100%)",
-                WebkitBackgroundClip: "text", backgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
-                trava interna
-              </span>{" "}
-              hoje?
-            </h3>
-
-            <p style={{
-              fontFamily: "Lora, Georgia, serif",
-              fontSize: "clamp(7px,1.1vw,10px)", lineHeight: 1.5,
-              color: "rgba(245,240,232,0.65)",
-              maxWidth: "85%", margin: 0,
-            }}>
-              Escolha o que mais ressoa neste momento — sem julgamento.
-            </p>
-
-            {/* CTA */}
-            <div style={{
-              marginTop: "clamp(2px,0.6vw,5px)",
-              display: "inline-flex", alignItems: "center", gap: "5px",
-              padding: "5px 14px", borderRadius: "100px",
-              background: "linear-gradient(180deg, #dac394 0%, #c6a870 100%)",
-              color: "#0a0c1a",
-              fontFamily: "Manrope, system-ui, sans-serif",
-              fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              boxShadow: "0 4px 12px rgba(198,168,112,0.32), inset 0 1px 0 rgba(255,255,255,0.30)",
-            }}>
-              Continuar
-              <ArrowRight size={6} strokeWidth={2.4} />
-            </div>
-
-            {/* Progress dots */}
-            <div style={{ marginTop: "6px", display: "flex", gap: "3px" }}>
-              {[...Array(8)].map((_, i) => (
-                <div key={i} style={{
-                  width: i < 3 ? "9px" : "4px", height: "2px",
-                  borderRadius: "100px",
-                  background: i < 3 ? "#c6a870" : "rgba(198,168,112,0.22)",
-                  transition: "width 0.4s",
-                }} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Base do laptop (teclado) */}
-      <div style={{
-        position: "relative",
-        height: "clamp(10px, 1.6vw, 14px)",
-        background: base,
-        borderRadius: "0 0 14px 14px",
-        marginTop: "-2px",
-        boxShadow: `inset 0 1px 0 ${isLight ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.10)"}, 0 8px 18px rgba(0,0,0,0.16)`,
-      }}>
-        {/* Slot/dobra */}
-        <div aria-hidden="true" style={{
-          position: "absolute", top: "1px", left: "30%", right: "30%", height: "2px",
-          background: isLight ? "rgba(0,0,0,0.10)" : "rgba(0,0,0,0.42)",
-          borderRadius: "100px",
-        }} />
-      </div>
-    </div>
-  );
-}
-
 /* ══════════════════════════════════════════════════════════════════
    MAIN COMPONENT
 ══════════════════════════════════════════════════════════════════ */
@@ -379,28 +197,6 @@ export default function LandingPage() {
   const openWaitlist = useCallback((source: string) => {
     setWaitlistSource(source);
     setWaitlistOpen(true);
-  }, []);
-
-  /* Laptop scroll-driven reveal — abre conforme o usuário rola o hero */
-  const [laptopProgress, setLaptopProgress] = useState(0);
-  useEffect(() => {
-    let raf = 0;
-    const compute = () => {
-      raf = 0;
-      const y = window.scrollY;
-      const trigger = window.innerHeight * 0.55; // tela abre nos primeiros 55% da viewport
-      const p = Math.min(1, Math.max(0, y / trigger));
-      setLaptopProgress(p);
-    };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(compute); };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    // Pequeno delay no mount pra animar de fechado → aberto na entrada
-    const t = setTimeout(compute, 280);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-      clearTimeout(t);
-    };
   }, []);
 
   useScrollProgress(progressRef);
@@ -433,6 +229,7 @@ export default function LandingPage() {
         <meta name="description" content="Um caminho gentil e profundo de autoconhecimento feminino, com aulas práticas, comunidade viva e o seu próprio ritmo. Por Sunyan Nunes." />
         <meta property="og:title" content="Despertar Espiral — Um caminho feminino de reconexão" />
         <meta property="og:description" content="Um caminho gentil e profundo de autoconhecimento feminino — aulas práticas, comunidade viva e o seu próprio ritmo." />
+        <link rel="preload" as="image" href={mockupAtualizado} fetchpriority="high" />
       </Helmet>
 
       <main id="main" style={{
@@ -474,6 +271,16 @@ export default function LandingPage() {
           @keyframes heroFloatB {
             0%, 100% { transform: translateY(0px) rotate(1deg); }
             50%       { transform: translateY(10px) rotate(-1deg); }
+          }
+
+          /* Mockup orgânico — levitação suave + glow respirando */
+          @keyframes mockupFloat {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-10px); }
+          }
+          @keyframes mockupGlow {
+            0%, 100% { opacity: 0.62; transform: scale(1); }
+            50%       { opacity: 1;    transform: scale(1.04); }
           }
 
           /* Scroll indicator bounce */
@@ -748,15 +555,31 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                {/* Mockup interativo — MacBook que abre conforme o usuário rola */}
+                {/* Mockup — entrada orgânica: levitação suave + glow respirando */}
                 <div style={{ position: "relative", width: "100%" }}>
+                  {/* Glow que respira atrás do mockup */}
                   <div aria-hidden="true" style={{
-                    position: "absolute", inset: "-16px",
-                    borderRadius: "clamp(16px,3vw,28px)",
-                    background: `radial-gradient(ellipse 80% 60% at 50% 50%, ${isLight ? "rgba(122,94,30,0.08)" : "rgba(198,168,112,0.10)"} 0%, transparent 70%)`,
+                    position: "absolute", inset: "-24px",
+                    borderRadius: "clamp(20px,3vw,32px)",
+                    background: `radial-gradient(ellipse 75% 55% at 50% 55%, ${isLight ? "rgba(122,94,30,0.10)" : "rgba(198,168,112,0.13)"} 0%, transparent 68%)`,
                     pointerEvents: "none", zIndex: 0,
+                    animation: "mockupGlow 7s ease-in-out infinite",
                   }} />
-                  <LaptopReveal progress={laptopProgress} isLight={isLight} />
+                  <img
+                    src={mockupAtualizado}
+                    alt="Despertar Espiral aberto no MacBook"
+                    width={768} height={454}
+                    loading="eager"
+                    decoding="async"
+                    // @ts-expect-error fetchPriority is valid HTML5 but not yet in React types
+                    fetchPriority="high"
+                    style={{
+                      width: "100%", height: "auto", display: "block", objectFit: "contain",
+                      position: "relative", zIndex: 1,
+                      filter: "drop-shadow(0 32px 60px rgba(0,0,0,0.36)) drop-shadow(0 6px 16px rgba(198,168,112,0.10))",
+                      animation: "mockupFloat 7s ease-in-out infinite",
+                    }}
+                  />
                 </div>
 
                 {/* Metrics strip */}
