@@ -285,7 +285,7 @@ export default function ProductsPage() {
                     <div style={{ padding: "14px 16px 16px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
                         <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>{p.completed_lessons} de {p.total_lessons} aulas</span>
-                        <span style={{ fontSize: "12px", fontFamily: "Montserrat", fontWeight: 600, color: p.progress_pct === 100 ? "var(--sage)" : "var(--gold)" }}>{p.progress_pct}%</span>
+                        <span style={{ fontSize: "12px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600, color: p.progress_pct === 100 ? "var(--sage)" : "var(--gold)" }}>{p.progress_pct}%</span>
                       </div>
                       <div className="progress-bar" style={{ marginBottom: "14px" }}>
                         <div className={`progress-bar-fill${p.progress_pct === 100 ? " sage" : ""}`} style={{ width: `${p.progress_pct}%` }} />
@@ -325,7 +325,7 @@ export default function ProductsPage() {
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontSize: "14px", color: "var(--text-primary)", fontWeight: 500, marginBottom: "3px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{p.title}</p>
-                    <p style={{ fontSize: "12px", color: "var(--text-faint)", fontFamily: "Montserrat" }}>
+                    <p style={{ fontSize: "12px", color: "var(--text-faint)", fontFamily: "Manrope, system-ui, sans-serif" }}>
                       {p.total_lessons} aulas
                       {p.price > 0 ? ` · R$ ${p.price.toFixed(2).replace(".", ",")}` : ""}
                     </p>

@@ -281,7 +281,7 @@ const btnStyle: React.CSSProperties = {
   display: "inline-flex", alignItems: "center", gap: 6,
   padding: "10px 16px", fontSize: 10, letterSpacing: "0.16em",
   textTransform: "uppercase", borderRadius: 10, cursor: "pointer",
-  fontFamily: "Montserrat, sans-serif", fontWeight: 500,
+  fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500,
 };
 
 function Th({ children }: { children: React.ReactNode }) {
@@ -299,7 +299,7 @@ function Badge({ children, tone }: { children: React.ReactNode; tone?: "muted" }
       padding: "3px 10px", borderRadius: 999,
       background: isMuted ? "rgba(140,140,160,0.10)" : "rgba(198,168,112,0.12)",
       color: isMuted ? "var(--text-muted)" : "var(--gold)",
-      fontSize: 10.5, letterSpacing: "0.08em", fontFamily: "Montserrat,sans-serif",
+      fontSize: 10.5, letterSpacing: "0.08em", fontFamily: "Manrope, system-ui, sans-serif",
       whiteSpace: "nowrap",
     }}>{children}</span>
   );

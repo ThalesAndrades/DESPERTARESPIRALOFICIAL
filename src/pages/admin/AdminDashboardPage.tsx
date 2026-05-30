@@ -167,7 +167,7 @@ export default function AdminDashboardPage() {
             display: "inline-flex", alignItems: "center", gap: 6,
             padding: "10px 18px", border: "1px solid var(--gold)",
             borderRadius: 999, color: "var(--gold)", textDecoration: "none",
-            fontFamily: "Montserrat,sans-serif", fontSize: 10,
+            fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10,
             letterSpacing: "0.18em", textTransform: "uppercase",
           }}>
             Ver página <ArrowRight size={12} />
@@ -238,7 +238,7 @@ export default function AdminDashboardPage() {
                   <thead>
                     <tr style={{ borderBottom: "1px solid var(--border-subtle)" }}>
                       {["E-mail", "Produto", "Valor", "Status", "Data"].map((h) => (
-                        <th key={h} style={{ textAlign: "left", padding: "14px 18px", fontSize: "8px", fontFamily: "Montserrat,sans-serif", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-faint)", fontWeight: 500 }}>{h}</th>
+                        <th key={h} style={{ textAlign: "left", padding: "14px 18px", fontSize: "8px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-faint)", fontWeight: 500 }}>{h}</th>
                       ))}
                     </tr>
                   </thead>

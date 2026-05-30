@@ -13,7 +13,7 @@ import { Eye, EyeOff, ArrowRight, Mail, KeyRound, ChevronLeft, RefreshCw, Loader
 
 const LABEL: React.CSSProperties = {
   display: "block",
-  fontFamily: "Montserrat, sans-serif",
+  fontFamily: "Manrope, system-ui, sans-serif",
   fontSize: "9px",
   letterSpacing: "0.20em",
   textTransform: "uppercase",
@@ -227,7 +227,7 @@ export default function RegisterPage() {
             {step === "otp" && (
               <>
                 <button onClick={() => setStep("form")}
-                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "transparent", border: "none", cursor: "pointer", color: "var(--text-muted)", fontSize: "13px", fontFamily: "DM Sans, sans-serif", padding: "0 0 24px", minHeight: "44px" }}>
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "transparent", border: "none", cursor: "pointer", color: "var(--text-muted)", fontSize: "13px", fontFamily: "Lora, Georgia, serif", padding: "0 0 24px", minHeight: "44px" }}>
                   <ChevronLeft size={16} strokeWidth={1.5} /> Voltar
                 </button>
 
@@ -262,7 +262,7 @@ export default function RegisterPage() {
                       placeholder="• • • •" className="input-dark"
                       autoComplete="one-time-code"
                       disabled={loading}
-                      style={{ textAlign: "center", fontSize: "clamp(22px,5vw,30px)", letterSpacing: "0.48em", fontFamily: "Montserrat, sans-serif", fontWeight: 500, minHeight: "64px", transition: "opacity 0.2s", opacity: loading ? 0.6 : 1 }}
+                      style={{ textAlign: "center", fontSize: "clamp(22px,5vw,30px)", letterSpacing: "0.48em", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500, minHeight: "64px", transition: "opacity 0.2s", opacity: loading ? 0.6 : 1 }}
                       autoFocus
                     />
                     {loading && (
@@ -294,7 +294,7 @@ export default function RegisterPage() {
                       cursor: resendCooldown > 0 || loading ? "default" : "pointer",
                       fontSize: "14px",
                       color: resendCooldown > 0 || loading ? "var(--text-faint)" : "var(--gold)",
-                      padding: "10px", minHeight: "44px", fontFamily: "DM Sans, sans-serif",
+                      padding: "10px", minHeight: "44px", fontFamily: "Lora, Georgia, serif",
                       transition: "color 0.2s",
                     }}>
                     <RefreshCw size={13} style={{ opacity: resendCooldown > 0 ? 0.45 : 0.85 }} />

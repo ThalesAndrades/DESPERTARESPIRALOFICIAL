@@ -222,14 +222,14 @@ export default function QuizPlayer({ moduleId, moduleTitle, onClose, onPassed }:
           </p>
         )}
         <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap", marginBottom: "22px" }}>
-          <span style={{ fontSize: "12px", color: "var(--text-faint)", fontFamily: "Montserrat", letterSpacing: "0.08em" }}>
+          <span style={{ fontSize: "12px", color: "var(--text-faint)", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.08em" }}>
             {quiz.questions.length} pergunta{quiz.questions.length !== 1 ? "s" : ""}
           </span>
-          <span style={{ fontSize: "12px", color: "var(--text-faint)", fontFamily: "Montserrat", letterSpacing: "0.08em" }}>
+          <span style={{ fontSize: "12px", color: "var(--text-faint)", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.08em" }}>
             Mínimo: {quiz.passing_score}%
           </span>
           {bestAttempt && (
-            <span style={{ fontSize: "12px", fontFamily: "Montserrat", letterSpacing: "0.08em", color: bestAttempt.passed ? "var(--sage)" : "var(--rose)" }}>
+            <span style={{ fontSize: "12px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.08em", color: bestAttempt.passed ? "var(--sage)" : "var(--rose)" }}>
               Melhor nota: {bestAttempt.score}%
             </span>
           )}
@@ -269,13 +269,13 @@ export default function QuizPlayer({ moduleId, moduleTitle, onClose, onPassed }:
       <div style={containerStyle} data-testid="quiz-player-playing">
         {/* Header */}
         <div style={{ padding: "16px 0 12px", display: "flex", alignItems: "center", gap: "12px", marginBottom: "4px" }}>
-          <span style={{ fontSize: "9px", fontFamily: "Montserrat", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--gold)" }}>
+          <span style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--gold)" }}>
             {current + 1} / {totalQ}
           </span>
           <div className="progress-bar" style={{ flex: 1, height: "3px" }}>
             <div className="progress-bar-fill" style={{ width: `${progressPct}%` }} />
           </div>
-          <span style={{ fontSize: "9px", fontFamily: "Montserrat", letterSpacing: "0.08em", color: "var(--text-faint)" }}>
+          <span style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.08em", color: "var(--text-faint)" }}>
             {Object.keys(answers).length}/{totalQ}
           </span>
         </div>
@@ -283,7 +283,7 @@ export default function QuizPlayer({ moduleId, moduleTitle, onClose, onPassed }:
         {/* Question card */}
         <div className="card-dark" style={{ padding: "clamp(18px,3vw,28px)", marginBottom: "12px" }}>
           <div style={{ display: "flex", gap: "10px", marginBottom: "18px" }}>
-            <span style={{ padding: "2px 10px", borderRadius: "100px", background: "rgba(164,158,208,0.10)", border: "1px solid rgba(164,158,208,0.2)", fontSize: "8px", fontFamily: "Montserrat", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--lavender)", flexShrink: 0 }}>
+            <span style={{ padding: "2px 10px", borderRadius: "100px", background: "rgba(164,158,208,0.10)", border: "1px solid rgba(164,158,208,0.2)", fontSize: "8px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--lavender)", flexShrink: 0 }}>
               {q.type === "multiple_choice" ? "Múltipla escolha" : "Verdadeiro / Falso"}
             </span>
           </div>
@@ -425,7 +425,7 @@ export default function QuizPlayer({ moduleId, moduleTitle, onClose, onPassed }:
                       ? <CheckCircle size={12} style={{ color: "var(--sage)" }} strokeWidth={2} />
                       : <XCircle    size={12} style={{ color: "var(--rose)" }} strokeWidth={2} />
                     }
-                    <span style={{ fontSize: "9px", fontFamily: "Montserrat", letterSpacing: "0.08em", textTransform: "uppercase", color: correct ? "var(--sage)" : "var(--rose)" }}>
+                    <span style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.08em", textTransform: "uppercase", color: correct ? "var(--sage)" : "var(--rose)" }}>
                       {idx + 1}. {correct ? "Correta" : "Incorreta"}
                     </span>
                   </div>

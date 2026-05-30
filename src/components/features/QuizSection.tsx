@@ -239,14 +239,14 @@ export default function QuizSection() {
             background: "rgba(198,168,112,0.10)", border: "1px solid rgba(198,168,112,0.25)",
             borderRadius: "100px", padding: "7px 18px",
           }}>
-            <span style={{ fontSize: "9px", letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--gold)", fontFamily: "Montserrat,sans-serif", fontWeight: 500 }}>
+            <span style={{ fontSize: "9px", letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--gold)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500 }}>
               Diagnóstico Espiral
             </span>
           </div>
           <h2 className="font-display text-balance" style={{ fontSize: "clamp(32px,6vw,72px)", fontWeight: 300, fontStyle: "italic", lineHeight: 1.04, color: "#f5f0e8", marginBottom: "14px" }}>
             Descubra por onde<br />começar sua jornada.
           </h2>
-          <p style={{ fontSize: "clamp(14px,1.7vw,16px)", color: "rgba(245,240,232,0.55)", lineHeight: 1.85, maxWidth: "480px", margin: "0 auto", fontFamily: "Montserrat,sans-serif" }}>
+          <p style={{ fontSize: "clamp(14px,1.7vw,16px)", color: "rgba(245,240,232,0.55)", lineHeight: 1.85, maxWidth: "480px", margin: "0 auto", fontFamily: "Manrope, system-ui, sans-serif" }}>
             4 perguntas, sem certas ou erradas. Só pra você ouvir o que o seu ser está pedindo agora.
           </p>
         </div>
@@ -276,13 +276,13 @@ export default function QuizSection() {
           {currentQ && (
             <div>
               <div style={{ textAlign: "center", marginBottom: "clamp(20px,3.5vw,36px)" }}>
-                <p style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(198,168,112,0.45)", fontFamily: "Montserrat,sans-serif", marginBottom: "12px" }}>
+                <p style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(198,168,112,0.45)", fontFamily: "Manrope, system-ui, sans-serif", marginBottom: "12px" }}>
                   Pergunta {step + 1} de {totalQuestions}
                 </p>
                 <h3 className="font-display" style={{ fontSize: "clamp(22px,4vw,42px)", fontWeight: 300, color: "#f5f0e8", lineHeight: 1.12, marginBottom: "8px" }}>
                   {currentQ.question}
                 </h3>
-                <p style={{ fontSize: "14px", color: "rgba(245,240,232,0.38)", fontFamily: "Montserrat,sans-serif" }}>
+                <p style={{ fontSize: "14px", color: "rgba(245,240,232,0.38)", fontFamily: "Manrope, system-ui, sans-serif" }}>
                   {currentQ.sub}
                 </p>
               </div>
@@ -327,7 +327,7 @@ export default function QuizSection() {
                     </span>
                     <span style={{
                       fontSize: "clamp(14px,1.7vw,16px)", color: "rgba(245,240,232,0.78)",
-                      lineHeight: 1.4, fontFamily: "Montserrat,sans-serif", fontWeight: 400,
+                      lineHeight: 1.4, fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 400,
                     }}>
                       {opt.label}
                     </span>
@@ -356,7 +356,7 @@ export default function QuizSection() {
                   animation: "quizPulse 1.8s ease-out infinite",
                 }} />
                 <span style={{
-                  fontFamily: "Montserrat,sans-serif", fontSize: "9px",
+                  fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px",
                   letterSpacing: "0.18em", textTransform: "uppercase",
                   color: "var(--gold)",
                 }}>
@@ -389,7 +389,7 @@ export default function QuizSection() {
                     </span>
                     <p style={{
                       fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase",
-                      color: result.accentColor, fontFamily: "Montserrat,sans-serif",
+                      color: result.accentColor, fontFamily: "Manrope, system-ui, sans-serif",
                       marginBottom: "14px", position: "relative",
                     }}>
                       {result.symbol} Seu diagnóstico
@@ -402,7 +402,7 @@ export default function QuizSection() {
                     </h3>
                     <p style={{
                       fontSize: "clamp(13px,1.5vw,15px)", color: "rgba(245,240,232,0.58)",
-                      lineHeight: 1.88, fontFamily: "Montserrat,sans-serif", position: "relative",
+                      lineHeight: 1.88, fontFamily: "Manrope, system-ui, sans-serif", position: "relative",
                     }}>
                       {result.body}
                     </p>
@@ -432,7 +432,7 @@ export default function QuizSection() {
                       }}>
                         "{result.quote}"
                       </p>
-                      <p style={{ fontSize: "9px", color: result.accentColor, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "Montserrat,sans-serif" }}>
+                      <p style={{ fontSize: "9px", color: result.accentColor, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "Manrope, system-ui, sans-serif" }}>
                         Sunyan Nunes · {result.quoteContext}
                       </p>
                     </div>
@@ -447,7 +447,7 @@ export default function QuizSection() {
                     >
                       <p style={{
                         fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase",
-                        color: "rgba(198,168,112,0.55)", fontFamily: "Montserrat,sans-serif", marginBottom: "4px",
+                        color: "rgba(198,168,112,0.55)", fontFamily: "Manrope, system-ui, sans-serif", marginBottom: "4px",
                       }}>
                         Quero ser avisada quando abrir
                       </p>
@@ -466,7 +466,7 @@ export default function QuizSection() {
                             background: "rgba(255,255,255,0.04)",
                             color: "#f5f0e8",
                             fontSize: "15px",
-                            fontFamily: "Montserrat,sans-serif",
+                            fontFamily: "Manrope, system-ui, sans-serif",
                             outline: "none",
                             minHeight: "52px",
                           }}
@@ -484,12 +484,12 @@ export default function QuizSection() {
                       </div>
 
                       {submitError && (
-                        <p role="alert" style={{ fontSize: "12px", color: "#ff8a8a", fontFamily: "Montserrat,sans-serif" }}>
+                        <p role="alert" style={{ fontSize: "12px", color: "#ff8a8a", fontFamily: "Manrope, system-ui, sans-serif" }}>
                           {submitError}
                         </p>
                       )}
 
-                      <p style={{ fontSize: "11px", color: "rgba(245,240,232,0.30)", fontFamily: "Montserrat,sans-serif", lineHeight: 1.55 }}>
+                      <p style={{ fontSize: "11px", color: "rgba(245,240,232,0.30)", fontFamily: "Manrope, system-ui, sans-serif", lineHeight: 1.55 }}>
                         Eu te aviso antes de qualquer pessoa, sem ruído.
                       </p>
                     </form>
@@ -500,7 +500,7 @@ export default function QuizSection() {
                       display: "flex", alignItems: "center", gap: "12px",
                     }}>
                       <span style={{ color: "var(--sage)", fontSize: "20px" }}>✦</span>
-                      <p style={{ fontSize: "14px", color: "var(--sage)", fontFamily: "Montserrat,sans-serif", lineHeight: 1.55 }}>
+                      <p style={{ fontSize: "14px", color: "var(--sage)", fontFamily: "Manrope, system-ui, sans-serif", lineHeight: 1.55 }}>
                         Recebi com carinho. Te aviso pelo e-mail assim que abrir.
                       </p>
                     </div>
@@ -511,7 +511,7 @@ export default function QuizSection() {
                     style={{
                       marginTop: "18px", background: "transparent", border: "none", cursor: "pointer",
                       fontSize: "9px", letterSpacing: "0.14em", textTransform: "uppercase",
-                      color: "rgba(245,240,232,0.25)", fontFamily: "Montserrat,sans-serif",
+                      color: "rgba(245,240,232,0.25)", fontFamily: "Manrope, system-ui, sans-serif",
                       minHeight: "36px", padding: 0, transition: "color 0.2s",
                     }}
                     onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.55)")}
@@ -540,7 +540,7 @@ export default function QuizSection() {
                       <p className="font-display" style={{ fontSize: "18px", color: result.accentColor, fontStyle: "italic", fontWeight: 300, textAlign: "center", lineHeight: 1.2 }}>
                         Sunyan Nunes
                       </p>
-                      <p style={{ fontSize: "8px", letterSpacing: "0.18em", textTransform: "uppercase", color: `${result.accentColor}70`, textAlign: "center", marginTop: "4px", fontFamily: "Montserrat,sans-serif" }}>
+                      <p style={{ fontSize: "8px", letterSpacing: "0.18em", textTransform: "uppercase", color: `${result.accentColor}70`, textAlign: "center", marginTop: "4px", fontFamily: "Manrope, system-ui, sans-serif" }}>
                         Criadora do Método Espiral
                       </p>
                     </div>
@@ -571,7 +571,7 @@ export default function QuizSection() {
                     <p style={{
                       fontSize: "8px", color: result.accentColor,
                       letterSpacing: "0.14em", textTransform: "uppercase",
-                      fontFamily: "Montserrat,sans-serif", lineHeight: 1.5,
+                      fontFamily: "Manrope, system-ui, sans-serif", lineHeight: 1.5,
                     }}>
                       {result.quoteContext}
                     </p>

@@ -13,7 +13,7 @@ import { User, Shield, KeyRound, Check, Loader2, Eye, EyeOff, LogOut } from "luc
 
 const LABEL: React.CSSProperties = {
   display: "block",
-  fontFamily: "Montserrat, sans-serif",
+  fontFamily: "Manrope, system-ui, sans-serif",
   fontSize: "9px",
   letterSpacing: "0.20em",
   textTransform: "uppercase",
@@ -134,7 +134,7 @@ export default function ProfilePage() {
             width: "56px", height: "56px", borderRadius: "50%", flexShrink: 0,
             background: "rgba(198,168,112,0.14)", color: "var(--gold)",
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "22px", fontFamily: "Montserrat", fontWeight: 500,
+            fontSize: "22px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500,
             border: "2px solid rgba(198,168,112,0.22)",
           }}>
             {user.name?.charAt(0).toUpperCase() ?? "U"}
@@ -147,7 +147,7 @@ export default function ProfilePage() {
               {user.email}
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "4px" }}>
-              <span style={{ fontSize: "11px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--lavender)" }}>
+              <span style={{ fontSize: "11px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--lavender)" }}>
                 {user.anonymous_name}
               </span>
               <span style={{ fontSize: "10px", color: "var(--text-faint)" }}>na comunidade</span>
@@ -156,7 +156,7 @@ export default function ProfilePage() {
           {user.role === "admin" && (
             <div style={{ display: "flex", alignItems: "center", gap: "4px", padding: "4px 10px", borderRadius: "100px", background: "rgba(198,168,112,0.08)", border: "1px solid rgba(198,168,112,0.20)", flexShrink: 0 }}>
               <Shield size={10} style={{ color: "var(--gold)" }} />
-              <span style={{ fontSize: "9px", fontFamily: "Montserrat", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)" }}>Admin</span>
+              <span style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)" }}>Admin</span>
             </div>
           )}
         </div>

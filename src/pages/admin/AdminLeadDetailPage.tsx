@@ -349,7 +349,7 @@ export default function AdminLeadDetailPage() {
                         padding: "6px 12px", fontSize: 10, letterSpacing: "0.16em",
                         textTransform: "uppercase", borderRadius: 999, cursor: "pointer",
                         background: "transparent", border: "1px solid var(--gold)",
-                        color: "var(--gold)", fontFamily: "Montserrat,sans-serif",
+                        color: "var(--gold)", fontFamily: "Manrope, system-ui, sans-serif",
                       }}
                     >
                       Reenviar

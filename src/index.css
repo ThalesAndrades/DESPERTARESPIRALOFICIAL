@@ -184,7 +184,7 @@
   body {
     background-color: var(--bg-surface);
     color: var(--text-primary);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Lora', Georgia, serif;
     font-weight: 400;
     line-height: 1.58;
     font-size: 16px;
@@ -216,7 +216,7 @@
   }
 
   h3 {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Lora', Georgia, serif;
     font-weight: 600;
     line-height: 1.35;
     letter-spacing: -0.012em;
@@ -224,7 +224,7 @@
   }
 
   h4, h5, h6 {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Lora', Georgia, serif;
     font-weight: 600;
     line-height: 1.4;
     letter-spacing: -0.008em;
@@ -264,11 +264,11 @@
 
   /* ── Typography ── */
   .font-display { font-family: 'Cormorant Garamond', serif; }
-  .font-body    { font-family: 'DM Sans', sans-serif; }
-  .font-label   { font-family: 'Montserrat', sans-serif; }
+  .font-body    { font-family: 'Lora', Georgia, serif; }
+  .font-label   { font-family: 'Manrope', system-ui, sans-serif; }
 
   .overline {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Manrope', system-ui, sans-serif;
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.24em;
@@ -520,7 +520,7 @@
     border: 1px solid var(--input-border);
     border-radius: var(--r-md);
     color: var(--text-primary);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Lora', Georgia, serif;
     font-weight: 400;
     font-size: 16px;
     line-height: 1.5;
@@ -548,7 +548,7 @@
 
   .input-group { display: flex; flex-direction: column; gap: 8px; }
   .input-label {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Manrope', system-ui, sans-serif;
     font-size: 9px;
     font-weight: 500;
     letter-spacing: 0.18em;
@@ -564,7 +564,7 @@
     padding: 11px 12px;
     border-radius: var(--r-sm);
     color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Lora', Georgia, serif;
     font-size: 14px;
     font-weight: 500;
     transition:
@@ -622,7 +622,7 @@
   ═════════════════════════════════════ */
   .badge-base {
     @apply inline-flex items-center;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Manrope', system-ui, sans-serif;
     font-size: 8.5px;
     font-weight: 600;
     letter-spacing: 0.16em;
@@ -645,7 +645,7 @@
     padding: 5px 14px; border-radius: 100px;
     background: rgba(140,170,150,0.10);
     border: 1px solid rgba(140,170,150,0.22);
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Manrope', system-ui, sans-serif;
     font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
     color: var(--sage); font-weight: 600;
   }
@@ -783,7 +783,7 @@
   .cat-pill {
     display: inline-flex; align-items: center;
     padding: 6px 15px; border-radius: 100px; border: 1px solid;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Manrope', system-ui, sans-serif;
     font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
     white-space: nowrap; flex-shrink: 0;
     transition: all 0.18s ease; cursor: pointer;
@@ -1025,7 +1025,7 @@
   /* ── Section label pulse ── */
   .section-label-live {
     display: inline-flex; align-items: center; gap: 6px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Manrope', system-ui, sans-serif;
     font-size: 8.5px; letter-spacing: 0.20em; text-transform: uppercase;
     color: var(--sage);
   }
@@ -1234,7 +1234,7 @@ img { animation: imgFadeIn 0.22s ease both; }
   padding: 12px 20px;
   background: var(--gold);
   color: #0a0c1a;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Manrope', system-ui, sans-serif;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.16em;

@@ -406,7 +406,7 @@ function Quiz({
           style={{
             background: "transparent", border: "none",
             color: "var(--text-muted)", cursor: "pointer",
-            fontFamily: "Montserrat,sans-serif", fontSize: 10,
+            fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10,
             letterSpacing: "0.20em", textTransform: "uppercase",
             padding: "8px 12px",
           }}

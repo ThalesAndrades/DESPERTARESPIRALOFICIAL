@@ -45,7 +45,7 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
   ];
 
   const linkStyle: React.CSSProperties = {
-    fontFamily: "Montserrat, sans-serif",
+    fontFamily: "Manrope, system-ui, sans-serif",
     fontSize: "9px",
     letterSpacing: "0.22em",
     textTransform: "uppercase",
@@ -190,7 +190,7 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
                 display: "flex", alignItems: "center",
                 padding: "14px 0", width: "100%", background: "transparent", border: "none",
                 borderBottom: "1px solid var(--border-subtle)",
-                fontFamily: "Montserrat, sans-serif", fontSize: "9px",
+                fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px",
                 letterSpacing: "0.22em", textTransform: "uppercase",
                 color: "var(--text-secondary)", cursor: "pointer",
                 textAlign: "left", minHeight: "52px",
@@ -227,7 +227,7 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
               <>
                 {showAuthEntry && (
                   <Link to="/login" onClick={() => setOpen(false)}
-                    style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", minHeight: "52px" }}>
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", minHeight: "52px" }}>
                     Entrar
                   </Link>
                 )}

@@ -45,7 +45,7 @@ const LESSON_TYPES = ["video", "text", "pdf", "audio"] as const;
 
 const LABEL_STYLE: React.CSSProperties = {
   display: "block",
-  fontFamily: "Montserrat, sans-serif", fontSize: "9px",
+  fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px",
   letterSpacing: "0.18em", textTransform: "uppercase",
   color: "var(--text-muted)", marginBottom: "8px", fontWeight: 500,
 };
@@ -470,7 +470,7 @@ export default function AdminProductContentPage() {
     // Institution label
     const institution = certConfig.institutionLabel || "Despertar Espiral";
     ctx.fillStyle = "#C6A870";
-    ctx.font = "500 13px Montserrat, sans-serif";
+    ctx.font = "500 13px Manrope, system-ui, sans-serif";
     ctx.textAlign = "center";
     ctx.fillText(institution.toUpperCase(), W / 2, 108);
 
@@ -497,7 +497,7 @@ export default function AdminProductContentPage() {
 
     // "Certificamos que"
     ctx.fillStyle = "rgba(26,18,9,0.45)";
-    ctx.font = "400 14px DM Sans, sans-serif";
+    ctx.font = "400 14px Lora, Georgia, serif";
     ctx.fillText("Certificamos que", W / 2, 276);
 
     // Student name placeholder
@@ -520,7 +520,7 @@ export default function AdminProductContentPage() {
     const desc = certConfig.certDescription ||
       ("concluiu com êxito o programa " + courseLabel + (certConfig.courseTagline ? " — " + certConfig.courseTagline : "") + ".");
     ctx.fillStyle = "rgba(26,18,9,0.52)";
-    ctx.font = "400 14px DM Sans, sans-serif";
+    ctx.font = "400 14px Lora, Georgia, serif";
     ctx.textAlign = "center";
     const words = desc.split(" ");
     let line = "";
@@ -541,7 +541,7 @@ export default function AdminProductContentPage() {
       ? new Date(certConfig.issueDate + "T12:00:00").toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })
       : new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
     ctx.fillStyle = "rgba(26,18,9,0.40)";
-    ctx.font = "400 13px DM Sans, sans-serif";
+    ctx.font = "400 13px Lora, Georgia, serif";
     ctx.fillText(dateStr, W / 2, lineY + 32);
 
     // Horizontal divider
@@ -566,18 +566,18 @@ export default function AdminProductContentPage() {
     ctx.beginPath(); ctx.moveTo(sigCX - sigBlockW / 2, sigY + 8); ctx.lineTo(sigCX + sigBlockW / 2, sigY + 8); ctx.stroke();
 
     ctx.fillStyle = "rgba(26,18,9,0.65)";
-    ctx.font = "600 11px Montserrat, sans-serif";
+    ctx.font = "600 11px Manrope, system-ui, sans-serif";
     ctx.fillText((certConfig.instructorName || "Sunyan Nunes").toUpperCase(), sigCX, sigY + 26);
 
     ctx.fillStyle = "rgba(26,18,9,0.40)";
-    ctx.font = "400 11px DM Sans, sans-serif";
+    ctx.font = "400 11px Lora, Georgia, serif";
     ctx.fillText(certConfig.instructorTitle || "Mentora & Fundadora · Despertar Espiral", sigCX, sigY + 43);
 
     // Footer note
     const footerNote = certConfig.footerNote ||
       "Este certificado atesta a conclusão integral do programa, com dedicação, presença e comprometimento.";
     ctx.fillStyle = "rgba(26,18,9,0.30)";
-    ctx.font = "400 11px DM Sans, sans-serif";
+    ctx.font = "400 11px Lora, Georgia, serif";
     ctx.textAlign = "center";
     ctx.fillText(footerNote.slice(0, 110), W / 2, H - 56);
 
@@ -627,7 +627,7 @@ export default function AdminProductContentPage() {
         {/* Back */}
         <Link to="/admin/products" style={{
           display: "inline-flex", alignItems: "center", gap: "6px",
-          fontSize: "9px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.18em",
+          fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.18em",
           textTransform: "uppercase", color: "var(--text-muted)", textDecoration: "none",
           transition: "color 0.2s", marginBottom: "clamp(16px,3vw,24px)", minHeight: "44px",
         }}>
@@ -656,11 +656,11 @@ export default function AdminProductContentPage() {
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "clamp(12px,2vw,16px) clamp(12px,2.5vw,18px)", borderBottom: isOpen ? "1px solid var(--border-subtle)" : "none" }}>
                   <GripVertical size={14} style={{ color: "var(--border-mid)", flexShrink: 0 }} />
                   <button onClick={() => toggleModule(mod.id)} style={{ flex: 1, display: "flex", alignItems: "center", gap: "10px", background: "transparent", border: "none", cursor: "pointer", textAlign: "left", minHeight: "36px", padding: 0 }}>
-                    <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "rgba(198,168,112,0.12)", color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontFamily: "Montserrat", fontWeight: 500, flexShrink: 0 }}>
+                    <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "rgba(198,168,112,0.12)", color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500, flexShrink: 0 }}>
                       {mIdx + 1}
                     </span>
                     <p style={{ flex: 1, fontSize: "clamp(13px,1.6vw,15px)", fontWeight: 500, color: "var(--text-primary)", textAlign: "left" }}>{mod.title}</p>
-                    <span style={{ fontSize: "10px", fontFamily: "Montserrat", color: "var(--text-faint)", letterSpacing: "0.1em" }}>
+                    <span style={{ fontSize: "10px", fontFamily: "Manrope, system-ui, sans-serif", color: "var(--text-faint)", letterSpacing: "0.1em" }}>
                       {mod.lessons.length} aulas
                     </span>
                     {isOpen ? <ChevronDown size={13} style={{ color: "var(--border-mid)" }} /> : <ChevronRight size={13} style={{ color: "var(--border-mid)" }} />}
@@ -688,7 +688,7 @@ export default function AdminProductContentPage() {
                       data-testid={`quiz-toggle-${mod.id}`}
                     >
                       <ClipboardList size={13} style={{ color: "var(--lavender)", flexShrink: 0 }} strokeWidth={1.5} />
-                      <span style={{ flex: 1, fontSize: "12px", color: "var(--text-muted)", fontFamily: "DM Sans" }}>Quiz do módulo</span>
+                      <span style={{ flex: 1, fontSize: "12px", color: "var(--text-muted)", fontFamily: "Lora, Georgia, serif" }}>Quiz do módulo</span>
                       {openQuiz[mod.id]
                         ? <ChevronDown  size={12} style={{ color: "var(--border-mid)" }} />
                         : <ChevronRight size={12} style={{ color: "var(--border-mid)" }} />
@@ -757,7 +757,7 @@ export default function AdminProductContentPage() {
                                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                       <Loader2 size={13} style={{ color: "var(--gold)", animation: "spin 0.8s linear infinite", flexShrink: 0 }} />
                                       <span style={{ fontSize: "12px", color: "var(--gold)" }}>Enviando vídeo…</span>
-                                      <span style={{ marginLeft: "auto", fontSize: "11px", color: "var(--text-faint)", fontFamily: "Montserrat" }}>{editVideoProgress}%</span>
+                                      <span style={{ marginLeft: "auto", fontSize: "11px", color: "var(--text-faint)", fontFamily: "Manrope, system-ui, sans-serif" }}>{editVideoProgress}%</span>
                                     </div>
                                     <div style={{ height: "3px", borderRadius: "100px", background: "var(--border-subtle)", overflow: "hidden" }}>
                                       <div style={{ height: "100%", width: `${editVideoProgress}%`, borderRadius: "100px", background: "var(--gold)", transition: "width 0.3s" }} />
@@ -874,14 +874,14 @@ export default function AdminProductContentPage() {
                           }}
                         >
                           <GripVertical size={12} style={{ color: "var(--border-subtle)", flexShrink: 0 }} />
-                          <span style={{ fontSize: "8px", fontFamily: "Montserrat", letterSpacing: "0.14em", textTransform: "uppercase", padding: "3px 10px", borderRadius: "100px", background: "rgba(198,168,112,0.10)", color: "var(--gold)", flexShrink: 0 }}>
+                          <span style={{ fontSize: "8px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.14em", textTransform: "uppercase", padding: "3px 10px", borderRadius: "100px", background: "rgba(198,168,112,0.10)", color: "var(--gold)", flexShrink: 0 }}>
                             {lesson.type}
                           </span>
                           <p style={{ flex: 1, fontSize: "clamp(12px,1.5vw,14px)", color: "var(--text-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                             {lesson.title}
                           </p>
                           {lesson.duration_min > 0 && (
-                            <span style={{ fontSize: "10px", color: "var(--text-faint)", fontFamily: "Montserrat", flexShrink: 0 }}>{lesson.duration_min}min</span>
+                            <span style={{ fontSize: "10px", color: "var(--text-faint)", fontFamily: "Manrope, system-ui, sans-serif", flexShrink: 0 }}>{lesson.duration_min}min</span>
                           )}
                           {lesson.is_free && (
                             <span className="badge-sage" style={{ fontSize: "7px", padding: "2px 8px", flexShrink: 0 }}>GRÁTIS</span>
@@ -972,7 +972,7 @@ export default function AdminProductContentPage() {
                                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                     <Loader2 size={13} style={{ color: "var(--gold)", animation: "spin 0.8s linear infinite", flexShrink: 0 }} />
                                     <span style={{ fontSize: "12px", color: "var(--gold)" }}>Enviando vídeo…</span>
-                                    <span style={{ marginLeft: "auto", fontSize: "11px", color: "var(--text-faint)", fontFamily: "Montserrat" }}>{videoProgress}%</span>
+                                    <span style={{ marginLeft: "auto", fontSize: "11px", color: "var(--text-faint)", fontFamily: "Manrope, system-ui, sans-serif" }}>{videoProgress}%</span>
                                   </div>
                                   <div style={{ height: "3px", borderRadius: "100px", background: "var(--border-subtle)", overflow: "hidden" }}>
                                     <div style={{ height: "100%", width: `${videoProgress}%`, borderRadius: "100px", background: "var(--gold)", transition: "width 0.3s" }} />
@@ -1043,7 +1043,7 @@ export default function AdminProductContentPage() {
                     ) : (
                       <button
                         onClick={() => setShowAddLesson(mod.id)}
-                        style={{ width: "100%", display: "flex", alignItems: "center", gap: "8px", padding: "12px 18px", background: "transparent", border: "none", cursor: "pointer", color: "rgba(198,168,112,0.5)", fontSize: "12px", fontFamily: "DM Sans", transition: "color 0.2s, background 0.2s", minHeight: "44px" }}
+                        style={{ width: "100%", display: "flex", alignItems: "center", gap: "8px", padding: "12px 18px", background: "transparent", border: "none", cursor: "pointer", color: "rgba(198,168,112,0.5)", fontSize: "12px", fontFamily: "Lora, Georgia, serif", transition: "color 0.2s, background 0.2s", minHeight: "44px" }}
                         onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--gold)"; (e.currentTarget as HTMLElement).style.background = "rgba(198,168,112,0.04)"; }}
                         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(198,168,112,0.5)"; (e.currentTarget as HTMLElement).style.background = "transparent"; }}
                       >

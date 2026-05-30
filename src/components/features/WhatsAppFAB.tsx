@@ -74,7 +74,7 @@ export default function WhatsAppFAB({ surface }: Props) {
         color: "#fff",
         boxShadow: "0 12px 30px -10px rgba(37,211,102,0.55), 0 4px 14px rgba(0,0,0,0.18)",
         textDecoration: "none",
-        fontFamily: "Montserrat, sans-serif",
+        fontFamily: "Manrope, system-ui, sans-serif",
         fontSize: 12, fontWeight: 600,
         letterSpacing: "0.04em",
         transform: visible ? "translateY(0) scale(1)" : "translateY(20px) scale(0.92)",

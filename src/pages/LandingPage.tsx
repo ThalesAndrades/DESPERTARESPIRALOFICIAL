@@ -561,8 +561,8 @@ export default function LandingPage() {
                     <div style={{ display: "flex", gap: "2px" }}>
                       {[...Array(5)].map((_, i) => <Star key={i} size={8} fill="var(--gold)" style={{ color: "var(--gold)" }} />)}
                     </div>
-                    <span style={{ fontSize: "11px", color: heroText, fontFamily: "DM Sans, sans-serif", fontWeight: 500 }}>4.9</span>
-                    <span style={{ fontSize: "11px", color: heroMuted, fontFamily: "DM Sans, sans-serif" }}>avaliação</span>
+                    <span style={{ fontSize: "11px", color: heroText, fontFamily: "Lora, Georgia, serif", fontWeight: 500 }}>4.9</span>
+                    <span style={{ fontSize: "11px", color: heroMuted, fontFamily: "Lora, Georgia, serif" }}>avaliação</span>
                   </div>
                 </div>
 
@@ -583,8 +583,8 @@ export default function LandingPage() {
                   }}>
                     <span style={{ fontSize: "14px" }}>🏅</span>
                     <div>
-                      <p style={{ fontSize: "11px", color: "var(--gold)", fontFamily: "Montserrat, sans-serif", fontWeight: 600, lineHeight: 1.2 }}>Certificado</p>
-                      <p style={{ fontSize: "10px", color: heroMuted, fontFamily: "DM Sans, sans-serif", lineHeight: 1.2 }}>incluso</p>
+                      <p style={{ fontSize: "11px", color: "var(--gold)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600, lineHeight: 1.2 }}>Certificado</p>
+                      <p style={{ fontSize: "10px", color: heroMuted, fontFamily: "Lora, Georgia, serif", lineHeight: 1.2 }}>incluso</p>
                     </div>
                   </div>
                 </div>
@@ -635,13 +635,13 @@ export default function LandingPage() {
                           background: `${c}20`, border: `1.5px solid ${c}66`,
                           display: "flex", alignItems: "center", justifyContent: "center",
                           marginLeft: i > 0 ? "-7px" : "0",
-                          fontSize: "9px", color: c, fontFamily: "Montserrat,sans-serif", fontWeight: 700,
+                          fontSize: "9px", color: c, fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 700,
                           zIndex: 3 - i, position: "relative",
                         }}>{["L","V","R"][i]}</div>
                       ))}
                     </div>
-                    <p style={{ fontSize: "clamp(11px,1.3vw,13px)", fontWeight: 700, color: heroText, fontFamily: "DM Sans,sans-serif", lineHeight: 1.1, textAlign: "center" }}>280+ alunas</p>
-                    <p style={{ fontSize: "clamp(9px,1vw,10px)", color: heroMuted, fontFamily: "DM Sans,sans-serif", textAlign: "center", lineHeight: 1.2 }}>em jornada</p>
+                    <p style={{ fontSize: "clamp(11px,1.3vw,13px)", fontWeight: 700, color: heroText, fontFamily: "Lora, Georgia, serif", lineHeight: 1.1, textAlign: "center" }}>280+ alunas</p>
+                    <p style={{ fontSize: "clamp(9px,1vw,10px)", color: heroMuted, fontFamily: "Lora, Georgia, serif", textAlign: "center", lineHeight: 1.2 }}>em jornada</p>
                   </div>
 
                   {/* Card 2: Progresso */}
@@ -661,7 +661,7 @@ export default function LandingPage() {
                       <div style={{ background: isLight ? "rgba(10,12,26,0.08)" : "rgba(255,255,255,0.07)", borderRadius: "100px", height: "3px", overflow: "hidden", marginBottom: "3px" }}>
                         <div style={{ width: "72%", height: "100%", borderRadius: "100px", background: "linear-gradient(90deg, #c6a870, #dac394)" }} />
                       </div>
-                      <p style={{ fontSize: "clamp(9px,1vw,10px)", color: "var(--gold)", fontFamily: "Montserrat,sans-serif", fontWeight: 700, textAlign: "center" }}>72% concluído</p>
+                      <p style={{ fontSize: "clamp(9px,1vw,10px)", color: "var(--gold)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 700, textAlign: "center" }}>72% concluído</p>
                     </div>
                   </div>
 
@@ -676,7 +676,7 @@ export default function LandingPage() {
                     boxShadow: "0 4px 24px rgba(198,168,112,0.10)",
                   }}>
                     <div style={{ fontSize: "20px", lineHeight: 1 }}>🏅</div>
-                    <p style={{ fontSize: "clamp(9px,1vw,10px)", color: "var(--gold)", fontFamily: "Montserrat,sans-serif", letterSpacing: "0.10em", textTransform: "uppercase", fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>Certificado{"\n"}incluso</p>
+                    <p style={{ fontSize: "clamp(9px,1vw,10px)", color: "var(--gold)", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.10em", textTransform: "uppercase", fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>Certificado{"\n"}incluso</p>
                   </div>
                 </div>
               </div>
@@ -814,7 +814,7 @@ export default function LandingPage() {
                 background: "rgba(198,168,112,0.14)",
                 border: "1px solid rgba(198,168,112,0.32)",
                 color: "var(--gold)",
-                fontFamily: "Montserrat, sans-serif",
+                fontFamily: "Manrope, system-ui, sans-serif",
                 fontSize: "9px", fontWeight: 600,
                 letterSpacing: "0.22em", textTransform: "uppercase",
               }}>
@@ -871,7 +871,7 @@ export default function LandingPage() {
                 <li key={label} style={{
                   display: "flex", alignItems: "center", gap: "8px",
                   color: "rgba(245,240,232,0.62)",
-                  fontFamily: "Montserrat, sans-serif",
+                  fontFamily: "Manrope, system-ui, sans-serif",
                   fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
                 }}>
                   <Icon size={12} strokeWidth={1.6} style={{ color: "var(--gold)" }} />
@@ -1149,7 +1149,7 @@ export default function LandingPage() {
                   <p className="font-display" style={{ fontSize: "clamp(15px,1.8vw,17px)", color: "var(--text-secondary)", lineHeight: 1.70, fontStyle: "italic", fontWeight: 300, flex: 1, marginBottom: "20px" }}>"{t.text}"</p>
                   <hr className="divider-gold" style={{ marginBottom: "18px" }} />
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                    <div style={{ width: "34px", height: "34px", borderRadius: "50%", background: "rgba(172,128,142,0.15)", color: "var(--rose)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", fontFamily: "Montserrat,sans-serif", fontWeight: 500, flexShrink: 0 }}>{t.name.charAt(0)}</div>
+                    <div style={{ width: "34px", height: "34px", borderRadius: "50%", background: "rgba(172,128,142,0.15)", color: "var(--rose)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500, flexShrink: 0 }}>{t.name.charAt(0)}</div>
                     <div>
                       <p style={{ fontSize: "13px", color: "var(--text-primary)", fontWeight: 500 }}>{t.name}</p>
                       <p className="font-label" style={{ fontSize: "9px", color: "var(--text-faint)", letterSpacing: "0.12em", textTransform: "uppercase" }}>{t.detail}</p>
@@ -1197,7 +1197,7 @@ export default function LandingPage() {
                   <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#8caa96", animation: "communityPulse 2s ease-out infinite", opacity: 0.6 }} />
                   <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#8caa96", display: "block" }} />
                 </span>
-                <span style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(164,158,208,0.90)", fontFamily: "Montserrat,sans-serif", fontWeight: 500 }}>
+                <span style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(164,158,208,0.90)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500 }}>
                   Comunidade exclusiva de alunas
                 </span>
               </div>
@@ -1227,7 +1227,7 @@ export default function LandingPage() {
                   textAlign: "center", borderRight: i < arr.length - 1 ? "1px solid rgba(81,72,152,0.20)" : "none",
                 }}>
                   <p className="font-display" style={{ fontSize: "clamp(22px,3vw,40px)", color: "rgba(164,158,208,0.95)", fontWeight: 300, fontStyle: "italic", lineHeight: 1 }}>{value}</p>
-                  <p style={{ fontSize: "clamp(9px,1vw,11px)", color: "rgba(245,240,232,0.35)", letterSpacing: "0.16em", textTransform: "uppercase", fontFamily: "Montserrat,sans-serif", marginTop: "8px" }}>{label}</p>
+                  <p style={{ fontSize: "clamp(9px,1vw,11px)", color: "rgba(245,240,232,0.35)", letterSpacing: "0.16em", textTransform: "uppercase", fontFamily: "Manrope, system-ui, sans-serif", marginTop: "8px" }}>{label}</p>
                 </div>
               ))}
             </div>
@@ -1235,7 +1235,7 @@ export default function LandingPage() {
             {/* Two-column */}
             <div className="grid lg:grid-cols-[0.9fr_1.1fr]" style={{ gap: "clamp(28px,5vw,64px)", alignItems: "start" }}>
               <div className="reveal-left">
-                <p style={{ fontSize: "9px", letterSpacing: "0.26em", textTransform: "uppercase", color: "rgba(164,158,208,0.65)", fontFamily: "Montserrat,sans-serif", fontWeight: 500, marginBottom: "20px" }}>Espaço exclusivo para alunas</p>
+                <p style={{ fontSize: "9px", letterSpacing: "0.26em", textTransform: "uppercase", color: "rgba(164,158,208,0.65)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500, marginBottom: "20px" }}>Espaço exclusivo para alunas</p>
                 <h3 style={{ fontSize: "clamp(22px,3.5vw,44px)", fontWeight: 300, lineHeight: 1.13, color: "#f5f0e8", marginBottom: "20px", fontFamily: "Cormorant Garamond,serif" }}>
                   Um lugar onde você pode ser<span style={{ fontStyle: "italic", color: "rgba(164,158,208,0.85)" }}> quem realmente é.</span>
                 </h3>
@@ -1254,8 +1254,8 @@ export default function LandingPage() {
                         <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: color }} />
                       </div>
                       <div>
-                        <p style={{ fontSize: "13px", color: "rgba(245,240,232,0.80)", fontWeight: 500, marginBottom: "2px", fontFamily: "Montserrat,sans-serif" }}>{label}</p>
-                        <p style={{ fontSize: "11px", color: "rgba(245,240,232,0.35)", fontFamily: "Montserrat,sans-serif" }}>{desc}</p>
+                        <p style={{ fontSize: "13px", color: "rgba(245,240,232,0.80)", fontWeight: 500, marginBottom: "2px", fontFamily: "Manrope, system-ui, sans-serif" }}>{label}</p>
+                        <p style={{ fontSize: "11px", color: "rgba(245,240,232,0.35)", fontFamily: "Manrope, system-ui, sans-serif" }}>{desc}</p>
                       </div>
                     </div>
                   ))}
@@ -1273,7 +1273,7 @@ export default function LandingPage() {
               {/* Right column: the promise of the community */}
               <div className="reveal-right" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px", padding: "0 2px" }}>
-                  <p style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(164,158,208,0.55)", fontFamily: "Montserrat,sans-serif" }}>O que você vai encontrar</p>
+                  <p style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(164,158,208,0.55)", fontFamily: "Manrope, system-ui, sans-serif" }}>O que você vai encontrar</p>
                 </div>
                 {[
                   { title: "Conquistas", body: "Espaço para celebrar pequenos e grandes movimentos da jornada." },
@@ -1287,14 +1287,14 @@ export default function LandingPage() {
                   }}>
                     <p style={{
                       fontSize: "10px", letterSpacing: "0.22em", textTransform: "uppercase",
-                      color: "rgba(164,158,208,0.90)", fontFamily: "Montserrat,sans-serif",
+                      color: "rgba(164,158,208,0.90)", fontFamily: "Manrope, system-ui, sans-serif",
                       marginBottom: 8,
                     }}>{card.title}</p>
-                    <p style={{ fontSize: "clamp(12px,1.4vw,14px)", color: "rgba(245,240,232,0.62)", lineHeight: 1.72, fontFamily: "Montserrat,sans-serif" }}>{card.body}</p>
+                    <p style={{ fontSize: "clamp(12px,1.4vw,14px)", color: "rgba(245,240,232,0.62)", lineHeight: 1.72, fontFamily: "Manrope, system-ui, sans-serif" }}>{card.body}</p>
                   </div>
                 ))}
                 <div style={{ borderRadius: "clamp(12px,1.5vw,16px)", border: "1px dashed rgba(81,72,152,0.35)", padding: "clamp(16px,2vw,22px)", textAlign: "center", background: "rgba(81,72,152,0.05)" }}>
-                  <p style={{ fontSize: "clamp(13px,1.4vw,14px)", color: "rgba(245,240,232,0.55)", fontFamily: "Montserrat,sans-serif", marginBottom: "12px", lineHeight: 1.6 }}>
+                  <p style={{ fontSize: "clamp(13px,1.4vw,14px)", color: "rgba(245,240,232,0.55)", fontFamily: "Manrope, system-ui, sans-serif", marginBottom: "12px", lineHeight: 1.6 }}>
                     A comunidade abre junto com a primeira turma.
                   </p>
                   <button
@@ -1303,7 +1303,7 @@ export default function LandingPage() {
                     style={{
                       display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "10px",
                       color: "rgba(164,158,208,0.90)", letterSpacing: "0.18em", textTransform: "uppercase",
-                      fontFamily: "Montserrat,sans-serif", fontWeight: 500, textDecoration: "none",
+                      fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500, textDecoration: "none",
                       background: "transparent", border: "none", cursor: "pointer", padding: 0,
                     }}
                   >
@@ -1331,7 +1331,7 @@ export default function LandingPage() {
                   style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 12%", display: "block" }} />
                 <div aria-hidden="true" style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "44px 20px 20px", background: "linear-gradient(to top, rgba(6,8,15,0.90) 0%, rgba(6,8,15,0.30) 55%, transparent 100%)" }}>
                   <p style={{ fontFamily: "Cormorant Garamond,serif", fontSize: "20px", color: "#c6a870", fontStyle: "italic", fontWeight: 300, textAlign: "center", lineHeight: 1.2 }}>Sunyan Nunes</p>
-                  <p style={{ fontFamily: "Montserrat,sans-serif", fontSize: "8px", letterSpacing: "0.20em", textTransform: "uppercase", color: "rgba(198,168,112,0.58)", textAlign: "center", marginTop: "4px" }}>Criadora do Método Espiral</p>
+                  <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "8px", letterSpacing: "0.20em", textTransform: "uppercase", color: "rgba(198,168,112,0.58)", textAlign: "center", marginTop: "4px" }}>Criadora do Método Espiral</p>
                 </div>
                 <div aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: "linear-gradient(90deg, transparent, rgba(198,168,112,0.55), transparent)" }} />
               </div>

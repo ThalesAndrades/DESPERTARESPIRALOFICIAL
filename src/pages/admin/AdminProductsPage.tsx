@@ -35,7 +35,7 @@ interface UserForAccess {
 
 const LABEL: React.CSSProperties = {
   display: "block",
-  fontFamily: "Montserrat, sans-serif",
+  fontFamily: "Manrope, system-ui, sans-serif",
   fontSize: "9px",
   letterSpacing: "0.18em",
   textTransform: "uppercase",
@@ -407,7 +407,7 @@ export default function AdminProductsPage() {
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "320px", overflowY: "auto" }}>
                       {accessUsers.map((u) => (
                         <div key={u.id} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 12px", borderRadius: "10px", background: u.has_access ? "rgba(140,170,150,0.07)" : "transparent", border: `1px solid ${u.has_access ? "rgba(140,170,150,0.20)" : "var(--border-subtle)"}` }}>
-                          <div style={{ width: "30px", height: "30px", borderRadius: "50%", background: "rgba(198,168,112,0.12)", color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontFamily: "Montserrat", fontWeight: 500, flexShrink: 0 }}>
+                          <div style={{ width: "30px", height: "30px", borderRadius: "50%", background: "rgba(198,168,112,0.12)", color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500, flexShrink: 0 }}>
                             {(u.full_name ?? u.username ?? u.email).charAt(0).toUpperCase()}
                           </div>
                           <div style={{ flex: 1, minWidth: 0 }}>

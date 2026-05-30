@@ -149,7 +149,7 @@ export default function LessonPage() {
     ctx.fillStyle = grad; ctx.fillRect(pad2 + 20, 50, W - (pad2 + 20) * 2, 1.2);
 
     // Institution
-    ctx.fillStyle = "#C6A870"; ctx.font = "500 10px Montserrat,sans-serif"; ctx.textAlign = "center";
+    ctx.fillStyle = "#C6A870"; ctx.font = "500 10px Manrope, system-ui, sans-serif"; ctx.textAlign = "center";
     ctx.fillText((cfg.institutionLabel || "Despertar Espiral").toUpperCase(), W / 2, 70);
 
     // Diamonds
@@ -161,7 +161,7 @@ export default function LessonPage() {
     ctx.fillStyle = "#1A1209"; ctx.font = "300 44px Georgia,serif"; ctx.fillText("Certificado", W / 2, 138);
     ctx.fillStyle = "rgba(26,18,9,0.48)"; ctx.font = "italic 300 20px Georgia,serif";
     ctx.fillText("de Conclusão", W / 2, 163);
-    ctx.fillStyle = "rgba(26,18,9,0.38)"; ctx.font = "400 11px DM Sans,sans-serif";
+    ctx.fillStyle = "rgba(26,18,9,0.38)"; ctx.font = "400 11px Lora, Georgia, serif";
     ctx.fillText("Certificamos que", W / 2, 198);
 
     // Student name
@@ -176,7 +176,7 @@ export default function LessonPage() {
     // Description (word-wrapped)
     const desc = cfg.certDescription ||
       `concluiu com êxito o programa ${courseName}${cfg.courseTagline ? " — " + cfg.courseTagline : ""}.`;
-    ctx.fillStyle = "rgba(26,18,9,0.45)"; ctx.font = "400 11.5px DM Sans,sans-serif";
+    ctx.fillStyle = "rgba(26,18,9,0.45)"; ctx.font = "400 11.5px Lora, Georgia, serif";
     const words = desc.split(" "); let line = "", lineY = 272;
     for (const word of words) {
       const t = line + word + " ";
@@ -186,7 +186,7 @@ export default function LessonPage() {
     ctx.fillText(line.trim(), W / 2, lineY);
 
     // Date
-    ctx.fillStyle = "rgba(26,18,9,0.32)"; ctx.font = "400 10.5px DM Sans,sans-serif";
+    ctx.fillStyle = "rgba(26,18,9,0.32)"; ctx.font = "400 10.5px Lora, Georgia, serif";
     ctx.fillText(new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" }), W / 2, lineY + 22);
 
     // Divider
@@ -201,14 +201,14 @@ export default function LessonPage() {
     ctx.fillStyle = "#1A1209"; ctx.font = "italic 300 24px Georgia,serif"; ctx.fillText(sn, W / 2, H - 88);
     ctx.strokeStyle = "rgba(198,168,112,0.45)"; ctx.lineWidth = 0.5;
     ctx.beginPath(); ctx.moveTo(W / 2 - 80, H - 80); ctx.lineTo(W / 2 + 80, H - 80); ctx.stroke();
-    ctx.fillStyle = "rgba(26,18,9,0.58)"; ctx.font = "600 8.5px Montserrat,sans-serif";
+    ctx.fillStyle = "rgba(26,18,9,0.58)"; ctx.font = "600 8.5px Manrope, system-ui, sans-serif";
     ctx.fillText(sn.toUpperCase(), W / 2, H - 68);
-    ctx.fillStyle = "rgba(26,18,9,0.36)"; ctx.font = "400 8.5px DM Sans,sans-serif";
+    ctx.fillStyle = "rgba(26,18,9,0.36)"; ctx.font = "400 8.5px Lora, Georgia, serif";
     ctx.fillText(st, W / 2, H - 55);
 
     // Footer note
     const fn = cfg.footerNote || "Este certificado atesta a conclusão integral do programa, com dedicação, presença e comprometimento.";
-    ctx.fillStyle = "rgba(26,18,9,0.25)"; ctx.font = "400 8.5px DM Sans,sans-serif";
+    ctx.fillStyle = "rgba(26,18,9,0.25)"; ctx.font = "400 8.5px Lora, Georgia, serif";
     ctx.fillText(fn.slice(0, 108), W / 2, H - 34);
     ctx.fillStyle = grad; ctx.fillRect(pad2 + 18, H - 48, W - (pad2 + 18) * 2, 0.9);
   }, [certConfig, product, user]);
@@ -417,7 +417,7 @@ export default function LessonPage() {
             to={`/products/${slug}`}
             style={{
               display: "inline-flex", alignItems: "center", gap: "6px",
-              fontSize: "9px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.18em",
+              fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.18em",
               textTransform: "uppercase", color: "var(--text-muted)", textDecoration: "none",
               transition: "color 0.2s", minHeight: "36px",
             }}
@@ -446,13 +446,13 @@ export default function LessonPage() {
                   width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0,
                   background: "rgba(198,168,112,0.12)", color: "var(--gold)",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "10px", fontFamily: "Montserrat, sans-serif", fontWeight: 500,
+                  fontSize: "10px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500,
                 }}>
                   {mIdx + 1}
                 </span>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p style={{ fontSize: "13px", color: "var(--text-primary)", fontWeight: 500, lineHeight: 1.3, marginBottom: "2px" }}>{mod.title}</p>
-                  <p style={{ fontSize: "10px", color: "var(--text-faint)", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.08em" }}>
+                  <p style={{ fontSize: "10px", color: "var(--text-faint)", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.08em" }}>
                     {modDone}/{mod.lessons.length} concluídas
                   </p>
                 </div>
@@ -499,7 +499,7 @@ export default function LessonPage() {
                       {l.title}
                     </p>
                     {!done && !isActive && (
-                      <span style={{ fontSize: "8px", fontFamily: "Montserrat", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-faint)", flexShrink: 0 }}>
+                      <span style={{ fontSize: "8px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-faint)", flexShrink: 0 }}>
                         {typeLabel[l.type] ?? l.type}
                       </span>
                     )}
@@ -601,7 +601,7 @@ export default function LessonPage() {
                 display: "flex", alignItems: "center", gap: "6px",
                 background: "transparent", border: "none", cursor: "pointer",
                 color: "var(--text-muted)", fontSize: "11px",
-                fontFamily: "Montserrat, sans-serif", letterSpacing: "0.12em",
+                fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.12em",
                 padding: "6px 0", minHeight: "44px",
               }}
             >
@@ -609,7 +609,7 @@ export default function LessonPage() {
               <span style={{ textTransform: "uppercase" }}>Módulos</span>
             </button>
             <div style={{ flex: 1, height: "1px", background: "var(--border-subtle)" }} />
-            <span style={{ fontSize: "10px", fontFamily: "Montserrat, sans-serif", color: "var(--text-faint)" }}>
+            <span style={{ fontSize: "10px", fontFamily: "Manrope, system-ui, sans-serif", color: "var(--text-faint)" }}>
               {currentIndex + 1}/{allLessons.length}
             </span>
           </div>
@@ -620,11 +620,11 @@ export default function LessonPage() {
             {/* Module progress mini-bar */}
             {moduleOfLesson && (
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "clamp(12px,2vw,18px)", padding: "10px 14px", borderRadius: "12px", background: "var(--bg-surface-2)", border: "1px solid var(--border-subtle)" }}>
-                <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "Montserrat, sans-serif", whiteSpace: "nowrap", letterSpacing: "0.06em" }}>Módulo atual</span>
+                <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "Manrope, system-ui, sans-serif", whiteSpace: "nowrap", letterSpacing: "0.06em" }}>Módulo atual</span>
                 <div style={{ flex: 1, height: "3px", borderRadius: "100px", background: "var(--border-subtle)", overflow: "hidden" }}>
                   <div style={{ width: `${modulePct}%`, height: "100%", borderRadius: "100px", background: modulePct === 100 ? "var(--sage)" : "var(--gold)", transition: "width 0.6s cubic-bezier(.16,1,.3,1)" }} />
                 </div>
-                <span style={{ fontSize: "11px", fontFamily: "Montserrat, sans-serif", fontWeight: 600, color: modulePct === 100 ? "var(--sage)" : "var(--gold)", whiteSpace: "nowrap" }}>
+                <span style={{ fontSize: "11px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600, color: modulePct === 100 ? "var(--sage)" : "var(--gold)", whiteSpace: "nowrap" }}>
                   {moduleDoneCount}/{moduleTotalCount}
                 </span>
               </div>
@@ -634,12 +634,12 @@ export default function LessonPage() {
             <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "clamp(12px,2vw,20px)", flexWrap: "wrap" }}>
               <Link
                 to={`/products/${slug}`}
-                style={{ fontSize: "9px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-faint)", textDecoration: "none", transition: "color 0.2s", display: "inline-flex", alignItems: "center", gap: "4px", minHeight: "36px" }}
+                style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-faint)", textDecoration: "none", transition: "color 0.2s", display: "inline-flex", alignItems: "center", gap: "4px", minHeight: "36px" }}
               >
                 <ArrowLeft size={11} /> Curso
               </Link>
               <span style={{ color: "var(--border-mid)", fontSize: "10px" }}>›</span>
-              <span style={{ fontSize: "9px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--lavender)" }}>
+              <span style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--lavender)" }}>
                 {moduleOfLesson?.title}
               </span>
             </div>
@@ -661,7 +661,7 @@ export default function LessonPage() {
                     display: "inline-flex", alignItems: "center", gap: "5px",
                     padding: "4px 12px", borderRadius: "100px",
                     background: "rgba(198,168,112,0.08)", border: "1px solid rgba(198,168,112,0.18)",
-                    fontSize: "9px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--gold)",
+                    fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--gold)",
                   }}>
                     <Icon size={10} strokeWidth={1.5} /> {typeLabel[lesson.type] ?? lesson.type}
                   </span>
@@ -672,7 +672,7 @@ export default function LessonPage() {
                   display: "inline-flex", alignItems: "center", gap: "5px",
                   padding: "4px 12px", borderRadius: "100px",
                   background: "rgba(140,170,150,0.10)", border: "1px solid rgba(140,170,150,0.22)",
-                  fontSize: "9px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--sage)",
+                  fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--sage)",
                 }}>
                   <CheckCircle size={10} strokeWidth={2} /> Concluída
                 </span>
@@ -818,7 +818,7 @@ export default function LessonPage() {
                     to={`/products/${slug}/lesson/${prevLesson.id}`}
                     style={{
                       display: "inline-flex", alignItems: "center", gap: "6px",
-                      fontSize: "9px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.15em",
+                      fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.15em",
                       textTransform: "uppercase", color: "var(--text-muted)", textDecoration: "none",
                       transition: "color 0.2s", padding: "8px 0", minHeight: "44px",
                     }}
@@ -833,7 +833,7 @@ export default function LessonPage() {
                     <CheckCircle size={14} /> Marcar como concluída
                   </button>
                 ) : (
-                  <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "9px", fontFamily: "Montserrat", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--sage)" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--sage)" }}>
                     <CheckCircle size={14} strokeWidth={2} /> Concluída
                   </span>
                 )}
@@ -881,7 +881,7 @@ export default function LessonPage() {
         ) : (
           <div style={{ flex: 1, minHeight: "48px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", borderRadius: "14px", background: "rgba(140,170,150,0.10)", border: "1px solid rgba(140,170,150,0.22)" }}>
             <CheckCircle size={14} style={{ color: "var(--sage)" }} strokeWidth={2} />
-            <span style={{ fontSize: "9px", fontFamily: "Montserrat", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--sage)" }}>Concluída</span>
+            <span style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--sage)" }}>Concluída</span>
           </div>
         )}
 

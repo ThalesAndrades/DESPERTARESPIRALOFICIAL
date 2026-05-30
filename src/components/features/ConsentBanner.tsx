@@ -61,7 +61,7 @@ export default function ConsentBanner() {
         </div>
         <div style={{ flex: 1 }}>
           <p style={{
-            fontFamily: "Montserrat, sans-serif", fontSize: 10,
+            fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10,
             letterSpacing: "0.20em", textTransform: "uppercase",
             color: "var(--gold)", marginBottom: 4,
           }}>Antes de entrar</p>
@@ -125,7 +125,7 @@ export default function ConsentBanner() {
             background: "transparent",
             border: "1px solid var(--border-soft)",
             color: "var(--text-secondary)",
-            fontFamily: "Montserrat, sans-serif", fontSize: 10,
+            fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10,
             letterSpacing: "0.18em", textTransform: "uppercase",
             borderRadius: 10, cursor: "pointer",
             transition: "border-color .2s, color .2s",

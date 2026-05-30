@@ -105,7 +105,7 @@ const Sidebar = memo(function Sidebar() {
               width: "34px", height: "34px", borderRadius: "50%",
               background: "linear-gradient(135deg, rgba(198,168,112,0.20) 0%, rgba(198,168,112,0.08) 100%)",
               color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: "13px", fontFamily: "Montserrat", fontWeight: 600, flexShrink: 0,
+              fontSize: "13px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600, flexShrink: 0,
               border: "1.5px solid rgba(198,168,112,0.20)",
             }}>
               {user?.name?.charAt(0).toUpperCase() ?? "U"}
@@ -187,7 +187,7 @@ function BottomTabBar() {
               }}>
                 <Icon size={20} strokeWidth={active ? 2 : 1.5} />
               </div>
-              <span style={{ fontFamily: "Montserrat", fontSize: "7.5px", letterSpacing: "0.10em", textTransform: "uppercase", fontWeight: active ? 600 : 400 }}>
+              <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "7.5px", letterSpacing: "0.10em", textTransform: "uppercase", fontWeight: active ? 600 : 400 }}>
                 {label}
               </span>
             </Link>
@@ -215,13 +215,13 @@ function BottomTabBar() {
             background: isOnProfile ? "rgba(198,168,112,0.18)" : "rgba(198,168,112,0.10)",
             color: "var(--gold)",
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "11px", fontFamily: "Montserrat", fontWeight: 600,
+            fontSize: "11px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600,
             border: `1.5px solid rgba(198,168,112,${isOnProfile ? "0.40" : "0.20"})`,
             transition: "all 0.16s",
           }}>
             {user?.name?.charAt(0).toUpperCase() ?? "U"}
           </div>
-          <span style={{ fontFamily: "Montserrat", fontSize: "7.5px", letterSpacing: "0.10em", textTransform: "uppercase", fontWeight: isOnProfile ? 600 : 400 }}>
+          <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "7.5px", letterSpacing: "0.10em", textTransform: "uppercase", fontWeight: isOnProfile ? 600 : 400 }}>
             Perfil
           </span>
         </button>
@@ -259,7 +259,7 @@ function BottomTabBar() {
                 width: "48px", height: "48px", borderRadius: "50%",
                 background: "linear-gradient(135deg, rgba(198,168,112,0.20) 0%, rgba(198,168,112,0.08) 100%)",
                 color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: "18px", fontFamily: "Montserrat", fontWeight: 600, flexShrink: 0,
+                fontSize: "18px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600, flexShrink: 0,
                 border: "2px solid rgba(198,168,112,0.22)",
               }}>
                 {user?.name?.charAt(0).toUpperCase() ?? "U"}
@@ -283,7 +283,7 @@ function BottomTabBar() {
               {user?.role === "admin" && (
                 <button
                   onClick={() => { navigate("/admin"); setProfileOpen(false); }}
-                  style={{ display: "flex", alignItems: "center", gap: "12px", padding: "15px 18px", borderRadius: "14px", background: "rgba(198,168,112,0.07)", border: "1px solid rgba(198,168,112,0.20)", color: "var(--gold)", cursor: "pointer", width: "100%", fontSize: "15px", fontFamily: "DM Sans", minHeight: "54px", textAlign: "left", transition: "background 0.18s" }}
+                  style={{ display: "flex", alignItems: "center", gap: "12px", padding: "15px 18px", borderRadius: "14px", background: "rgba(198,168,112,0.07)", border: "1px solid rgba(198,168,112,0.20)", color: "var(--gold)", cursor: "pointer", width: "100%", fontSize: "15px", fontFamily: "Lora, Georgia, serif", minHeight: "54px", textAlign: "left", transition: "background 0.18s" }}
                   onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "rgba(198,168,112,0.12)")}
                   onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "rgba(198,168,112,0.07)")}
                 >
@@ -292,7 +292,7 @@ function BottomTabBar() {
               )}
               <button
                 onClick={() => { navigate("/perfil"); setProfileOpen(false); }}
-                style={{ display: "flex", alignItems: "center", gap: "12px", padding: "15px 18px", borderRadius: "14px", background: "transparent", border: "1px solid var(--border-soft)", color: "var(--text-secondary)", cursor: "pointer", width: "100%", fontSize: "15px", fontFamily: "DM Sans", minHeight: "54px", textAlign: "left", transition: "background 0.18s, border-color 0.18s" }}
+                style={{ display: "flex", alignItems: "center", gap: "12px", padding: "15px 18px", borderRadius: "14px", background: "transparent", border: "1px solid var(--border-soft)", color: "var(--text-secondary)", cursor: "pointer", width: "100%", fontSize: "15px", fontFamily: "Lora, Georgia, serif", minHeight: "54px", textAlign: "left", transition: "background 0.18s, border-color 0.18s" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border-mid)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border-soft)"; }}
               >
@@ -300,7 +300,7 @@ function BottomTabBar() {
               </button>
               <button
                 onClick={handleLogout}
-                style={{ display: "flex", alignItems: "center", gap: "12px", padding: "15px 18px", borderRadius: "14px", background: "transparent", border: "1px solid rgba(201,154,170,0.22)", color: "var(--rose)", cursor: "pointer", width: "100%", fontSize: "15px", fontFamily: "DM Sans", minHeight: "54px", textAlign: "left", transition: "background 0.18s, border-color 0.18s" }}
+                style={{ display: "flex", alignItems: "center", gap: "12px", padding: "15px 18px", borderRadius: "14px", background: "transparent", border: "1px solid rgba(201,154,170,0.22)", color: "var(--rose)", cursor: "pointer", width: "100%", fontSize: "15px", fontFamily: "Lora, Georgia, serif", minHeight: "54px", textAlign: "left", transition: "background 0.18s, border-color 0.18s" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(201,154,170,0.06)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,154,170,0.38)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,154,170,0.22)"; }}
               >

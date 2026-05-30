@@ -223,7 +223,7 @@ export default function CertificatePage() {
       }}>
         <button
           onClick={() => navigate(`/products/${slug}`)}
-          style={{ display: "flex", alignItems: "center", gap: "6px", background: "transparent", border: "none", cursor: "pointer", fontSize: "9px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", minHeight: "44px", padding: "0 4px" }}
+          style={{ display: "flex", alignItems: "center", gap: "6px", background: "transparent", border: "none", cursor: "pointer", fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", minHeight: "44px", padding: "0 4px" }}
         >
           <ArrowLeft size={12} /> Curso
         </button>
@@ -315,7 +315,7 @@ export default function CertificatePage() {
 
             {/* Institution */}
             <p style={{
-              fontFamily: "Montserrat, sans-serif",
+              fontFamily: "Manrope, system-ui, sans-serif",
               fontSize: "clamp(7px,1.1vw,11px)",
               letterSpacing: "clamp(0.18em,0.3vw,0.38em)",
               textTransform: "uppercase",
@@ -416,12 +416,12 @@ export default function CertificatePage() {
             <div style={{ display: "flex", gap: "clamp(16px,3%,36px)", alignItems: "center", marginTop: "clamp(2px,0.5%,6px)" }}>
               <div style={{ textAlign: "center" }}>
                 <p style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "clamp(14px,2vw,22px)", fontWeight: 600, color: "#c6a870", lineHeight: 1, margin: 0 }}>{certData.totalHours}h</p>
-                <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "clamp(6px,0.9vw,9px)", letterSpacing: "0.2em", textTransform: "uppercase", color: "#9a8260", marginTop: "2px" }}>Carga horária</p>
+                <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "clamp(6px,0.9vw,9px)", letterSpacing: "0.2em", textTransform: "uppercase", color: "#9a8260", marginTop: "2px" }}>Carga horária</p>
               </div>
               <div style={{ width: "0.5px", height: "clamp(24px,3.5%,36px)", background: "rgba(198,168,112,0.35)" }} />
               <div style={{ textAlign: "center" }}>
                 <p style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "clamp(10px,1.5vw,15px)", fontWeight: 500, color: "#4a3c2c", lineHeight: 1, margin: 0 }}>{certData.completedAt}</p>
-                <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "clamp(6px,0.9vw,9px)", letterSpacing: "0.2em", textTransform: "uppercase", color: "#9a8260", marginTop: "2px" }}>Data de conclusão</p>
+                <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "clamp(6px,0.9vw,9px)", letterSpacing: "0.2em", textTransform: "uppercase", color: "#9a8260", marginTop: "2px" }}>Data de conclusão</p>
               </div>
             </div>
 
@@ -441,13 +441,13 @@ export default function CertificatePage() {
                 <path d="M8 28 C 20 8, 40 4, 55 18 C 68 30, 85 10, 102 20" stroke="#c6a870" strokeWidth="1.8" strokeLinecap="round" fill="none" opacity="0.7" />
                 <path d="M12 32 C 30 26, 60 30, 98 26" stroke="#c6a870" strokeWidth="0.8" strokeLinecap="round" fill="none" opacity="0.4" />
               </svg>
-              <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "clamp(7px,1vw,10px)", fontWeight: 600, color: "#4a3c2c", letterSpacing: "0.18em", textTransform: "uppercase", margin: 0 }}>
+              <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "clamp(7px,1vw,10px)", fontWeight: 600, color: "#4a3c2c", letterSpacing: "0.18em", textTransform: "uppercase", margin: 0 }}>
                 {instructorName}
               </p>
-              <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "clamp(6px,0.85vw,9px)", color: "#9a8260", letterSpacing: "0.12em", margin: 0 }}>
+              <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "clamp(6px,0.85vw,9px)", color: "#9a8260", letterSpacing: "0.12em", margin: 0 }}>
                 {instructorTitle}
               </p>
-              <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "clamp(6px,0.8vw,8px)", color: "rgba(154,130,96,0.55)", letterSpacing: "0.14em", textTransform: "uppercase", margin: 0 }}>
+              <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "clamp(6px,0.8vw,8px)", color: "rgba(154,130,96,0.55)", letterSpacing: "0.14em", textTransform: "uppercase", margin: 0 }}>
                 {signatureLabel}
               </p>
             </div>

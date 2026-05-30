@@ -160,7 +160,7 @@ export default function TabletMockup({ targetSection = "section-6" }: TabletMock
                   Sunyan Nunes
                 </p>
                 <p style={{
-                  fontFamily:    "Montserrat, sans-serif",
+                  fontFamily:    "Manrope, system-ui, sans-serif",
                   fontSize:      "7px",
                   letterSpacing: "0.20em",
                   textTransform: "uppercase",
@@ -235,7 +235,7 @@ export default function TabletMockup({ targetSection = "section-6" }: TabletMock
             border:         "none",
             borderRadius:   "100px",
             color:          "#0b0d1c",
-            fontFamily:     "Montserrat, sans-serif",
+            fontFamily:     "Manrope, system-ui, sans-serif",
             fontSize:       "9px",
             fontWeight:     600,
             letterSpacing:  "0.20em",
@@ -253,7 +253,7 @@ export default function TabletMockup({ targetSection = "section-6" }: TabletMock
         </button>
 
         <p style={{
-          fontFamily:    "Montserrat, sans-serif",
+          fontFamily:    "Manrope, system-ui, sans-serif",
           fontSize:      "8px",
           letterSpacing: "0.16em",
           textTransform: "uppercase",

@@ -415,7 +415,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
   ════════════════════════════ */
   if (phase === "intro") {
     return (
-      <div style={{ minHeight: "100dvh", background: "#04060f", overflowX: "hidden", fontFamily: "DM Sans, sans-serif" }}>
+      <div style={{ minHeight: "100dvh", background: "#04060f", overflowX: "hidden", fontFamily: "Lora, Georgia, serif" }}>
         {/* Full-bleed hero image */}
         <div style={{ position: "relative", height: "100dvh", overflow: "hidden" }}>
           {/* Hero image with overlay */}
@@ -454,7 +454,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
             {/* Eyebrow */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
               <div style={{ height: "1px", width: "40px", background: "var(--gold)" }} />
-              <span style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.26em", textTransform: "uppercase", color: "var(--gold)" }}>
+              <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.26em", textTransform: "uppercase", color: "var(--gold)" }}>
                 Despertar Espiral
               </span>
             </div>
@@ -499,7 +499,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                   backdropFilter: "blur(12px)",
                 }}>
                   <Icon size={11} style={{ color: "var(--gold)" }} strokeWidth={1.5} />
-                  <span style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(245,240,232,0.80)" }}>
+                  <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(245,240,232,0.80)" }}>
                     {text}
                   </span>
                 </div>
@@ -521,7 +521,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                 background: "var(--gold)",
                 color: "#04060f",
                 border: "none", borderRadius: "100px",
-                fontFamily: "Montserrat, sans-serif",
+                fontFamily: "Manrope, system-ui, sans-serif",
                 fontSize: "11px", fontWeight: 700,
                 letterSpacing: "0.22em", textTransform: "uppercase",
                 cursor: "pointer", alignSelf: "flex-start",
@@ -537,7 +537,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
             </button>
 
             {/* Hint contextual */}
-            <p style={{ marginTop: "20px", fontSize: "11px", color: "rgba(245,240,232,0.32)", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.12em" }}>
+            <p style={{ marginTop: "20px", fontSize: "11px", color: "rgba(245,240,232,0.32)", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.12em" }}>
               {requireQR ? "Exclusive — acesso via QR code" : "Suas respostas são salvas automaticamente neste dispositivo"}
             </p>
           </div>
@@ -557,7 +557,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
           </blockquote>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px" }}>
             <div style={{ height: "1px", width: "32px", background: "rgba(198,168,112,0.35)" }} />
-            <span style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", color: "rgba(198,168,112,0.55)" }}>SUNYAN · DESPERTAR ESPIRAL</span>
+            <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.18em", color: "rgba(198,168,112,0.55)" }}>SUNYAN · DESPERTAR ESPIRAL</span>
             <div style={{ height: "1px", width: "32px", background: "rgba(198,168,112,0.35)" }} />
           </div>
         </div>
@@ -575,7 +575,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
     const isMed       = currentStep.type === "meditation";
 
     return (
-      <div ref={containerRef} style={{ minHeight: "100dvh", background: "#04060f", overflowX: "hidden", fontFamily: "DM Sans, sans-serif" }}>
+      <div ref={containerRef} style={{ minHeight: "100dvh", background: "#04060f", overflowX: "hidden", fontFamily: "Lora, Georgia, serif" }}>
         <ProgressBar current={step + 1} total={STEPS.length} />
 
         {/* Step header sticky */}
@@ -589,7 +589,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
         }}>
           <button
             onClick={goPrev}
-            style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", cursor: "pointer", color: "rgba(245,240,232,0.45)", fontSize: "13px", fontFamily: "DM Sans, sans-serif", padding: "8px", borderRadius: "8px", minHeight: "44px", transition: "color 0.2s" }}
+            style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "none", cursor: "pointer", color: "rgba(245,240,232,0.45)", fontSize: "13px", fontFamily: "Lora, Georgia, serif", padding: "8px", borderRadius: "8px", minHeight: "44px", transition: "color 0.2s" }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--gold)")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(245,240,232,0.45)")}
           >
@@ -607,7 +607,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
             ))}
           </div>
 
-          <div style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.16em", color: "rgba(198,168,112,0.55)" }}>
+          <div style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.16em", color: "rgba(198,168,112,0.55)" }}>
             {step + 1}/{STEPS.length}
           </div>
         </header>
@@ -633,11 +633,11 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
               gap: "2px",
             }}>
               <span style={{ fontSize: "18px", color: "var(--gold)", lineHeight: 1 }}>{currentStep.symbol}</span>
-              <span style={{ fontFamily: "Montserrat, sans-serif", fontSize: "8px", letterSpacing: "0.14em", color: "rgba(198,168,112,0.55)" }}>0{currentStep.id}</span>
+              <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "8px", letterSpacing: "0.14em", color: "rgba(198,168,112,0.55)" }}>0{currentStep.id}</span>
             </div>
 
             <div>
-              <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "6px" }}>
+              <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "6px" }}>
                 {currentStep.label}
               </p>
               <h2 style={{
@@ -704,7 +704,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                   background: "rgba(255,255,255,0.04)",
                   border: "1.5px solid rgba(198,168,112,0.18)",
                   borderRadius: "16px", color: "#f5f0e8",
-                  fontFamily: "DM Sans, sans-serif", fontSize: "16px",
+                  fontFamily: "Lora, Georgia, serif", fontSize: "16px",
                   lineHeight: 1.7, resize: "none", outline: "none",
                   transition: "border-color 0.22s, background 0.22s, box-shadow 0.22s",
                   caretColor: "var(--gold)",
@@ -723,7 +723,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                     {startIdx === 3 && (
                       <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "8px 0 12px" }}>
                         <div style={{ flex: 1, height: "1px", background: "rgba(198,168,112,0.12)" }} />
-                        <span style={{ fontFamily: "Montserrat, sans-serif", fontSize: "8.5px", letterSpacing: "0.18em", color: "rgba(198,168,112,0.55)", textTransform: "uppercase" }}>
+                        <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "8.5px", letterSpacing: "0.18em", color: "rgba(198,168,112,0.55)", textTransform: "uppercase" }}>
                           Sentimentos
                         </span>
                         <div style={{ flex: 1, height: "1px", background: "rgba(198,168,112,0.12)" }} />
@@ -743,7 +743,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                             background: "rgba(255,255,255,0.04)",
                             border: "1.5px solid rgba(198,168,112,0.14)",
                             borderRadius: "14px", color: "#f5f0e8",
-                            fontFamily: "DM Sans, sans-serif", fontSize: "15px",
+                            fontFamily: "Lora, Georgia, serif", fontSize: "15px",
                             lineHeight: 1.65, resize: "none", outline: "none",
                             transition: "border-color 0.22s, box-shadow 0.22s",
                             caretColor: "var(--gold)",
@@ -779,7 +779,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
 
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
                     <Volume2 size={14} style={{ color: "var(--gold)" }} strokeWidth={1.5} />
-                    <span style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "var(--gold)" }}>
+                    <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "var(--gold)" }}>
                       Leia em voz alta
                     </span>
                   </div>
@@ -813,7 +813,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                     background: affirmRead ? "rgba(140,170,150,0.15)" : "rgba(198,168,112,0.10)",
                     border: `1.5px solid ${affirmRead ? "rgba(140,170,150,0.35)" : "rgba(198,168,112,0.28)"}`,
                     color: affirmRead ? "var(--sage)" : "var(--gold)",
-                    fontFamily: "Montserrat, sans-serif", fontSize: "10px",
+                    fontFamily: "Manrope, system-ui, sans-serif", fontSize: "10px",
                     letterSpacing: "0.18em", textTransform: "uppercase",
                     cursor: "pointer", fontWeight: 600,
                     display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
@@ -870,7 +870,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                     background: medDone ? "rgba(140,170,150,0.15)" : "rgba(198,168,112,0.10)",
                     border: `1.5px solid ${medDone ? "rgba(140,170,150,0.35)" : "rgba(198,168,112,0.28)"}`,
                     color: medDone ? "var(--sage)" : "var(--gold)",
-                    fontFamily: "Montserrat, sans-serif", fontSize: "10px",
+                    fontFamily: "Manrope, system-ui, sans-serif", fontSize: "10px",
                     letterSpacing: "0.18em", textTransform: "uppercase",
                     cursor: "pointer", fontWeight: 600,
                     display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
@@ -892,7 +892,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                   background: canAdvance() ? "var(--gold)" : "rgba(198,168,112,0.14)",
                   color: canAdvance() ? "#04060f" : "rgba(198,168,112,0.35)",
                   border: "none", borderRadius: "16px",
-                  fontFamily: "Montserrat, sans-serif", fontSize: "11px",
+                  fontFamily: "Manrope, system-ui, sans-serif", fontSize: "11px",
                   fontWeight: 700, letterSpacing: "0.20em", textTransform: "uppercase",
                   cursor: canAdvance() ? "pointer" : "not-allowed",
                   display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
@@ -911,7 +911,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
               </button>
 
               {!canAdvance() && currentStep.type === "textarea" && (
-                <p style={{ textAlign: "center", marginTop: "12px", fontSize: "12px", color: "rgba(245,240,232,0.28)", fontFamily: "Montserrat, sans-serif" }}>
+                <p style={{ textAlign: "center", marginTop: "12px", fontSize: "12px", color: "rgba(245,240,232,0.28)", fontFamily: "Manrope, system-ui, sans-serif" }}>
                   Escreva sua resposta para continuar
                 </p>
               )}
@@ -927,7 +927,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
   ════════════════════════════ */
   if (phase === "capture") {
     return (
-      <div style={{ minHeight: "100dvh", background: "#04060f", fontFamily: "DM Sans, sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ minHeight: "100dvh", background: "#04060f", fontFamily: "Lora, Georgia, serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
 
         {/* Background image */}
         <div style={{ position: "fixed", inset: 0, zIndex: 0 }}>
@@ -956,7 +956,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
             }}>
               <span style={{ fontSize: "32px" }}>✶</span>
             </div>
-            <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "12px" }}>
+            <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "12px" }}>
               Jornada Completa
             </p>
             <h2 style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "clamp(32px,5vw,48px)", fontWeight: 300, color: "#f5f0e8", lineHeight: 1.1, marginBottom: "14px" }}>
@@ -970,7 +970,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
           {/* Form */}
           <form onSubmit={handleCapture} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
             <div>
-              <label style={{ display: "block", fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(245,240,232,0.45)", marginBottom: "8px" }}>
+              <label style={{ display: "block", fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(245,240,232,0.45)", marginBottom: "8px" }}>
                 E-mail (opcional)
               </label>
               <input
@@ -983,7 +983,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                   background: "rgba(255,255,255,0.05)",
                   border: "1.5px solid rgba(198,168,112,0.18)",
                   borderRadius: "14px", color: "#f5f0e8",
-                  fontFamily: "DM Sans, sans-serif", fontSize: "16px",
+                  fontFamily: "Lora, Georgia, serif", fontSize: "16px",
                   outline: "none", transition: "border-color 0.22s, box-shadow 0.22s",
                   caretColor: "var(--gold)",
                 }}
@@ -993,7 +993,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
             </div>
 
             <div>
-              <label style={{ display: "block", fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(245,240,232,0.45)", marginBottom: "8px" }}>
+              <label style={{ display: "block", fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(245,240,232,0.45)", marginBottom: "8px" }}>
                 Telefone / WhatsApp (opcional)
               </label>
               <input
@@ -1006,7 +1006,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                   background: "rgba(255,255,255,0.05)",
                   border: "1.5px solid rgba(198,168,112,0.18)",
                   borderRadius: "14px", color: "#f5f0e8",
-                  fontFamily: "DM Sans, sans-serif", fontSize: "16px",
+                  fontFamily: "Lora, Georgia, serif", fontSize: "16px",
                   outline: "none", transition: "border-color 0.22s, box-shadow 0.22s",
                   caretColor: "var(--gold)",
                 }}
@@ -1022,7 +1022,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                 width: "100%", padding: "18px",
                 background: "var(--gold)", color: "#04060f",
                 border: "none", borderRadius: "14px",
-                fontFamily: "Montserrat, sans-serif", fontSize: "11px",
+                fontFamily: "Manrope, system-ui, sans-serif", fontSize: "11px",
                 fontWeight: 700, letterSpacing: "0.20em", textTransform: "uppercase",
                 cursor: submitting ? "not-allowed" : "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
@@ -1040,7 +1040,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
               onClick={() => setPhase("result")}
               style={{
                 background: "none", border: "none", color: "rgba(245,240,232,0.32)",
-                fontFamily: "Montserrat, sans-serif", fontSize: "9px",
+                fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px",
                 letterSpacing: "0.16em", textTransform: "uppercase",
                 cursor: "pointer", padding: "10px", minHeight: "44px",
                 transition: "color 0.2s",
@@ -1052,7 +1052,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
             </button>
           </form>
 
-          <p style={{ textAlign: "center", marginTop: "20px", fontSize: "11px", color: "rgba(245,240,232,0.22)", fontFamily: "Montserrat, sans-serif", lineHeight: 1.6 }}>
+          <p style={{ textAlign: "center", marginTop: "20px", fontSize: "11px", color: "rgba(245,240,232,0.22)", fontFamily: "Manrope, system-ui, sans-serif", lineHeight: 1.6 }}>
             Seus dados são protegidos e nunca compartilhados.<br />
             Você pode cancelar a qualquer momento.
           </p>
@@ -1066,7 +1066,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
   ════════════════════════════ */
   if (phase === "result") {
     return (
-      <div style={{ minHeight: "100dvh", background: "#04060f", fontFamily: "DM Sans, sans-serif", overflowX: "hidden", color: "#f5f0e8" }}>
+      <div style={{ minHeight: "100dvh", background: "#04060f", fontFamily: "Lora, Georgia, serif", overflowX: "hidden", color: "#f5f0e8" }}>
         {/* Background fixo */}
         <div style={{ position: "fixed", inset: 0, zIndex: 0 }} className="no-print">
           <img src={heroImg} alt="" aria-hidden style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.12) saturate(0.7)" }} />
@@ -1079,7 +1079,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
           <div style={{ textAlign: "center", marginBottom: "clamp(32px,5vw,52px)" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: "12px", marginBottom: "18px" }}>
               <div style={{ height: "1px", width: "40px", background: "var(--gold)" }} />
-              <span style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.26em", textTransform: "uppercase", color: "var(--gold)" }}>
+              <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.26em", textTransform: "uppercase", color: "var(--gold)" }}>
                 Despertar Espiral
               </span>
               <div style={{ height: "1px", width: "40px", background: "var(--gold)" }} />
@@ -1090,7 +1090,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
             <p style={{ fontSize: "clamp(13px,2vw,15px)", color: "rgba(245,240,232,0.55)", lineHeight: 1.7 }}>
               Registro pessoal das 8 etapas de ativação. Guarde, releia, retorne sempre que precisar.
             </p>
-            <p style={{ marginTop: "10px", fontSize: "11px", color: "rgba(245,240,232,0.35)", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.12em" }}>
+            <p style={{ marginTop: "10px", fontSize: "11px", color: "rgba(245,240,232,0.35)", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.12em" }}>
               {new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}
             </p>
           </div>
@@ -1122,7 +1122,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                       <span style={{ color: "var(--gold)", fontSize: "16px" }}>{s.symbol}</span>
                     </div>
                     <div>
-                      <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "2px" }}>
+                      <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "2px" }}>
                         Etapa 0{s.id} · {s.label}
                       </p>
                       <p style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "clamp(16px,2.4vw,19px)", color: "rgba(245,240,232,0.88)", lineHeight: 1.3, fontWeight: 400 }}>
@@ -1134,12 +1134,12 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
                   {/* Respostas */}
                   <div style={{ paddingLeft: "54px" }}>
                     {isAffirm && (
-                      <p style={{ fontSize: "13px", color: affirmRead ? "var(--sage)" : "rgba(245,240,232,0.42)", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.04em" }}>
+                      <p style={{ fontSize: "13px", color: affirmRead ? "var(--sage)" : "rgba(245,240,232,0.42)", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.04em" }}>
                         {affirmRead ? "✓ Compromisso lido em voz alta" : "Não confirmado"}
                       </p>
                     )}
                     {isMed && (
-                      <p style={{ fontSize: "13px", color: medDone ? "var(--sage)" : "rgba(245,240,232,0.42)", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.04em" }}>
+                      <p style={{ fontSize: "13px", color: medDone ? "var(--sage)" : "rgba(245,240,232,0.42)", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.04em" }}>
                         {medDone ? "✓ Visualização concluída" : "Não confirmada"}
                       </p>
                     )}
@@ -1172,7 +1172,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
             <p style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "clamp(16px,2.4vw,20px)", fontStyle: "italic", color: "rgba(245,240,232,0.75)", lineHeight: 1.5, marginBottom: "8px" }}>
               "Você é o mapa. Você é o poder."
             </p>
-            <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "rgba(198,168,112,0.55)" }}>
+            <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "rgba(198,168,112,0.55)" }}>
               despertarespiral.com/mapa-do-poder
             </p>
           </div>
@@ -1190,7 +1190,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
               padding: "17px 24px",
               background: "var(--gold)", color: "#04060f",
               border: "none", borderRadius: "14px",
-              fontFamily: "Montserrat, sans-serif", fontSize: "11px",
+              fontFamily: "Manrope, system-ui, sans-serif", fontSize: "11px",
               fontWeight: 700, letterSpacing: "0.20em", textTransform: "uppercase",
               cursor: "pointer", minHeight: "56px",
               boxShadow: "0 8px 32px rgba(198,168,112,0.30)",
@@ -1210,7 +1210,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
               background: "transparent",
               border: "1px solid rgba(198,168,112,0.30)",
               borderRadius: "14px", color: "rgba(245,240,232,0.75)",
-              fontFamily: "Montserrat, sans-serif", fontSize: "10px",
+              fontFamily: "Manrope, system-ui, sans-serif", fontSize: "10px",
               fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase",
               cursor: "pointer", minHeight: "52px",
               transition: "border-color 0.22s, color 0.22s",
@@ -1240,7 +1240,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
      COMPLETE PHASE
   ════════════════════════════ */
   return (
-    <div style={{ minHeight: "100dvh", background: "#04060f", fontFamily: "DM Sans, sans-serif", overflowX: "hidden" }}>
+    <div style={{ minHeight: "100dvh", background: "#04060f", fontFamily: "Lora, Georgia, serif", overflowX: "hidden" }}>
 
       {/* Hero image — full backdrop */}
       <div style={{ position: "fixed", inset: 0, zIndex: 0 }}>
@@ -1275,7 +1275,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
           ✶
         </div>
 
-        <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.28em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "16px", animation: "fadeUp 0.6s ease 0.4s both" }}>
+        <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.28em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "16px", animation: "fadeUp 0.6s ease 0.4s both" }}>
           Ativação Completa
         </p>
 
@@ -1318,7 +1318,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
             style={{ display: "block", borderRadius: "8px" }}
           />
           <div>
-            <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(4,6,15,0.45)", marginBottom: "4px" }}>
+            <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(4,6,15,0.45)", marginBottom: "4px" }}>
               Acesse sempre
             </p>
             <p style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "16px", color: "#04060f", fontWeight: 500, letterSpacing: "0.02em" }}>
@@ -1348,7 +1348,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
               padding: "17px 32px",
               background: "var(--gold)", color: "#04060f",
               borderRadius: "14px", textDecoration: "none",
-              fontFamily: "Montserrat, sans-serif", fontSize: "10.5px",
+              fontFamily: "Manrope, system-ui, sans-serif", fontSize: "10.5px",
               fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase",
               boxShadow: "0 8px 32px rgba(198,168,112,0.30)",
               transition: "transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s",
@@ -1378,7 +1378,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
               padding: "14px 24px", background: "transparent",
               border: "1px solid rgba(198,168,112,0.20)",
               borderRadius: "14px", color: "rgba(245,240,232,0.45)",
-              fontFamily: "Montserrat, sans-serif", fontSize: "9px",
+              fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px",
               letterSpacing: "0.16em", textTransform: "uppercase",
               cursor: "pointer", transition: "all 0.2s", minHeight: "50px",
             }}
@@ -1393,7 +1393,7 @@ export default function MapaDoPoder({ requireQR = false }: MapaDoPoderProps = {}
         <div style={{ marginTop: "clamp(40px,8vw,80px)", animation: "fadeIn 0.5s ease 1.4s both" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", justifyContent: "center" }}>
             <div style={{ height: "1px", width: "24px", background: "rgba(198,168,112,0.25)" }} />
-            <span style={{ fontFamily: "Montserrat, sans-serif", fontSize: "8px", letterSpacing: "0.24em", textTransform: "uppercase", color: "rgba(198,168,112,0.35)" }}>
+            <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "8px", letterSpacing: "0.24em", textTransform: "uppercase", color: "rgba(198,168,112,0.35)" }}>
               Despertar Espiral · Sunyan
             </span>
             <div style={{ height: "1px", width: "24px", background: "rgba(198,168,112,0.25)" }} />
