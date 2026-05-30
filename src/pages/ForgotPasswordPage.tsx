@@ -12,7 +12,7 @@ import { mapAuthError } from "@/lib/authErrors";
 
 const LABEL: React.CSSProperties = {
   display: "block",
-  fontFamily: "Montserrat, sans-serif",
+  fontFamily: "Manrope, system-ui, sans-serif",
   fontSize: "9px",
   letterSpacing: "0.20em",
   textTransform: "uppercase",
@@ -156,7 +156,7 @@ export default function ForgotPasswordPage() {
                   Não recebeu? Verifique a pasta de spam ou{" "}
                   <button
                     onClick={() => setSent(false)}
-                    style={{ background: "transparent", border: "none", cursor: "pointer", color: "var(--gold)", fontFamily: "DM Sans", fontSize: "13px", padding: 0 }}
+                    style={{ background: "transparent", border: "none", cursor: "pointer", color: "var(--gold)", fontFamily: "Lora, Georgia, serif", fontSize: "13px", padding: 0 }}
                   >
                     tente novamente
                   </button>.
@@ -168,7 +168,7 @@ export default function ForgotPasswordPage() {
           <div style={{ textAlign: "center", marginTop: "clamp(20px,3vw,32px)" }}>
             <Link to="/login" style={{
               display: "inline-flex", alignItems: "center", gap: "6px",
-              fontFamily: "Montserrat, sans-serif", fontSize: "9px",
+              fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px",
               letterSpacing: "0.18em", textTransform: "uppercase",
               color: "var(--text-muted)", textDecoration: "none",
               transition: "color 0.2s", minHeight: "44px",

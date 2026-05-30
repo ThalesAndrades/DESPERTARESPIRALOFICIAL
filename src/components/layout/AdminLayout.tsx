@@ -182,7 +182,7 @@ function AdminBottomNav() {
             }}>
               <Icon size={17} strokeWidth={active ? 2 : 1.5} />
             </div>
-            <span style={{ fontFamily: "Montserrat, sans-serif", fontSize: "7px", letterSpacing: "0.10em", textTransform: "uppercase", fontWeight: active ? 600 : 400 }}>
+            <span style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: "7px", letterSpacing: "0.10em", textTransform: "uppercase", fontWeight: active ? 600 : 400 }}>
               {label}
             </span>
           </Link>

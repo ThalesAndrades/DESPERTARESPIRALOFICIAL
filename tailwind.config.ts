@@ -12,8 +12,8 @@ export default {
     extend: {
       fontFamily: {
         display: ["Cormorant Garamond", "serif"],
-        body: ["DM Sans", "sans-serif"],
-        label: ["Montserrat", "sans-serif"],
+        body: ["Lora", "Georgia", "serif"],
+        label: ["Manrope", "system-ui", "sans-serif"],
       },
       colors: {
         navy: {

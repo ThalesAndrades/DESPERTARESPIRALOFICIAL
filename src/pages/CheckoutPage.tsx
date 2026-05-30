@@ -14,7 +14,7 @@ export default function CheckoutPage() {
   const [waitlistOpen, setWaitlistOpen] = useState(false);
 
   return (
-    <div style={{ minHeight: "100dvh", background: "var(--bg-deep)", color: "var(--text-primary)", fontFamily: "DM Sans, sans-serif" }}>
+    <div style={{ minHeight: "100dvh", background: "var(--bg-deep)", color: "var(--text-primary)", fontFamily: "Lora, Georgia, serif" }}>
       <Helmet>
         <title>Pré-lançamento · Despertar Espiral</title>
         <meta name="robots" content="noindex" />
@@ -46,7 +46,7 @@ export default function CheckoutPage() {
         </div>
 
         <p style={{
-          fontFamily: "Montserrat, sans-serif", fontSize: 10, letterSpacing: "0.28em",
+          fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10, letterSpacing: "0.28em",
           textTransform: "uppercase", color: "var(--gold)", marginBottom: 14,
         }}>
           Pré-lançamento

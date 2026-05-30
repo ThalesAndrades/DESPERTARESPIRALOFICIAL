@@ -152,7 +152,7 @@ export default function AdminUsersPage() {
                     <tr key={u.id} style={{ borderBottom: i < filtered.length - 1 ? "1px solid var(--border-subtle)" : "none" }}>
                       <td style={{ padding: "14px 18px" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                          <div style={{ width: "34px", height: "34px", borderRadius: "50%", background: "rgba(198,168,112,0.12)", color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontFamily: "Montserrat", fontWeight: 500, flexShrink: 0 }}>
+                          <div style={{ width: "34px", height: "34px", borderRadius: "50%", background: "rgba(198,168,112,0.12)", color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500, flexShrink: 0 }}>
                             {displayName(u).charAt(0).toUpperCase()}
                           </div>
                           <div>
@@ -212,7 +212,7 @@ export default function AdminUsersPage() {
             ) : filtered.map((u) => (
               <div key={u.id} className="card-dark" style={{ padding: "16px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
-                  <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "rgba(198,168,112,0.12)", color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", fontFamily: "Montserrat", fontWeight: 500, flexShrink: 0 }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "rgba(198,168,112,0.12)", color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500, flexShrink: 0 }}>
                     {displayName(u).charAt(0).toUpperCase()}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>

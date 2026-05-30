@@ -221,7 +221,7 @@ export default function DashboardPage() {
                 background: "rgba(164,158,208,0.08)", border: "1px solid rgba(164,158,208,0.18)",
               }}>
                 <div style={{ width: "16px", height: "16px", borderRadius: "50%", background: "rgba(164,158,208,0.20)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: "8px", color: "var(--lavender)", fontFamily: "Montserrat", fontWeight: 600 }}>
+                  <span style={{ fontSize: "8px", color: "var(--lavender)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600 }}>
                     {user?.anonymous_name?.charAt(0) ?? "A"}
                   </span>
                 </div>
@@ -235,7 +235,7 @@ export default function DashboardPage() {
               width: "48px", height: "48px", borderRadius: "50%",
               background: "linear-gradient(135deg, rgba(198,168,112,0.22) 0%, rgba(198,168,112,0.08) 100%)",
               color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: "18px", fontFamily: "Montserrat", fontWeight: 600, flexShrink: 0,
+              fontSize: "18px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600, flexShrink: 0,
               border: "2px solid rgba(198,168,112,0.24)",
               boxShadow: "0 4px 20px rgba(198,168,112,0.15)",
             }}>
@@ -250,7 +250,7 @@ export default function DashboardPage() {
                 <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>Jornada geral</span>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                   {overallPct === 100 && <Sparkles size={11} style={{ color: "var(--gold)" }} />}
-                  <span style={{ fontSize: "12px", color: "var(--gold)", fontFamily: "Montserrat", fontWeight: 600 }}>{overallPct}%</span>
+                  <span style={{ fontSize: "12px", color: "var(--gold)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600 }}>{overallPct}%</span>
                 </div>
               </div>
               <div className="progress-bar thick" style={{ marginBottom: "12px" }}>
@@ -343,7 +343,7 @@ export default function DashboardPage() {
                           {p.completed_lessons}/{p.total_lessons} aulas
                         </span>
                         <span style={{
-                          fontSize: "11px", fontFamily: "Montserrat", fontWeight: 600,
+                          fontSize: "11px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600,
                           color: p.progress_pct === 100 ? "var(--sage)" : "var(--gold)",
                         }}>
                           {p.progress_pct === 100 ? "✓ Concluído" : `${p.progress_pct}%`}

@@ -194,7 +194,7 @@ export default function CourseViewPage() {
         <div style={{ padding: "clamp(14px,2.5vw,20px) clamp(14px,4vw,24px) 0" }}>
           <button
             onClick={() => navigate("/products")}
-            style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "transparent", border: "none", cursor: "pointer", fontSize: "9px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", padding: "8px 0", minHeight: "44px", transition: "color 0.2s" }}
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "transparent", border: "none", cursor: "pointer", fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", padding: "8px 0", minHeight: "44px", transition: "color 0.2s" }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--gold)")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-muted)")}
           >
@@ -225,7 +225,7 @@ export default function CourseViewPage() {
                 <h1 className="font-display" style={{ fontSize: "clamp(22px,4.5vw,40px)", fontWeight: 300, color: "#f5f0e8", lineHeight: 1.1, marginBottom: "6px" }}>
                   {product.title as string}
                 </h1>
-                <p style={{ fontSize: "9px", fontFamily: "Montserrat", letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,240,232,0.38)" }}>
+                <p style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,240,232,0.38)" }}>
                   {(product.modules as unknown[]).length} módulos · {totalLessons} aulas
                 </p>
               </div>
@@ -238,7 +238,7 @@ export default function CourseViewPage() {
                   <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
                     {completedCount} de {totalLessons} aulas
                   </span>
-                  <span style={{ fontSize: "13px", fontFamily: "Montserrat", fontWeight: 600, color: isCourseComplete ? "var(--sage)" : "var(--gold)" }}>
+                  <span style={{ fontSize: "13px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600, color: isCourseComplete ? "var(--sage)" : "var(--gold)" }}>
                     {progress}%
                   </span>
                 </div>
@@ -277,11 +277,11 @@ export default function CourseViewPage() {
                 const allDone    = pct === 100;
                 return (
                   <div key={mod.id} className={`module-chip${allDone ? " done" : ""}`} style={{ padding: "7px 11px", borderRadius: "10px", background: "var(--bg-surface-2)", border: `1px solid ${allDone ? "rgba(140,170,150,0.28)" : "var(--border-subtle)"}`, display: "flex", alignItems: "center", gap: "7px", flexShrink: 0 }}>
-                    <span style={{ fontSize: "9px", fontFamily: "Montserrat", color: allDone ? "var(--sage)" : "var(--text-faint)", letterSpacing: "0.08em" }}>M{i + 1}</span>
+                    <span style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", color: allDone ? "var(--sage)" : "var(--text-faint)", letterSpacing: "0.08em" }}>M{i + 1}</span>
                     <div style={{ width: "36px", height: "3px", borderRadius: "100px", background: "var(--border-subtle)", overflow: "hidden" }}>
                       <div style={{ width: `${pct}%`, height: "100%", borderRadius: "100px", background: allDone ? "var(--sage)" : "var(--gold)", transition: "width 0.7s" }} />
                     </div>
-                    <span style={{ fontSize: "9px", fontFamily: "Montserrat", color: allDone ? "var(--sage)" : "var(--gold)", fontWeight: 600 }}>{pct}%</span>
+                    <span style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", color: allDone ? "var(--sage)" : "var(--gold)", fontWeight: 600 }}>{pct}%</span>
                   </div>
                 );
               })}
@@ -302,8 +302,8 @@ export default function CourseViewPage() {
               <div key={lbl} className="stat-chip">
                 <Icon size={12} style={{ color: "var(--gold)" }} strokeWidth={1.5} />
                 <div>
-                  <p style={{ fontSize: "13px", fontFamily: "Montserrat", fontWeight: 600, color: "var(--text-primary)", lineHeight: 1 }}>{val}</p>
-                  <p style={{ fontSize: "9px", fontFamily: "Montserrat", letterSpacing: "0.10em", textTransform: "uppercase", color: "var(--text-faint)", marginTop: "2px" }}>{lbl}</p>
+                  <p style={{ fontSize: "13px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600, color: "var(--text-primary)", lineHeight: 1 }}>{val}</p>
+                  <p style={{ fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.10em", textTransform: "uppercase", color: "var(--text-faint)", marginTop: "2px" }}>{lbl}</p>
                 </div>
               </div>
             ))}
@@ -363,7 +363,7 @@ export default function CourseViewPage() {
                       background: allDone ? "rgba(140,170,150,0.15)" : "rgba(198,168,112,0.12)",
                       color: allDone ? "var(--sage)" : "var(--gold)",
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "11px", fontFamily: "Montserrat", fontWeight: 500,
+                      fontSize: "11px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500,
                       transition: "background 0.2s, color 0.2s",
                     }}>
                       {allDone ? <CheckCircle size={14} strokeWidth={2} /> : mIdx + 1}
@@ -372,7 +372,7 @@ export default function CourseViewPage() {
                       <p style={{ fontSize: "clamp(14px,1.8vw,16px)", fontWeight: 500, color: "var(--text-primary)", lineHeight: 1.3, marginBottom: "3px" }}>
                         {mod.title}
                       </p>
-                      <p style={{ fontSize: "11px", fontFamily: "Montserrat", letterSpacing: "0.08em", textTransform: "uppercase", color: allDone ? "var(--sage)" : "var(--text-faint)" }}>
+                      <p style={{ fontSize: "11px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.08em", textTransform: "uppercase", color: allDone ? "var(--sage)" : "var(--text-faint)" }}>
                         {modDone}/{mod.lessons.length} aulas concluídas
                       </p>
                     </div>
@@ -417,11 +417,11 @@ export default function CourseViewPage() {
                             </p>
                             <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
                               {lesson.duration_min != null && lesson.duration_min > 0 && (
-                                <span style={{ fontSize: "10px", fontFamily: "Montserrat", color: "var(--text-faint)", letterSpacing: "0.06em" }}>
+                                <span style={{ fontSize: "10px", fontFamily: "Manrope, system-ui, sans-serif", color: "var(--text-faint)", letterSpacing: "0.06em" }}>
                                   {lesson.duration_min}min
                                 </span>
                               )}
-                              <span style={{ fontSize: "8px", fontFamily: "Montserrat", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--text-faint)" }}>
+                              <span style={{ fontSize: "8px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--text-faint)" }}>
                                 {lessonLabel[lesson.type] ?? lesson.type}
                               </span>
                             </div>

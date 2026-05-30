@@ -244,7 +244,7 @@ export default function CommunityPage() {
             marginBottom: "16px",
           }}>
             <div style={{ width: "18px", height: "18px", borderRadius: "50%", background: "rgba(164,158,208,0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: "9px", color: "var(--lavender)", fontFamily: "Montserrat, sans-serif", fontWeight: 600 }}>
+              <span style={{ fontSize: "9px", color: "var(--lavender)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600 }}>
                 {user?.anonymous_name?.charAt(0) ?? "A"}
               </span>
             </div>
@@ -311,7 +311,7 @@ export default function CommunityPage() {
                     width: "30px", height: "30px", borderRadius: "50%",
                     background: "rgba(164,158,208,0.14)", color: "var(--lavender)",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: "11px", fontFamily: "Montserrat, sans-serif", fontWeight: 600, flexShrink: 0,
+                    fontSize: "11px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600, flexShrink: 0,
                   }}>
                     {post.author_anonymous.charAt(0)}
                   </div>
@@ -324,7 +324,7 @@ export default function CommunityPage() {
                     </div>
                   </div>
                   <span style={{
-                    fontSize: "8px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.14em",
+                    fontSize: "8px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.14em",
                     textTransform: "uppercase", padding: "3px 10px", borderRadius: "100px",
                     border: `1px solid ${catColor(post.category)}30`,
                     color: catColor(post.category),
@@ -362,7 +362,7 @@ export default function CommunityPage() {
                     display: "flex", alignItems: "center", gap: "6px",
                     padding: "10px 12px", background: "transparent", border: "none", cursor: "pointer",
                     color: liked.has(post.id) ? "var(--rose)" : "var(--text-faint)",
-                    fontSize: "13px", fontFamily: "DM Sans, sans-serif",
+                    fontSize: "13px", fontFamily: "Lora, Georgia, serif",
                     transition: "color 0.2s", minHeight: "44px", borderRadius: "8px",
                   }}
                   aria-label={liked.has(post.id) ? "Remover curtida" : "Curtir"}
@@ -390,7 +390,7 @@ export default function CommunityPage() {
                     display: "flex", alignItems: "center", gap: "5px",
                     padding: "10px 12px", textDecoration: "none",
                     color: "var(--text-faint)", fontSize: "12px", marginLeft: "auto",
-                    fontFamily: "Montserrat, sans-serif", letterSpacing: "0.1em", textTransform: "uppercase",
+                    fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.1em", textTransform: "uppercase",
                     minHeight: "44px", borderRadius: "8px",
                   }}
                 >
@@ -477,7 +477,7 @@ export default function CommunityPage() {
 
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
               <div>
-                <label style={{ display: "block", fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "8px" }}>
+                <label style={{ display: "block", fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "8px" }}>
                   Categoria
                 </label>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
@@ -488,7 +488,7 @@ export default function CommunityPage() {
                       onClick={() => setNewPost((p) => ({ ...p, category: c.value as CommunityPost["category"] }))}
                       style={{
                         padding: "7px 14px", borderRadius: "100px", border: "1px solid",
-                        fontSize: "9px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase",
+                        fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.15em", textTransform: "uppercase",
                         cursor: "pointer", minHeight: "36px", transition: "all 0.18s",
                         borderColor: newPost.category === c.value ? c.color : "var(--border-subtle)",
                         color: newPost.category === c.value ? c.color : "var(--text-faint)",
@@ -502,7 +502,7 @@ export default function CommunityPage() {
               </div>
 
               <div>
-                <label style={{ display: "block", fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "8px" }}>
+                <label style={{ display: "block", fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "8px" }}>
                   Título
                 </label>
                 <input
@@ -517,7 +517,7 @@ export default function CommunityPage() {
               </div>
 
               <div>
-                <label style={{ display: "block", fontFamily: "Montserrat, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "8px" }}>
+                <label style={{ display: "block", fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "8px" }}>
                   Conteúdo
                 </label>
                 <textarea

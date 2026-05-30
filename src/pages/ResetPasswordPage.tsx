@@ -15,7 +15,7 @@ import { mapAuthError } from "@/lib/authErrors";
 
 const LABEL: React.CSSProperties = {
   display: "block",
-  fontFamily: "Montserrat, sans-serif",
+  fontFamily: "Manrope, system-ui, sans-serif",
   fontSize: "9px",
   letterSpacing: "0.20em",
   textTransform: "uppercase",

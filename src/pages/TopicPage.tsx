@@ -204,7 +204,7 @@ export default function TopicPage() {
         <div style={{ padding: "clamp(14px,2.5vw,20px) 16px 0" }}>
           <Link to="/community" style={{
             display: "inline-flex", alignItems: "center", gap: "6px",
-            fontSize: "9px", fontFamily: "Montserrat, sans-serif",
+            fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif",
             letterSpacing: "0.18em", textTransform: "uppercase",
             color: "var(--text-muted)", textDecoration: "none",
             transition: "color 0.2s", minHeight: "44px",
@@ -223,7 +223,7 @@ export default function TopicPage() {
             {/* Category + author row */}
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px", flexWrap: "wrap" }}>
               <span style={{
-                fontSize: "8px", fontFamily: "Montserrat, sans-serif", letterSpacing: "0.15em",
+                fontSize: "8px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.15em",
                 textTransform: "uppercase", padding: "4px 12px", borderRadius: "100px",
                 border: `1px solid ${color}28`, color, background: `${color}10`,
               }}>
@@ -232,7 +232,7 @@ export default function TopicPage() {
               {post.is_pinned && <Flame size={11} style={{ color: "var(--gold)" }} />}
               <div style={{ display: "flex", alignItems: "center", gap: "6px", marginLeft: "2px" }}>
                 <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "rgba(164,158,208,0.14)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: "9px", color: "var(--lavender)", fontFamily: "Montserrat", fontWeight: 600 }}>
+                  <span style={{ fontSize: "9px", color: "var(--lavender)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600 }}>
                     {authorName.charAt(0)}
                   </span>
                 </div>
@@ -267,7 +267,7 @@ export default function TopicPage() {
                   padding: "8px 12px", background: "transparent", border: "none",
                   cursor: "pointer", borderRadius: "8px",
                   color: likedPost ? "var(--rose)" : "var(--text-faint)",
-                  fontSize: "13px", fontFamily: "DM Sans", transition: "color 0.2s",
+                  fontSize: "13px", fontFamily: "Lora, Georgia, serif", transition: "color 0.2s",
                   minHeight: "44px",
                 }}
               >
@@ -306,7 +306,7 @@ export default function TopicPage() {
                   {/* Author */}
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
                     <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "rgba(172,128,142,0.14)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <span style={{ fontSize: "10px", color: "var(--rose)", fontFamily: "Montserrat", fontWeight: 600 }}>
+                      <span style={{ fontSize: "10px", color: "var(--rose)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600 }}>
                         {commentAuthor.charAt(0)}
                       </span>
                     </div>
@@ -327,7 +327,7 @@ export default function TopicPage() {
                     style={{
                       display: "flex", alignItems: "center", gap: "5px",
                       background: "transparent", border: "none", cursor: "pointer",
-                      fontSize: "12px", fontFamily: "DM Sans",
+                      fontSize: "12px", fontFamily: "Lora, Georgia, serif",
                       color: isLiked ? "var(--rose)" : "var(--text-faint)",
                       padding: "4px 0", minHeight: "36px",
                       transition: "color 0.2s",

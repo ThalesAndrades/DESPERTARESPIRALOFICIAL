@@ -20,7 +20,7 @@ import { toast } from "sonner";
 /* ── helpers ── */
 const LABEL: React.CSSProperties = {
   display: "block",
-  fontFamily: "Montserrat, sans-serif",
+  fontFamily: "Manrope, system-ui, sans-serif",
   fontSize: "9px",
   letterSpacing: "0.18em",
   textTransform: "uppercase",
@@ -414,7 +414,7 @@ export default function QuizEditor({ moduleId, productId }: Props) {
                 {/* Question header */}
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 12px", background: isOpen ? "rgba(198,168,112,0.04)" : "transparent" }}>
                   <GripVertical size={12} style={{ color: "var(--border-subtle)", flexShrink: 0 }} />
-                  <span style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(198,168,112,0.10)", color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "9px", fontFamily: "Montserrat", fontWeight: 600, flexShrink: 0 }}>
+                  <span style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(198,168,112,0.10)", color: "var(--gold)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "9px", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 600, flexShrink: 0 }}>
                     {qIdx + 1}
                   </span>
                   <button
@@ -426,7 +426,7 @@ export default function QuizEditor({ moduleId, productId }: Props) {
                       {q.question || <span style={{ color: "var(--text-faint)", fontStyle: "italic" }}>Sem enunciado</span>}
                     </p>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
-                      <span style={{ fontSize: "8px", fontFamily: "Montserrat", letterSpacing: "0.12em", textTransform: "uppercase", padding: "2px 8px", borderRadius: "100px", background: "rgba(164,158,208,0.10)", color: "var(--lavender)" }}>
+                      <span style={{ fontSize: "8px", fontFamily: "Manrope, system-ui, sans-serif", letterSpacing: "0.12em", textTransform: "uppercase", padding: "2px 8px", borderRadius: "100px", background: "rgba(164,158,208,0.10)", color: "var(--lavender)" }}>
                         {q.type === "multiple_choice" ? "múltipla escolha" : "V/F"}
                       </span>
                       {!hasCorrect && (
@@ -629,7 +629,7 @@ export default function QuizEditor({ moduleId, productId }: Props) {
               marginTop: "8px", width: "100%", display: "flex", alignItems: "center", gap: "8px",
               padding: "11px 16px", background: "transparent", border: "1px dashed var(--border-soft)",
               borderRadius: "10px", cursor: "pointer", color: "rgba(198,168,112,0.55)",
-              fontSize: "12px", fontFamily: "DM Sans", transition: "all 0.2s",
+              fontSize: "12px", fontFamily: "Lora, Georgia, serif", transition: "all 0.2s",
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--gold)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(198,168,112,0.4)"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(198,168,112,0.55)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border-soft)"; }}

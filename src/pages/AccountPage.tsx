@@ -88,7 +88,7 @@ export default function AccountPage() {
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "32px 24px" }}>
         <header style={{ marginBottom: 32 }}>
-          <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: 10, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 8 }}>
+          <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 8 }}>
             Minha conta
           </p>
           <h1 style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "clamp(28px,4vw,40px)", fontWeight: 300, lineHeight: 1.1 }}>
@@ -183,7 +183,7 @@ export default function AccountPage() {
               padding: "12px 24px", border: "1px solid rgba(198,168,112,0.25)",
               background: "transparent", color: "var(--text-muted)",
               borderRadius: 10, cursor: "pointer",
-              fontFamily: "Montserrat, sans-serif", fontSize: 10,
+              fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10,
               letterSpacing: "0.18em", textTransform: "uppercase",
             }}
           >
@@ -227,7 +227,7 @@ const btnSecondary = (loading: boolean): React.CSSProperties => ({
   background: "rgba(198,168,112,0.12)",
   border: "1px solid rgba(198,168,112,0.30)",
   borderRadius: 10, color: "var(--gold)",
-  fontFamily: "Montserrat, sans-serif", fontSize: 10,
+  fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10,
   letterSpacing: "0.16em", textTransform: "uppercase", fontWeight: 600,
   cursor: loading ? "wait" : "pointer",
 });

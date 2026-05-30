@@ -69,7 +69,7 @@ function GlobalLoader() {
           />
         </svg>
         <p style={{
-          fontFamily: "Montserrat, sans-serif", fontSize: "8px",
+          fontFamily: "Manrope, system-ui, sans-serif", fontSize: "8px",
           letterSpacing: "0.30em", textTransform: "uppercase",
           color: "rgba(198,168,112,0.45)",
         }}>

@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
           </svg>
           <div style={{ textAlign: "center", maxWidth: "400px" }}>
             <p style={{
-              fontFamily: "Montserrat, sans-serif", fontSize: "9px",
+              fontFamily: "Manrope, system-ui, sans-serif", fontSize: "9px",
               letterSpacing: "0.28em", textTransform: "uppercase",
               color: "rgba(198,168,112,0.6)", marginBottom: "12px",
             }}>
@@ -58,7 +58,7 @@ export class ErrorBoundary extends Component<Props, State> {
             style={{
               padding: "12px 28px", borderRadius: "12px",
               background: "rgba(198,168,112,0.14)", border: "1px solid rgba(198,168,112,0.35)",
-              color: "#c6a870", fontFamily: "Montserrat, sans-serif",
+              color: "#c6a870", fontFamily: "Manrope, system-ui, sans-serif",
               fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase",
               cursor: "pointer", transition: "background 0.2s",
             }}

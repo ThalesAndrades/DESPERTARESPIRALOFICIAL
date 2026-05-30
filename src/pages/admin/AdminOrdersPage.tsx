@@ -250,7 +250,7 @@ export default function AdminOrdersPage() {
                 <button
                   onClick={() => triggerRecovery(false)}
                   disabled={recovering}
-                  style={{ background: "transparent", border: "none", cursor: "pointer", color: "var(--gold)", fontSize: "12px", fontFamily: "DM Sans, sans-serif", padding: 0, textDecoration: "underline" }}>
+                  style={{ background: "transparent", border: "none", cursor: "pointer", color: "var(--gold)", fontSize: "12px", fontFamily: "Lora, Georgia, serif", padding: 0, textDecoration: "underline" }}>
                   Disparar recuperação agora
                 </button>
               </p>

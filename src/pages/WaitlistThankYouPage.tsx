@@ -176,7 +176,7 @@ export default function WaitlistThankYouPage() {
                   border: "1px solid var(--gold)",
                   color: "var(--gold)",
                   borderRadius: 999,
-                  fontFamily: "Montserrat, sans-serif", fontSize: 10,
+                  fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10,
                   letterSpacing: "0.18em", textTransform: "uppercase",
                   cursor: "pointer", transition: "background .2s",
                 }}
@@ -231,7 +231,7 @@ export default function WaitlistThankYouPage() {
               to="/"
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
-                fontFamily: "Montserrat, sans-serif", fontSize: 10,
+                fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10,
                 letterSpacing: "0.20em", textTransform: "uppercase",
                 color: "var(--text-muted)", textDecoration: "none",
                 padding: "10px 18px",

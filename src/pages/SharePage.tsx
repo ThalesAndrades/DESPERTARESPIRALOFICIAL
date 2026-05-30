@@ -95,7 +95,7 @@ export default function SharePage() {
             }}>{profile.glyph}</div>
           )}
           <p style={{
-            fontFamily: "Montserrat,sans-serif", fontSize: 10,
+            fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10,
             letterSpacing: "0.30em", textTransform: "uppercase", opacity: 0.7,
             marginBottom: 10,
           }}>Despertar Espiral</p>

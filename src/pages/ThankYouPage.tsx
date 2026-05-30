@@ -86,7 +86,7 @@ export default function ThankYouPage() {
   const isPaid = order?.status === "paid" || isLocal;
 
   return (
-    <div style={{ minHeight: "100dvh", background: "var(--bg-deep)", color: "var(--text-primary)", fontFamily: "DM Sans, sans-serif" }}>
+    <div style={{ minHeight: "100dvh", background: "var(--bg-deep)", color: "var(--text-primary)", fontFamily: "Lora, Georgia, serif" }}>
       <Helmet>
         <title>Obrigada · Despertar Espiral</title>
         <meta name="robots" content="noindex" />
@@ -113,7 +113,7 @@ export default function ThankYouPage() {
               <CheckCircle2 size={42} style={{ color: "#8caa96" }} strokeWidth={1.5} />
             </div>
 
-            <p style={{ fontFamily: "Montserrat, sans-serif", fontSize: 10, letterSpacing: "0.26em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 14 }}>
+            <p style={{ fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10, letterSpacing: "0.26em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 14 }}>
               Pagamento confirmado
             </p>
 
@@ -132,7 +132,7 @@ export default function ThankYouPage() {
                 padding: "17px 32px",
                 background: "var(--gold)", color: "#04060f",
                 borderRadius: 12, textDecoration: "none",
-                fontFamily: "Montserrat, sans-serif", fontSize: 12, fontWeight: 700,
+                fontFamily: "Manrope, system-ui, sans-serif", fontSize: 12, fontWeight: 700,
                 letterSpacing: "0.18em", textTransform: "uppercase",
                 boxShadow: "0 8px 30px rgba(198,168,112,0.30)",
               }}>
@@ -143,7 +143,7 @@ export default function ThankYouPage() {
                 <Link to={`/login?next=/dashboard`} style={{
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                   padding: 14, color: "var(--text-muted)", textDecoration: "none",
-                  fontFamily: "Montserrat, sans-serif", fontSize: 10,
+                  fontFamily: "Manrope, system-ui, sans-serif", fontSize: 10,
                   letterSpacing: "0.18em", textTransform: "uppercase",
                   border: "1px solid rgba(198,168,112,0.25)", borderRadius: 12,
                 }}>
