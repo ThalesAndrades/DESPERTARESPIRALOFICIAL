@@ -12,13 +12,11 @@ import {
 } from "@/components/layout/LazyDecorative";
 import mulherEspiralHero from "@/assets/mulher-espiral-hero-new.jpg";
 import sunyanPortrait     from "@/assets/sunyan-portrait.jpg";
-import mockupAtualizado   from "@/assets/mockup-atualizado.png";
 import mapaPoderHero      from "@/assets/mapa-poder-hero.jpg";
 import { useTheme } from "@/hooks/useTheme";
 import { ArrowRight, ArrowUpRight, Star, ChevronDown, Sparkles, Clock, ShieldCheck } from "lucide-react";
 import { Events, track } from "@/lib/analytics";
 import { steps, guarantees, faqs, testimonials } from "@/constants/landingContent";
-import QuizSection from "@/components/features/QuizSection";
 import WaitlistModal from "@/components/features/WaitlistModal";
 import AdminAccessButton from "@/components/features/AdminAccessButton";
 import WhatsAppFAB from "@/components/features/WhatsAppFAB";
@@ -120,24 +118,6 @@ function useActiveSection(dotsRef: React.RefObject<HTMLDivElement | null>) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Stat counter with animated reveal
-───────────────────────────────────────────────────────────────── */
-function Stat({ value, label, delay = "" }: { value: string; label: string; delay?: string }) {
-  return (
-    <div className={`reveal ${delay}`} style={{ textAlign: "center", padding: "clamp(14px,2.2vw,22px) 8px" }}>
-      <p className="font-display" style={{
-        fontSize: "clamp(40px,6.5vw,66px)", color: "var(--gold)",
-        fontStyle: "italic", fontWeight: 300, lineHeight: 1,
-      }}>{value}</p>
-      <p className="overline" style={{
-        color: "var(--text-muted)", fontSize: "8px",
-        letterSpacing: "0.28em", marginTop: "10px",
-      }}>{label}</p>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
    FAQ accordion
 ───────────────────────────────────────────────────────────────── */
 function FaqItem({ q, a }: { q: string; a: string }) {
@@ -200,25 +180,183 @@ function Orb({ color, x, y, size, blur, opacity }: {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Horizontal ticker (continuous scroll text)
+   LaptopReveal — MacBook que abre conforme o usuário rola
+   Premium scroll-driven 3D animation. Mostra a ferramenta (Mapa do
+   Poder) na tela quando totalmente aberto.
 ───────────────────────────────────────────────────────────────── */
-const TICKER_ITEMS = [
-  "Autoconhecimento", "◆", "Reconexão", "◆", "Cura Feminina", "◆",
-  "Presença", "◆", "Propósito", "◆", "Comunidade", "◆",
-  "Transformação", "◆", "Autenticidade", "◆", "Método Espiral", "◆",
-];
-function Ticker() {
-  const items = [...TICKER_ITEMS, ...TICKER_ITEMS];
+function LaptopReveal({ progress, isLight }: { progress: number; isLight: boolean }) {
+  // progress: 0 = fechado (tela rebatida sobre o teclado), 1 = totalmente aberto
+  const eased = progress < 1 ? 1 - Math.pow(1 - progress, 3) : 1;
+  const rotation = -100 + 100 * eased;
+  const screenOpacity = Math.max(0, (progress - 0.35) / 0.5);
+
+  const bezel  = isLight ? "#1a1a22" : "#0a0a14";
+  const frame  = isLight ? "#c5c8d0" : "#33384a";
+  const base   = isLight
+    ? "linear-gradient(180deg, #e5e8ec 0%, #b8bcc6 60%, #888d9a 100%)"
+    : "linear-gradient(180deg, #3a3f52 0%, #252938 60%, #14171f 100%)";
+
   return (
-    <div style={{ overflow: "hidden", background: "rgba(198,168,112,0.06)", borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)", padding: "14px 0" }}>
-      <div style={{ display: "flex", gap: "32px", animation: "tickerScroll 38s linear infinite", width: "max-content" }}>
-        {items.map((item, i) => (
-          <span key={i} className="font-label" style={{
-            fontSize: "9px", letterSpacing: "0.28em", textTransform: "uppercase",
-            color: item === "◆" ? "var(--gold)" : "var(--text-faint)",
-            whiteSpace: "nowrap",
-          }}>{item}</span>
-        ))}
+    <div style={{
+      perspective: "1400px",
+      width: "100%", maxWidth: "560px", margin: "0 auto",
+      filter: "drop-shadow(0 36px 64px rgba(0,0,0,0.34)) drop-shadow(0 6px 18px rgba(198,168,112,0.08))",
+    }}>
+      {/* Tela — gira em torno da base (bottom edge) */}
+      <div style={{
+        transformOrigin: "50% 100%",
+        transform: `rotateX(${rotation}deg)`,
+        transition: "transform 60ms linear",
+        position: "relative",
+        aspectRatio: "16 / 10",
+        background: bezel,
+        borderRadius: "10px 10px 4px 4px",
+        padding: "12px 12px 18px",
+        boxShadow: `inset 0 1px 0 ${isLight ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)"}, 0 2px 0 ${frame}`,
+        willChange: "transform",
+      }}>
+        {/* Camera notch */}
+        <div aria-hidden="true" style={{
+          position: "absolute", top: "4px", left: "50%", transform: "translateX(-50%)",
+          width: "44px", height: "5px",
+          background: bezel,
+          borderRadius: "0 0 5px 5px",
+        }}>
+          <div style={{
+            position: "absolute", top: "1px", left: "50%", transform: "translateX(-50%)",
+            width: "3px", height: "3px", borderRadius: "50%",
+            background: "#101015",
+          }} />
+        </div>
+
+        {/* Screen content — Mapa do Poder preview */}
+        <div style={{
+          width: "100%", height: "100%",
+          background: "linear-gradient(135deg, #0a0d1e 0%, #1a0f24 50%, #0a0d1e 100%)",
+          borderRadius: "4px",
+          overflow: "hidden",
+          position: "relative",
+          opacity: screenOpacity,
+          transition: "opacity 320ms ease",
+        }}>
+          {/* Glow */}
+          <div aria-hidden="true" style={{
+            position: "absolute", inset: 0,
+            background: "radial-gradient(ellipse 70% 60% at 50% 40%, rgba(198,168,112,0.18) 0%, transparent 65%)",
+          }} />
+
+          {/* App chrome — top bar */}
+          <div style={{
+            position: "absolute", top: 0, left: 0, right: 0, height: "8%",
+            display: "flex", alignItems: "center", gap: "5px",
+            padding: "0 12px",
+            background: "rgba(7,9,21,0.4)",
+            borderBottom: "1px solid rgba(198,168,112,0.10)",
+          }}>
+            <div style={{ display: "flex", gap: "3px" }}>
+              {["#ff5f57","#febc2e","#28c840"].map((c) => (
+                <div key={c} style={{ width: "5px", height: "5px", borderRadius: "50%", background: c }} />
+              ))}
+            </div>
+            <div style={{ flex: 1, textAlign: "center", fontFamily: "Manrope, system-ui, sans-serif", fontSize: "6px", letterSpacing: "0.16em", color: "rgba(198,168,112,0.65)" }}>
+              despertarespiral.com/mapa-do-poder
+            </div>
+          </div>
+
+          {/* Conteúdo principal */}
+          <div style={{
+            position: "absolute", top: "8%", left: 0, right: 0, bottom: 0,
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            padding: "0 8%", textAlign: "center",
+            gap: "clamp(4px, 1vw, 8px)",
+          }}>
+            {/* Selo */}
+            <div style={{
+              padding: "3px 9px", borderRadius: "100px",
+              background: "rgba(198,168,112,0.15)",
+              border: "1px solid rgba(198,168,112,0.32)",
+              fontFamily: "Manrope, system-ui, sans-serif",
+              fontSize: "6.5px", letterSpacing: "0.22em",
+              textTransform: "uppercase", color: "#c6a870",
+              fontWeight: 600,
+            }}>
+              Etapa 3 de 8
+            </div>
+
+            {/* Heading */}
+            <h3 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: "clamp(13px,2.4vw,21px)",
+              fontStyle: "italic", fontWeight: 300,
+              color: "#f5f0e8", lineHeight: 1.06,
+              margin: 0, letterSpacing: "-0.018em",
+            }}>
+              Qual é a sua{" "}
+              <span style={{
+                background: "linear-gradient(135deg, #c6a870 0%, #dac394 100%)",
+                WebkitBackgroundClip: "text", backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}>
+                trava interna
+              </span>{" "}
+              hoje?
+            </h3>
+
+            <p style={{
+              fontFamily: "Lora, Georgia, serif",
+              fontSize: "clamp(7px,1.1vw,10px)", lineHeight: 1.5,
+              color: "rgba(245,240,232,0.65)",
+              maxWidth: "85%", margin: 0,
+            }}>
+              Escolha o que mais ressoa neste momento — sem julgamento.
+            </p>
+
+            {/* CTA */}
+            <div style={{
+              marginTop: "clamp(2px,0.6vw,5px)",
+              display: "inline-flex", alignItems: "center", gap: "5px",
+              padding: "5px 14px", borderRadius: "100px",
+              background: "linear-gradient(180deg, #dac394 0%, #c6a870 100%)",
+              color: "#0a0c1a",
+              fontFamily: "Manrope, system-ui, sans-serif",
+              fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              boxShadow: "0 4px 12px rgba(198,168,112,0.32), inset 0 1px 0 rgba(255,255,255,0.30)",
+            }}>
+              Continuar
+              <ArrowRight size={6} strokeWidth={2.4} />
+            </div>
+
+            {/* Progress dots */}
+            <div style={{ marginTop: "6px", display: "flex", gap: "3px" }}>
+              {[...Array(8)].map((_, i) => (
+                <div key={i} style={{
+                  width: i < 3 ? "9px" : "4px", height: "2px",
+                  borderRadius: "100px",
+                  background: i < 3 ? "#c6a870" : "rgba(198,168,112,0.22)",
+                  transition: "width 0.4s",
+                }} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Base do laptop (teclado) */}
+      <div style={{
+        position: "relative",
+        height: "clamp(10px, 1.6vw, 14px)",
+        background: base,
+        borderRadius: "0 0 14px 14px",
+        marginTop: "-2px",
+        boxShadow: `inset 0 1px 0 ${isLight ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.10)"}, 0 8px 18px rgba(0,0,0,0.16)`,
+      }}>
+        {/* Slot/dobra */}
+        <div aria-hidden="true" style={{
+          position: "absolute", top: "1px", left: "30%", right: "30%", height: "2px",
+          background: isLight ? "rgba(0,0,0,0.10)" : "rgba(0,0,0,0.42)",
+          borderRadius: "100px",
+        }} />
       </div>
     </div>
   );
@@ -241,6 +379,28 @@ export default function LandingPage() {
   const openWaitlist = useCallback((source: string) => {
     setWaitlistSource(source);
     setWaitlistOpen(true);
+  }, []);
+
+  /* Laptop scroll-driven reveal — abre conforme o usuário rola o hero */
+  const [laptopProgress, setLaptopProgress] = useState(0);
+  useEffect(() => {
+    let raf = 0;
+    const compute = () => {
+      raf = 0;
+      const y = window.scrollY;
+      const trigger = window.innerHeight * 0.55; // tela abre nos primeiros 55% da viewport
+      const p = Math.min(1, Math.max(0, y / trigger));
+      setLaptopProgress(p);
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(compute); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    // Pequeno delay no mount pra animar de fechado → aberto na entrada
+    const t = setTimeout(compute, 280);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+      clearTimeout(t);
+    };
   }, []);
 
   useScrollProgress(progressRef);
@@ -273,7 +433,6 @@ export default function LandingPage() {
         <meta name="description" content="Um caminho gentil e profundo de autoconhecimento feminino, com aulas práticas, comunidade viva e o seu próprio ritmo. Por Sunyan Nunes." />
         <meta property="og:title" content="Despertar Espiral — Um caminho feminino de reconexão" />
         <meta property="og:description" content="Um caminho gentil e profundo de autoconhecimento feminino — aulas práticas, comunidade viva e o seu próprio ritmo." />
-        <link rel="preload" as="image" href={mockupAtualizado} fetchpriority="high" />
       </Helmet>
 
       <main id="main" style={{
@@ -589,7 +748,7 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                {/* Mockup image */}
+                {/* Mockup interativo — MacBook que abre conforme o usuário rola */}
                 <div style={{ position: "relative", width: "100%" }}>
                   <div aria-hidden="true" style={{
                     position: "absolute", inset: "-16px",
@@ -597,20 +756,7 @@ export default function LandingPage() {
                     background: `radial-gradient(ellipse 80% 60% at 50% 50%, ${isLight ? "rgba(122,94,30,0.08)" : "rgba(198,168,112,0.10)"} 0%, transparent 70%)`,
                     pointerEvents: "none", zIndex: 0,
                   }} />
-                  <img
-                    src={mockupAtualizado}
-                    alt="Plataforma Despertar Espiral no MacBook"
-                    width={768} height={454}
-                    loading="eager"
-                    decoding="async"
-                    // @ts-expect-error fetchPriority is valid HTML5 but not yet in React types
-                    fetchPriority="high"
-                    style={{
-                      width: "100%", height: "auto", display: "block", objectFit: "contain",
-                      position: "relative", zIndex: 1,
-                      filter: "drop-shadow(0 28px 56px rgba(0,0,0,0.32)) drop-shadow(0 4px 14px rgba(198,168,112,0.08))",
-                    }}
-                  />
+                  <LaptopReveal progress={laptopProgress} isLight={isLight} />
                 </div>
 
                 {/* Metrics strip */}
@@ -691,31 +837,31 @@ export default function LandingPage() {
                   className="animate-fade-up delay-300"
                   style={{
                     fontSize: "clamp(15px,1.8vw,17px)", color: heroMuted,
-                    maxWidth: "440px", lineHeight: 1.92, fontWeight: 300,
+                    maxWidth: "420px", lineHeight: 1.78, fontWeight: 400,
                     textAlign: "center", marginBottom: "clamp(24px,3.5vw,38px)",
                   }}
                 >
-                  Um caminho feminino de autoconhecimento — claro, acolhedor, no seu ritmo — pra quem está voltando a sentir presença, direção e verdade.
+                  Um caminho feminino de autoconhecimento — no seu ritmo, com profundidade e cuidado.
                 </p>
 
                 <div className="animate-fade-up delay-400" style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "360px", marginBottom: "clamp(14px,2vw,18px)" }}>
+                  <Link
+                    to="/mapa-do-poder"
+                    className="btn-gold"
+                    style={{ justifyContent: "center", minHeight: "58px", borderRadius: "18px", width: "100%", gap: "10px" }}
+                    onClick={() => track(Events.ClickCTA, { name: "mapa_do_poder", surface: "hero" })}
+                  >
+                    <Sparkles size={14} strokeWidth={1.8} />
+                    Começar pelo Mapa do Poder
+                  </Link>
                   <button
                     type="button"
                     onClick={() => openWaitlist("hero")}
-                    className="btn-gold"
-                    style={{ justifyContent: "center", minHeight: "58px", borderRadius: "18px", width: "100%", border: "none", cursor: "pointer" }}
-                  >
-                    Quero entrar na lista <ArrowRight size={15} />
-                  </button>
-                  <Link
-                    to="/mapa-do-poder"
                     className="btn-outline-gold"
-                    style={{ justifyContent: "center", minHeight: "52px", borderRadius: "18px", gap: "8px" }}
-                    onClick={() => track(Events.ClickCTA, { name: "mapa_do_poder", surface: "hero" })}
+                    style={{ justifyContent: "center", minHeight: "52px", borderRadius: "18px", width: "100%", border: "1px solid var(--border-mid)", cursor: "pointer" }}
                   >
-                    <Sparkles size={13} strokeWidth={1.8} />
-                    Fazer Mapa do Poder · grátis
-                  </Link>
+                    Reservar minha vaga <ArrowRight size={13} />
+                  </button>
                 </div>
 
                 {showAuthEntry && (
@@ -749,7 +895,7 @@ export default function LandingPage() {
 
           {/* Scroll cue */}
           <button
-            onClick={() => scrollTo("section-1")}
+            onClick={() => scrollTo("mapa-do-poder-cta")}
             className="scroll-cue"
             aria-label="Rolar para próxima seção"
             style={{ background: "transparent", border: "none", cursor: "pointer", padding: "8px" }}
@@ -906,49 +1052,6 @@ export default function LandingPage() {
               Suas respostas ficam salvas só no seu dispositivo
             </p>
           </div>
-        </section>
-
-        {/* ══════════════════════════════════════
-               Ticker — transição entre hero e social proof
-            ══════════════════════════════════════ */}
-        <Ticker />
-
-        {/* ══════════════════════════════════════
-               1 — SOCIAL PROOF
-            ══════════════════════════════════════ */}
-        <section
-          id="section-1"
-          style={{
-            position: "relative", zIndex: 1, overflow: "hidden",
-            padding: "clamp(56px,8vw,100px) clamp(16px,5vw,24px)",
-            background: "var(--bg-surface-2)",
-          }}
-        >
-          {/* Subtle texture layer */}
-          <div aria-hidden="true" style={{ position: "absolute", inset: 0, opacity: isLight ? 0.03 : 0.015, backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`, pointerEvents: "none" }} />
-          <div style={{ maxWidth: "960px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-            <div className="reveal" style={{ textAlign: "center", marginBottom: "clamp(32px,5vw,56px)" }}>
-              <p className="overline" style={{ color: "var(--gold)", marginBottom: "14px" }}>Primeira turma</p>
-              <h2 className="font-display text-balance" style={{
-                fontSize: "clamp(22px,3vw,32px)", fontStyle: "italic",
-                color: "var(--text-secondary)", fontWeight: 300,
-                maxWidth: "640px", margin: "0 auto", lineHeight: 1.4,
-              }}>
-                Estamos preparando o ambiente para receber as primeiras mulheres do Método Espiral.
-              </h2>
-              <p style={{ marginTop: 18, fontSize: "clamp(13px,1.5vw,15px)", color: "var(--text-muted)", lineHeight: 1.8, maxWidth: 540, marginInline: "auto" }}>
-                Deixe seu contato e seja avisada antes de qualquer pessoa quando as vagas abrirem.
-              </p>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "clamp(4px,2vw,16px)" }} className="sm:grid-cols-3">
-              <Stat value="8" label="Módulos da jornada" delay="reveal-delay-1" />
-              <Stat value="Vitalício" label="Acesso ao conteúdo" delay="reveal-delay-2" />
-              <Stat value="7 dias" label="Garantia incondicional" delay="reveal-delay-3" />
-            </div>
-          </div>
-
-          {/* Bottom diamond */}
-          <div style={{ position: "absolute", bottom: "-9px", left: "50%", transform: "translateX(-50%)", width: "16px", height: "16px", background: "var(--bg-surface)", border: "1px solid var(--border-subtle)", rotate: "45deg", zIndex: 2 }} aria-hidden="true" />
         </section>
 
         {/* ══════════════════════════════════════
@@ -1161,159 +1264,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ══════════════════════════════════════
-               5 — QUIZ DIAGNÓSTICO
-            ══════════════════════════════════════ */}
-        <div id="section-5"><QuizSection /></div>
-
-        {/* ══════════════════════════════════════
-               6 — COMUNIDADE
-            ══════════════════════════════════════ */}
-        <section id="section-6" className="cv-auto" style={{
-          position: "relative", zIndex: 1, overflow: "hidden",
-          padding: "clamp(80px,12vw,140px) clamp(16px,5vw,24px)",
-          background: "#06050f",
-        }}>
-          {/* Atmospheric layers */}
-          <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 90% 70% at 50% 0%, rgba(81,72,152,0.22) 0%, transparent 60%)", pointerEvents: "none" }} />
-          <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 60% 55% at 10% 60%, rgba(172,128,142,0.12) 0%, transparent 55%)", pointerEvents: "none" }} />
-          <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 50% 45% at 90% 40%, rgba(81,72,152,0.14) 0%, transparent 55%)", pointerEvents: "none" }} />
-          <div aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(81,72,152,0.40) 30%, rgba(198,168,112,0.20) 50%, rgba(81,72,152,0.40) 70%, transparent)" }} />
-          <div aria-hidden="true" style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(81,72,152,0.30) 50%, transparent)" }} />
-
-          <div data-parallax="0.05" style={{ position: "absolute", right: "-20px", top: "8%", pointerEvents: "none" }} aria-hidden="true">
-            <SectionSpiral3D size={110} height={300} opacity={0.18} color="#514898" emissive="#201860" speed={0.00028} />
-          </div>
-
-          <div style={{ position: "relative", maxWidth: "1160px", margin: "0 auto" }}>
-            {/* Header */}
-            <div className="reveal" style={{ textAlign: "center", marginBottom: "clamp(48px,7vw,80px)" }}>
-              <div style={{
-                display: "inline-flex", alignItems: "center", gap: "10px", marginBottom: "24px",
-                background: "rgba(81,72,152,0.18)", border: "1px solid rgba(81,72,152,0.40)",
-                borderRadius: "100px", padding: "8px 20px 8px 12px",
-              }}>
-                <span style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center", width: "8px", height: "8px" }}>
-                  <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#8caa96", animation: "communityPulse 2s ease-out infinite", opacity: 0.6 }} />
-                  <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#8caa96", display: "block" }} />
-                </span>
-                <span style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(164,158,208,0.90)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500 }}>
-                  Comunidade exclusiva de alunas
-                </span>
-              </div>
-              <h2 className="font-display text-balance reveal-delay-1" style={{ fontSize: "clamp(36px,6.5vw,92px)", fontWeight: 300, fontStyle: "italic", lineHeight: 1.01, color: "#f5f0e8", marginBottom: "clamp(14px,2vw,20px)" }}>
-                Ninguém desperta<br /><span style={{ color: "rgba(164,158,208,0.90)" }}>sozinha.</span>
-              </h2>
-              <p style={{ fontSize: "clamp(14px,1.7vw,17px)", color: "rgba(245,240,232,0.52)", maxWidth: "540px", margin: "0 auto", lineHeight: 1.90, fontWeight: 300 }}>
-                Um espaço anônimo, seguro e vivo — onde mulheres em jornada se encontram, se apoiam e celebram juntas.
-              </p>
-            </div>
-
-            {/* Stats bar */}
-            <div className="reveal reveal-delay-1" style={{
-              display: "flex", justifyContent: "center",
-              marginBottom: "clamp(40px,6vw,64px)",
-              borderRadius: "clamp(16px,2vw,20px)",
-              border: "1px solid rgba(81,72,152,0.30)",
-              background: "rgba(81,72,152,0.08)", overflow: "hidden",
-            }}>
-              {[
-                { value: "Anônimo", label: "Identidade preservada" },
-                { value: "Privada", label: "Acesso só de alunas" },
-                { value: "Em breve", label: "Abertura na 1ª turma" },
-              ].map(({ value, label }, i, arr) => (
-                <div key={label} style={{
-                  flex: "1 1 0", minWidth: 0, padding: "clamp(16px,2.5vw,28px) clamp(12px,2vw,24px)",
-                  textAlign: "center", borderRight: i < arr.length - 1 ? "1px solid rgba(81,72,152,0.20)" : "none",
-                }}>
-                  <p className="font-display" style={{ fontSize: "clamp(22px,3vw,40px)", color: "rgba(164,158,208,0.95)", fontWeight: 300, fontStyle: "italic", lineHeight: 1 }}>{value}</p>
-                  <p style={{ fontSize: "clamp(9px,1vw,11px)", color: "rgba(245,240,232,0.35)", letterSpacing: "0.16em", textTransform: "uppercase", fontFamily: "Manrope, system-ui, sans-serif", marginTop: "8px" }}>{label}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Two-column */}
-            <div className="grid lg:grid-cols-[0.9fr_1.1fr]" style={{ gap: "clamp(28px,5vw,64px)", alignItems: "start" }}>
-              <div className="reveal-left">
-                <p style={{ fontSize: "9px", letterSpacing: "0.26em", textTransform: "uppercase", color: "rgba(164,158,208,0.65)", fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500, marginBottom: "20px" }}>Espaço exclusivo para alunas</p>
-                <h3 style={{ fontSize: "clamp(22px,3.5vw,44px)", fontWeight: 300, lineHeight: 1.13, color: "#f5f0e8", marginBottom: "20px", fontFamily: "Cormorant Garamond,serif" }}>
-                  Um lugar onde você pode ser<span style={{ fontStyle: "italic", color: "rgba(164,158,208,0.85)" }}> quem realmente é.</span>
-                </h3>
-                <p style={{ fontSize: "clamp(13px,1.5vw,15px)", color: "rgba(245,240,232,0.50)", lineHeight: 1.92, marginBottom: "clamp(24px,4vw,36px)" }}>
-                  Um fórum anônimo com 5 categorias: conquistas, desabafos, dúvidas, dicas e celebrações. Seu nome real nunca aparece — só o seu ser.
-                </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginBottom: "clamp(28px,4vw,40px)" }}>
-                  {[
-                    { color: "#8caa96", label: "Anonimato total", desc: "Nome real nunca exposto" },
-                    { color: "rgba(164,158,208,0.85)", label: "5 categorias temáticas", desc: "Conquistas · Desabafo · Dicas · Dúvidas · Geral" },
-                    { color: "#c6a870", label: "Moderação cuidadosa", desc: "Espaço seguro e respeitoso" },
-                    { color: "#c99aaa", label: "Sempre ativo", desc: "Comunidade 24h por dia" },
-                  ].map(({ color, label, desc }) => (
-                    <div key={label} style={{ display: "flex", alignItems: "flex-start", gap: "14px" }}>
-                      <div style={{ width: "28px", height: "28px", borderRadius: "50%", flexShrink: 0, background: `${color}18`, border: `1px solid ${color}45`, display: "flex", alignItems: "center", justifyContent: "center", marginTop: "1px" }}>
-                        <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: color }} />
-                      </div>
-                      <div>
-                        <p style={{ fontSize: "13px", color: "rgba(245,240,232,0.80)", fontWeight: 500, marginBottom: "2px", fontFamily: "Manrope, system-ui, sans-serif" }}>{label}</p>
-                        <p style={{ fontSize: "11px", color: "rgba(245,240,232,0.35)", fontFamily: "Manrope, system-ui, sans-serif" }}>{desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => openWaitlist("comunidade")}
-                  className="btn-gold"
-                  style={{ fontSize: "10px", cursor: "pointer", border: "none" }}
-                >
-                  Reservar minha vaga <ArrowRight size={14} />
-                </button>
-              </div>
-
-              {/* Right column: the promise of the community */}
-              <div className="reveal-right" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px", padding: "0 2px" }}>
-                  <p style={{ fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(164,158,208,0.55)", fontFamily: "Manrope, system-ui, sans-serif" }}>O que você vai encontrar</p>
-                </div>
-                {[
-                  { title: "Conquistas", body: "Espaço para celebrar pequenos e grandes movimentos da jornada." },
-                  { title: "Desabafo", body: "Um lugar para falar do que machuca sem ser julgada." },
-                  { title: "Dicas & práticas", body: "Trocas reais entre quem está percorrendo o mesmo caminho." },
-                  { title: "Dúvidas", body: "Apoio da comunidade e da Sunyan quando o caminho ficar nublado." },
-                ].map((card) => (
-                  <div key={card.title} style={{
-                    background: "rgba(255,255,255,0.032)", border: "1px solid rgba(255,255,255,0.055)",
-                    borderRadius: "clamp(12px,1.5vw,16px)", padding: "clamp(14px,2vw,20px)",
-                  }}>
-                    <p style={{
-                      fontSize: "10px", letterSpacing: "0.22em", textTransform: "uppercase",
-                      color: "rgba(164,158,208,0.90)", fontFamily: "Manrope, system-ui, sans-serif",
-                      marginBottom: 8,
-                    }}>{card.title}</p>
-                    <p style={{ fontSize: "clamp(12px,1.4vw,14px)", color: "rgba(245,240,232,0.62)", lineHeight: 1.72, fontFamily: "Manrope, system-ui, sans-serif" }}>{card.body}</p>
-                  </div>
-                ))}
-                <div style={{ borderRadius: "clamp(12px,1.5vw,16px)", border: "1px dashed rgba(81,72,152,0.35)", padding: "clamp(16px,2vw,22px)", textAlign: "center", background: "rgba(81,72,152,0.05)" }}>
-                  <p style={{ fontSize: "clamp(13px,1.4vw,14px)", color: "rgba(245,240,232,0.55)", fontFamily: "Manrope, system-ui, sans-serif", marginBottom: "12px", lineHeight: 1.6 }}>
-                    A comunidade abre junto com a primeira turma.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => openWaitlist("comunidade-feed")}
-                    style={{
-                      display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "10px",
-                      color: "rgba(164,158,208,0.90)", letterSpacing: "0.18em", textTransform: "uppercase",
-                      fontFamily: "Manrope, system-ui, sans-serif", fontWeight: 500, textDecoration: "none",
-                      background: "transparent", border: "none", cursor: "pointer", padding: 0,
-                    }}
-                  >
-                    Quero ser avisada <ArrowRight size={12} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* ══════════════════════════════════════
                7 — SUNYAN
@@ -1453,68 +1403,46 @@ export default function LandingPage() {
         </section>
 
         {/* ══════════════════════════════════════
-               FOOTER
+               FOOTER — enxuto
             ══════════════════════════════════════ */}
         <footer style={{
           position: "relative", zIndex: 1,
-          padding: "clamp(36px,6vw,60px) clamp(16px,5vw,24px)",
+          padding: "clamp(24px,4vw,36px) clamp(16px,5vw,24px) clamp(18px,3vw,24px)",
           background: isLight ? "var(--bg-surface-3)" : "#060810",
           borderTop: "1px solid var(--border-subtle)",
         }}>
-          <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "clamp(16px,3vw,28px)" }}>
-              <div>
-                <p className="font-label" style={{ fontSize: "11px", letterSpacing: "0.32em", textTransform: "uppercase", color: "var(--gold)", fontWeight: 500, marginBottom: "5px" }}>DESPERTAR ESPIRAL</p>
-                <p className="font-label" style={{ fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-faint)" }}>por Sunyan Nunes</p>
-              </div>
-              <nav aria-label="Footer navigation" style={{ display: "flex", gap: "clamp(14px,2.5vw,24px)", flexWrap: "wrap" }}>
-                {([
-                  ["Método", "#section-2"],
-                  ["Jornadas", "#section-3"],
-                  ["Comunidade", "#section-6"],
-                  ["Sobre", "/sobre"],
-                  ["Privacidade", "/privacidade"],
-                  ["Termos", "/termos"],
-                  ...(showAuthEntry ? [["Entrar", "/login"]] : []),
-                ] as Array<[string, string]>).map(([label, href]) =>
-                  href.startsWith("#") ? (
-                    <a
-                      key={label}
-                      href={href}
-                      className="font-label"
-                      style={{ fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "var(--text-muted)", textDecoration: "none", transition: "color 0.2s", minHeight: "44px", display: "inline-flex", alignItems: "center" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
-                    >{label}</a>
-                  ) : (
-                    <Link
-                      key={label}
-                      to={href}
-                      className="font-label"
-                      style={{ fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "var(--text-muted)", textDecoration: "none", transition: "color 0.2s", minHeight: "44px", display: "inline-flex", alignItems: "center" }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.color = "var(--gold)";
-                        if (href === "/login") prefetchLogin();
-                      }}
-                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-muted)")}
-                    >{label}</Link>
-                  )
-                )}
-              </nav>
-              <p className="font-label" style={{ fontSize: "9px", color: "var(--text-faint)", letterSpacing: "0.12em" }}>contato@despertarespiral.com</p>
-            </div>
-            <hr className="divider-gold" style={{ margin: "clamp(24px,4vw,40px) 0 clamp(20px,3vw,28px)" }} />
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "12px" }}>
-              <p className="font-label" style={{ fontSize: "8px", color: "var(--text-faint)", letterSpacing: "0.18em", textTransform: "uppercase" }}>
-                © {new Date().getFullYear()} Despertar Espiral — Todos os direitos reservados.
-              </p>
-              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-                <p className="font-label" style={{ fontSize: "8px", color: "var(--text-faint)", letterSpacing: "0.14em" }}>
-                  CNPJ · Sunyan Nunes · São Paulo, Brasil
-                </p>
-                <AdminAccessButton />
-              </div>
-            </div>
+          <div style={{
+            maxWidth: "1100px", margin: "0 auto",
+            display: "flex", flexWrap: "wrap", alignItems: "center",
+            justifyContent: "space-between", gap: "clamp(14px,2.5vw,24px)",
+          }}>
+            <p className="font-label" style={{
+              fontSize: "9px", letterSpacing: "0.24em", textTransform: "uppercase",
+              color: "var(--text-faint)",
+            }}>
+              © {new Date().getFullYear()} · Despertar Espiral · por Sunyan Nunes
+            </p>
+            <nav aria-label="Rodapé" style={{ display: "flex", gap: "clamp(14px,2.5vw,22px)", flexWrap: "wrap", alignItems: "center" }}>
+              {([
+                ["Sobre", "/sobre"],
+                ["Privacidade", "/privacidade"],
+                ["Termos", "/termos"],
+                ...(showAuthEntry ? [["Entrar", "/login"]] : []),
+              ] as Array<[string, string]>).map(([label, href]) => (
+                <Link
+                  key={label}
+                  to={href}
+                  className="font-label"
+                  style={{ fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase", color: "var(--text-muted)", textDecoration: "none", transition: "color 0.2s" }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.color = "var(--gold)";
+                    if (href === "/login") prefetchLogin();
+                  }}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "var(--text-muted)")}
+                >{label}</Link>
+              ))}
+              <AdminAccessButton />
+            </nav>
           </div>
         </footer>
       </main>
