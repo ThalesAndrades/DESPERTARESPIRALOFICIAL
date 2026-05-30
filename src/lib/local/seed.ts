@@ -1,4 +1,4 @@
-import mulherEspiralProduct from "@/assets/mulher-espiral-hero.jpg";
+import mulherEspiralProduct from "@/assets/mulher-espiral-hero-new.jpg";
 import type { DBShape } from "./types";
 
 const now = () => new Date().toISOString();
