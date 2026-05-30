@@ -13,8 +13,10 @@ import {
 import mulherEspiralHero from "@/assets/mulher-espiral-hero-new.jpg";
 import sunyanPortrait     from "@/assets/sunyan-portrait.jpg";
 import mockupAtualizado   from "@/assets/mockup-atualizado.png";
+import mapaPoderHero      from "@/assets/mapa-poder-hero.jpg";
 import { useTheme } from "@/hooks/useTheme";
-import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Star, ChevronDown, Sparkles, Clock, ShieldCheck } from "lucide-react";
+import { Events, track } from "@/lib/analytics";
 import { steps, guarantees, faqs, testimonials } from "@/constants/landingContent";
 import QuizSection from "@/components/features/QuizSection";
 import WaitlistModal from "@/components/features/WaitlistModal";
@@ -696,7 +698,7 @@ export default function LandingPage() {
                   Um caminho feminino de autoconhecimento — claro, acolhedor, no seu ritmo — pra quem está voltando a sentir presença, direção e verdade.
                 </p>
 
-                <div className="animate-fade-up delay-400" style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "360px", marginBottom: "clamp(18px,2.5vw,26px)" }}>
+                <div className="animate-fade-up delay-400" style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "360px", marginBottom: "clamp(14px,2vw,18px)" }}>
                   <button
                     type="button"
                     onClick={() => openWaitlist("hero")}
@@ -705,18 +707,33 @@ export default function LandingPage() {
                   >
                     Quero entrar na lista <ArrowRight size={15} />
                   </button>
-                  {showAuthEntry && (
-                    <Link
-                      to="/login"
-                      className="btn-outline-gold"
-                      style={{ justifyContent: "center", minHeight: "52px", borderRadius: "18px" }}
-                      onMouseEnter={prefetchLogin}
-                      onFocus={prefetchLogin}
-                    >
-                      Já sou aluna
-                    </Link>
-                  )}
+                  <Link
+                    to="/mapa-do-poder"
+                    className="btn-outline-gold"
+                    style={{ justifyContent: "center", minHeight: "52px", borderRadius: "18px", gap: "8px" }}
+                    onClick={() => track(Events.ClickCTA, { name: "mapa_do_poder", surface: "hero" })}
+                  >
+                    <Sparkles size={13} strokeWidth={1.8} />
+                    Fazer Mapa do Poder · grátis
+                  </Link>
                 </div>
+
+                {showAuthEntry && (
+                  <Link
+                    to="/login"
+                    onMouseEnter={prefetchLogin}
+                    onFocus={prefetchLogin}
+                    className="font-label animate-fade-in delay-500"
+                    style={{
+                      fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase",
+                      color: "var(--text-muted)", textDecoration: "none",
+                      marginBottom: "clamp(18px,2.5vw,24px)",
+                      borderBottom: "1px solid var(--border-subtle)", paddingBottom: "2px",
+                    }}
+                  >
+                    Já sou aluna · entrar
+                  </Link>
+                )}
 
                 <div className="animate-fade-in delay-600" style={{ display: "flex", justifyContent: "center", gap: "clamp(10px,2vw,20px)", flexWrap: "wrap" }}>
                   {guarantees.map(({ icon: Icon, label }) => (
@@ -740,6 +757,155 @@ export default function LandingPage() {
             <div className="animate-float" style={{ width: "1px", height: "48px", background: "linear-gradient(to bottom, transparent, rgba(198,168,112,0.40), transparent)" }} />
             <span className="overline" style={{ fontSize: "7px", color: "rgba(198,168,112,0.35)", letterSpacing: "0.38em" }}>DESCER</span>
           </button>
+        </section>
+
+        {/* ══════════════════════════════════════
+               LEAD MAGNET — Mapa do Poder (ferramenta gratuita)
+            ══════════════════════════════════════ */}
+        <section
+          id="mapa-do-poder-cta"
+          aria-labelledby="mapa-do-poder-title"
+          className="cv-auto"
+          style={{
+            position: "relative", zIndex: 1, overflow: "hidden",
+            padding: "clamp(56px,9vw,108px) clamp(16px,5vw,40px)",
+            background: isLight
+              ? "linear-gradient(135deg, #1a1428 0%, #2a1e3a 50%, #1a1428 100%)"
+              : "linear-gradient(135deg, #0a0d1e 0%, #1a0f24 50%, #0a0d1e 100%)",
+          }}
+        >
+          {/* Imagem de fundo */}
+          <div aria-hidden="true" style={{
+            position: "absolute", inset: 0, opacity: 0.22, zIndex: 0,
+          }}>
+            <img
+              src={mapaPoderHero}
+              alt=""
+              width={1200}
+              height={672}
+              loading="lazy"
+              decoding="async"
+              style={{
+                width: "100%", height: "100%", objectFit: "cover",
+                objectPosition: "center 35%",
+                filter: "blur(2px) saturate(0.7) brightness(0.55)",
+              }}
+            />
+          </div>
+
+          {/* Overlay gradient gold */}
+          <div aria-hidden="true" style={{
+            position: "absolute", inset: 0, zIndex: 1,
+            background: "radial-gradient(ellipse 80% 70% at 50% 50%, rgba(198,168,112,0.18) 0%, transparent 65%)",
+            pointerEvents: "none",
+          }} />
+
+          <div className="reveal" style={{
+            position: "relative", zIndex: 2,
+            maxWidth: "920px", margin: "0 auto",
+            display: "grid", gridTemplateColumns: "1fr", gap: "clamp(28px,4vw,44px)",
+            textAlign: "center",
+          }}>
+            {/* Selo "ferramenta gratuita" */}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <span style={{
+                display: "inline-flex", alignItems: "center", gap: "8px",
+                padding: "6px 16px", borderRadius: "100px",
+                background: "rgba(198,168,112,0.14)",
+                border: "1px solid rgba(198,168,112,0.32)",
+                color: "var(--gold)",
+                fontFamily: "Montserrat, sans-serif",
+                fontSize: "9px", fontWeight: 600,
+                letterSpacing: "0.22em", textTransform: "uppercase",
+              }}>
+                <Sparkles size={10} strokeWidth={2} />
+                Ferramenta gratuita · sem cadastro
+              </span>
+            </div>
+
+            <h2
+              id="mapa-do-poder-title"
+              className="text-balance"
+              style={{
+                fontSize: "clamp(30px,5.2vw,60px)",
+                lineHeight: 1.06, color: "#f5f0e8",
+                fontStyle: "italic", fontWeight: 300,
+                margin: 0,
+              }}
+            >
+              Descubra qual é a sua{" "}
+              <span style={{
+                background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-soft) 60%, var(--gold) 100%)",
+                WebkitBackgroundClip: "text", backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}>
+                trava interna
+              </span>{" "}
+              em 7 minutos
+            </h2>
+
+            <p className="text-pretty" style={{
+              fontSize: "clamp(15px,1.7vw,18px)", lineHeight: 1.78,
+              color: "rgba(245,240,232,0.78)",
+              maxWidth: "640px", margin: "0 auto",
+              fontWeight: 300,
+            }}>
+              O <strong style={{ color: "#f5f0e8", fontWeight: 500 }}>Mapa do Poder</strong> é
+              uma ferramenta de auto-investigação em 8 etapas guiadas. Você
+              identifica o que está te travando, de onde vem essa trava e qual
+              o primeiro passo concreto pra destravá-la — sem julgamento, no
+              seu ritmo.
+            </p>
+
+            {/* Trust badges */}
+            <ul style={{
+              display: "flex", justifyContent: "center",
+              flexWrap: "wrap", gap: "clamp(14px,2.5vw,28px)",
+              listStyle: "none", padding: 0, margin: 0,
+            }}>
+              {[
+                { icon: Sparkles,    label: "8 etapas guiadas" },
+                { icon: Clock,       label: "7 minutos" },
+                { icon: ShieldCheck, label: "Sem cadastro pra começar" },
+              ].map(({ icon: Icon, label }) => (
+                <li key={label} style={{
+                  display: "flex", alignItems: "center", gap: "8px",
+                  color: "rgba(245,240,232,0.62)",
+                  fontFamily: "Montserrat, sans-serif",
+                  fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+                }}>
+                  <Icon size={12} strokeWidth={1.6} style={{ color: "var(--gold)" }} />
+                  {label}
+                </li>
+              ))}
+            </ul>
+
+            {/* CTA principal */}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Link
+                to="/mapa-do-poder"
+                className="btn-gold"
+                style={{
+                  justifyContent: "center", minHeight: "60px",
+                  borderRadius: "18px",
+                  padding: "16px clamp(28px,5vw,44px)",
+                  fontSize: "11px",
+                }}
+                aria-describedby="mapa-do-poder-title"
+                onClick={() => track(Events.ClickCTA, { name: "mapa_do_poder", surface: "feature_section" })}
+              >
+                Começar meu Mapa do Poder
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+
+            <p className="font-label" style={{
+              fontSize: "9px", letterSpacing: "0.20em", textTransform: "uppercase",
+              color: "rgba(245,240,232,0.40)", margin: 0,
+            }}>
+              Suas respostas ficam salvas só no seu dispositivo
+            </p>
+          </div>
         </section>
 
         {/* ══════════════════════════════════════
