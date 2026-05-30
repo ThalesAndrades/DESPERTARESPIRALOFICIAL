@@ -271,9 +271,10 @@ export default function LandingPage() {
         <meta name="description" content="Um caminho gentil e profundo de autoconhecimento feminino, com aulas práticas, comunidade viva e o seu próprio ritmo. Por Sunyan Nunes." />
         <meta property="og:title" content="Despertar Espiral — Um caminho feminino de reconexão" />
         <meta property="og:description" content="Um caminho gentil e profundo de autoconhecimento feminino — aulas práticas, comunidade viva e o seu próprio ritmo." />
+        <link rel="preload" as="image" href={mockupAtualizado} fetchpriority="high" />
       </Helmet>
 
-      <div style={{
+      <main id="main" style={{
         background: "var(--bg-surface)", color: "var(--text-primary)",
         minHeight: "100dvh", overflowX: "hidden", position: "relative",
       }}>
@@ -1350,7 +1351,7 @@ export default function LandingPage() {
             </div>
           </div>
         </footer>
-      </div>
+      </main>
       <WaitlistModal open={waitlistOpen} source={waitlistSource} onClose={() => setWaitlistOpen(false)} />
       <WhatsAppFAB surface="landing" />
     </>

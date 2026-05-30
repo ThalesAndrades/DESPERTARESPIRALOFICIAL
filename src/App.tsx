@@ -169,6 +169,7 @@ export default function App() {
   usePageTracking();
   return (
     <Suspense>
+      <a href="#main" className="skip-link">Pular para o conteúdo</a>
       <ConsentBanner />
       <Routes>
         {/* Public — LandingPage is static for instant load */}
