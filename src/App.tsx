@@ -36,15 +36,8 @@ const AdminUsersPage        = React.lazy(() => import("@/pages/admin/AdminUsersP
 const AdminProductsPage     = React.lazy(() => import("@/pages/admin/AdminProductsPage"));
 const AdminProductContentPage = React.lazy(() => import("@/pages/admin/AdminProductContentPage"));
 const AdminOrdersPage       = React.lazy(() => import("@/pages/admin/AdminOrdersPage"));
-const AdminCommunityPage    = React.lazy(() => import("@/pages/admin/AdminCommunityPage"));
-const AdminSocialPage       = React.lazy(() => import("@/pages/admin/AdminSocialPage"));
-const AdminCRMPage          = React.lazy(() => import("@/pages/admin/AdminCRMPage"));
 const AdminWaitlistPage     = React.lazy(() => import("@/pages/admin/AdminWaitlistPage"));
 const AdminLeadDetailPage   = React.lazy(() => import("@/pages/admin/AdminLeadDetailPage"));
-const AdminConversionPage   = React.lazy(() => import("@/pages/admin/AdminConversionPage"));
-const AdminMediaPage        = React.lazy(() => import("@/pages/admin/AdminMediaPage"));
-const AdminTrafficPage      = React.lazy(() => import("@/pages/admin/AdminTrafficPage"));
-const AdminEventsPage       = React.lazy(() => import("@/pages/admin/AdminEventsPage"));
 const CertificatePage       = React.lazy(() => import("@/pages/CertificatePage"));
 const ProfilePage           = React.lazy(() => import("@/pages/ProfilePage"));
 const AccountPage            = React.lazy(() => import("@/pages/AccountPage"));
@@ -199,21 +192,14 @@ export default function App() {
         <Route path="/perfil"                              element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
         <Route path="/conta"                               element={<PrivateRoute><AccountPage /></PrivateRoute>} />
 
-        {/* Admin */}
+        {/* Admin — gestão da plataforma, cursos e leads */}
         <Route path="/admin"                      element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
         <Route path="/admin/users"                element={<AdminRoute><AdminUsersPage /></AdminRoute>} />
         <Route path="/admin/products"             element={<AdminRoute><AdminProductsPage /></AdminRoute>} />
         <Route path="/admin/products/:id/content" element={<AdminRoute><AdminProductContentPage /></AdminRoute>} />
         <Route path="/admin/orders"               element={<AdminRoute><AdminOrdersPage /></AdminRoute>} />
-        <Route path="/admin/community"            element={<AdminRoute><AdminCommunityPage /></AdminRoute>} />
-        <Route path="/admin/social"               element={<AdminRoute><AdminSocialPage /></AdminRoute>} />
-        <Route path="/admin/crm"                  element={<AdminRoute><AdminCRMPage /></AdminRoute>} />
-        <Route path="/admin/media"                element={<AdminRoute><AdminMediaPage /></AdminRoute>} />
-        <Route path="/admin/traffic"              element={<AdminRoute><AdminTrafficPage /></AdminRoute>} />
-        <Route path="/admin/events"               element={<AdminRoute><AdminEventsPage /></AdminRoute>} />
         <Route path="/admin/waitlist"             element={<AdminRoute><AdminWaitlistPage /></AdminRoute>} />
         <Route path="/admin/lead/:id"             element={<AdminRoute><AdminLeadDetailPage /></AdminRoute>} />
-        <Route path="/admin/conversao"            element={<AdminRoute><AdminConversionPage /></AdminRoute>} />
 
         {/* Caption — landing pública para tráfego pago (Meta/Google Ads) */}
         <Route path="/caption"             element={<CaptionPage />} />

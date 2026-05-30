@@ -10,29 +10,17 @@ import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useAuth } from "@/hooks/useAuth";
 import {
   LayoutDashboard, BookOpen, Users, ShoppingBag,
-  MessageSquare, LogOut, X, ChevronRight,
-  ArrowLeft, Shield, Menu, Instagram, BarChart2,
-  Trello, Megaphone, TrendingUp, Inbox, BarChart3,
+  LogOut, X, ChevronRight, ArrowLeft, Shield, Menu, Inbox,
 } from "lucide-react";
 
 interface NavItem { label: string; icon: React.ElementType; href: string; }
 
 const adminNav: NavItem[] = [
-  { label: "Painel",     icon: LayoutDashboard, href: "/admin" },
-  { label: "Usuários",   icon: Users,           href: "/admin/users" },
-  { label: "Produtos",   icon: BookOpen,        href: "/admin/products" },
-  { label: "Pedidos",    icon: ShoppingBag,     href: "/admin/orders" },
-  { label: "Comunidade", icon: MessageSquare,   href: "/admin/community" },
-];
-
-const marketingNav: NavItem[] = [
-  { label: "Lista de espera", icon: Inbox,     href: "/admin/waitlist" },
-  { label: "Conversões",    icon: BarChart3,   href: "/admin/conversao" },
-  { label: "Redes Sociais", icon: Instagram,   href: "/admin/social" },
-  { label: "CRM & Automação", icon: Megaphone, href: "/admin/crm" },
-  { label: "Funil Eventos",  icon: TrendingUp, href: "/admin/events" },
-  { label: "Projetos",      icon: Trello,      href: "/admin/media" },
-  { label: "Anúncios",      icon: BarChart2,   href: "/admin/traffic" },
+  { label: "Painel",          icon: LayoutDashboard, href: "/admin" },
+  { label: "Usuários",        icon: Users,           href: "/admin/users" },
+  { label: "Produtos",        icon: BookOpen,        href: "/admin/products" },
+  { label: "Pedidos",         icon: ShoppingBag,     href: "/admin/orders" },
+  { label: "Lista de espera", icon: Inbox,           href: "/admin/waitlist" },
 ];
 
 function isActive(href: string, pathname: string) {
@@ -117,26 +105,6 @@ function AdminSidebar({ onClose }: { onClose?: () => void }) {
             </Link>
           );
         })}
-        {/* ─── Marketing ─── */}
-        <div style={{ margin: "10px 4px 4px", display: "flex", alignItems: "center", gap: "8px" }}>
-          <div style={{ flex: 1, height: "1px", background: "var(--border-subtle)" }} />
-          <span className="font-label" style={{ fontSize: "7px", letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--text-faint)", whiteSpace: "nowrap" }}>Marketing</span>
-          <div style={{ flex: 1, height: "1px", background: "var(--border-subtle)" }} />
-        </div>
-        {marketingNav.map(({ label, icon: Icon, href }) => {
-          const active = isActive(href, location.pathname);
-          return (
-            <Link
-              key={href} to={href} onClick={onClose}
-              className={`sidebar-link ${active ? "active" : ""}`}
-              style={{ textDecoration: "none" }}
-            >
-              <Icon size={15} strokeWidth={active ? 2 : 1.5} />
-              <span style={{ fontSize: "14px" }}>{label}</span>
-              {active && <ChevronRight size={11} style={{ marginLeft: "auto", color: "var(--gold)", opacity: 0.5 }} />}
-            </Link>
-          );
-        })}
       </nav>
 
       <div style={{ margin: "6px 14px", height: "1px", background: "var(--border-subtle)" }} />
@@ -181,7 +149,7 @@ function AdminBottomNav() {
         zIndex: 150,
       }}
     >
-      {[...adminNav, ...marketingNav].map(({ label, icon: Icon, href }) => {
+      {adminNav.map(({ label, icon: Icon, href }) => {
         const active = isActive(href, location.pathname);
         return (
           <Link
