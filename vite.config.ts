@@ -37,20 +37,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Vendor splits para melhor cache no Hostinger
           react: ["react", "react-dom", "react-router-dom"],
           query: ["@tanstack/react-query"],
-          radix: [
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-popover",
-            "@radix-ui/react-select",
-            "@radix-ui/react-tabs",
-            "@radix-ui/react-tooltip",
-            "@radix-ui/react-slot",
-            "@radix-ui/react-accordion",
-            "@radix-ui/react-toast",
-          ],
         },
       },
     },
