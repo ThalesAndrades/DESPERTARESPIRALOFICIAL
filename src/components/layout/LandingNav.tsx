@@ -38,10 +38,10 @@ export default function LandingNav({ onJoinWaitlist }: Props = {}) {
   }, []);
 
   const navLinks = [
-    { label: "Método",     href: "#section-2" },
-    { label: "Jornadas",   href: "#section-3" },
-    { label: "Comunidade", href: "#section-5" },
-    { label: "Sobre",      href: "/sobre" },
+    { label: "Método",        href: "#section-2" },
+    { label: "Mapa do Poder", href: "/mapa-do-poder" },
+    { label: "Jornadas",      href: "#section-3" },
+    { label: "Sobre",         href: "/sobre" },
   ];
 
   const linkStyle: React.CSSProperties = {
