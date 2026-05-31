@@ -1,0 +1,144 @@
+# ─────────────────────────────────────────────────────────────
+# Despertar Espiral — Apache (.htaccess) para Hostinger Cloud
+# ─────────────────────────────────────────────────────────────
+# Cobre: SPA routing, HTTPS, www→raiz, compressão, cache, headers
+# ─────────────────────────────────────────────────────────────
+
+# Charset padrão
+AddDefaultCharset UTF-8
+
+# ─────────────────────────────────────────────────────────────
+# HTTPS + www → raiz (canônico: https://despertarespiral.com/)
+# ─────────────────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Força HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # Remove www
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+  # ─── SPA routing ──────────────────────────────────────────
+  # Qualquer rota que NÃO é arquivo/diretório existente vai pro index.html
+  # (React Router cuida do routing client-side a partir dali)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !^/api/
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# ─────────────────────────────────────────────────────────────
+# Compressão (gzip + deflate)
+# ─────────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript application/json
+  AddOutputFilterByType DEFLATE application/xml application/xhtml+xml application/rss+xml
+  AddOutputFilterByType DEFLATE image/svg+xml font/woff font/woff2 application/font-woff application/font-woff2
+</IfModule>
+
+# Brotli se disponível
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/javascript
+  AddOutputFilterByType BROTLI_COMPRESS application/javascript application/json application/xml
+  AddOutputFilterByType BROTLI_COMPRESS image/svg+xml font/woff font/woff2
+</IfModule>
+
+# ─────────────────────────────────────────────────────────────
+# Cache — imutável para assets com hash, curto para HTML
+# ─────────────────────────────────────────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                                  "access plus 1 month"
+
+  # HTML e XML: sempre revalidar
+  ExpiresByType text/html                         "access plus 0 seconds"
+  ExpiresByType application/xhtml+xml             "access plus 0 seconds"
+  ExpiresByType application/xml                   "access plus 0 seconds"
+
+  # Manifest / robots / sitemap
+  ExpiresByType application/manifest+json         "access plus 1 day"
+  ExpiresByType text/cache-manifest               "access plus 0 seconds"
+
+  # Assets versionados (com hash no nome) — cache longo
+  ExpiresByType text/css                          "access plus 1 year"
+  ExpiresByType application/javascript            "access plus 1 year"
+  ExpiresByType text/javascript                   "access plus 1 year"
+
+  # Mídia
+  ExpiresByType image/svg+xml                     "access plus 6 months"
+  ExpiresByType image/png                         "access plus 6 months"
+  ExpiresByType image/jpeg                        "access plus 6 months"
+  ExpiresByType image/webp                        "access plus 6 months"
+  ExpiresByType image/avif                        "access plus 6 months"
+  ExpiresByType image/x-icon                      "access plus 1 year"
+
+  # Fontes
+  ExpiresByType font/woff                         "access plus 1 year"
+  ExpiresByType font/woff2                        "access plus 1 year"
+  ExpiresByType application/font-woff             "access plus 1 year"
+  ExpiresByType application/font-woff2            "access plus 1 year"
+</IfModule>
+
+# Reforça Cache-Control para assets versionados (com hash)
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2?|svg|png|jpe?g|webp|avif|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # HTML sempre fresco
+  <FilesMatch "\.(html?)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # ─── Security headers ─────────────────────────────────────
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(self), usb=()"
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
+  # Remove fingerprinting (não revela versão do servidor)
+  Header unset X-Powered-By
+  Header always unset Server
+
+  # CORS — só permite mesmo domínio (ajuste se for usar CDN externo)
+  <FilesMatch "\.(woff2?|ttf|otf|eot)$">
+    Header set Access-Control-Allow-Origin "https://despertarespiral.com"
+  </FilesMatch>
+</IfModule>
+
+# ─────────────────────────────────────────────────────────────
+# MIME types (caso o servidor não reconheça)
+# ─────────────────────────────────────────────────────────────
+<IfModule mod_mime.c>
+  AddType application/javascript                  .js .mjs
+  AddType text/css                                .css
+  AddType image/svg+xml                           .svg
+  AddType image/webp                              .webp
+  AddType image/avif                              .avif
+  AddType font/woff2                              .woff2
+  AddType font/woff                               .woff
+  AddType application/manifest+json               .webmanifest
+</IfModule>
+
+# ─────────────────────────────────────────────────────────────
+# Erros — devolve index.html (SPA cuida das telas 404)
+# ─────────────────────────────────────────────────────────────
+ErrorDocument 404 /index.html
+
+# ─────────────────────────────────────────────────────────────
+# Bloqueia acesso a arquivos sensíveis
+# ─────────────────────────────────────────────────────────────
+<FilesMatch "(^\.|composer\.json|package\.json|package-lock\.json|tsconfig.*\.json|vite\.config\.|vitest\.config\.|eslint\.config\.|tailwind\.config\.|postcss\.config\.|README\.md|SECURITY\.md|.gitignore|.gitattributes)">
+  Require all denied
+</FilesMatch>
+
+# Diretório listing — desabilita
+Options -Indexes

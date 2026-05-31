@@ -1,0 +1,27 @@
+{
+  "name": "Despertar Espiral",
+  "short_name": "Espiral",
+  "description": "Um caminho feminino de autoconhecimento — método Mulher Espiral por Sunyan Nunes.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070915",
+  "theme_color": "#0b0d1c",
+  "lang": "pt-BR",
+  "categories": ["lifestyle", "education", "wellness"],
+  "icons": [
+    {
+      "src": "/brand-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/og-image.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
