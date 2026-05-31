@@ -12,11 +12,34 @@
 
   --gold:          #c6a870;
   --gold-soft:     #dac394;
+  --gold-bright:   #f0d8a8;
+  --gold-deep:     #8a6f3e;
   --gold-dim:      rgba(198,168,112,0.45);
   --gold-glow:     rgba(198,168,112,0.10);
   --rose:          #c99aaa;
+  --rose-soft:     rgba(201,154,170,0.18);
+  --rose-deep:     #a87285;
   --lavender:      #a49ed0;
+  --lavender-soft: rgba(164,158,208,0.18);
+  --lavender-deep: #7a72b5;
   --sage:          #8caa96;
+  --sage-soft:     rgba(140,170,150,0.18);
+  --sage-deep:     #65876f;
+
+  /* Gradients ricos — usar em CTAs, headlines, hovers */
+  --grad-gold:   linear-gradient(135deg, #f0d8a8 0%, #dac394 28%, #c6a870 68%, #a78854 100%);
+  --grad-warm:   linear-gradient(135deg, #dac394 0%, #c99aaa 100%);
+  --grad-cool:   linear-gradient(135deg, #a49ed0 0%, #8caa96 100%);
+  --grad-magic:  linear-gradient(135deg, #dac394 0%, #c99aaa 50%, #a49ed0 100%);
+
+  /* Aurora — backgrounds com mesh sutil, evita cor chapada */
+  --aurora-warm:
+    radial-gradient(at 22% 28%, rgba(198,168,112,0.10) 0%, transparent 55%),
+    radial-gradient(at 78% 62%, rgba(201,154,170,0.07) 0%, transparent 50%),
+    radial-gradient(at 50% 92%, rgba(164,158,208,0.06) 0%, transparent 55%);
+  --aurora-deep:
+    radial-gradient(at 18% 18%, rgba(122,114,181,0.09) 0%, transparent 60%),
+    radial-gradient(at 82% 72%, rgba(198,168,112,0.08) 0%, transparent 55%);
 
   --bg-base:       #04060f;
   --bg-surface:    #070915;
@@ -101,11 +124,32 @@
 
   --gold:          #7a5e1e;
   --gold-soft:     #8f6e28;
+  --gold-bright:   #a98538;
+  --gold-deep:     #5c4615;
   --gold-dim:      rgba(122,94,30,0.42);
   --gold-glow:     rgba(122,94,30,0.07);
   --rose:          #7a3248;
+  --rose-soft:     rgba(122,50,72,0.10);
+  --rose-deep:     #5c2434;
   --lavender:      #3d3890;
+  --lavender-soft: rgba(61,56,144,0.10);
+  --lavender-deep: #2c2870;
   --sage:          #2a5e38;
+  --sage-soft:     rgba(42,94,56,0.10);
+  --sage-deep:     #1d4527;
+
+  --grad-gold:   linear-gradient(135deg, #a98538 0%, #8f6e28 30%, #7a5e1e 70%, #5c4615 100%);
+  --grad-warm:   linear-gradient(135deg, #8f6e28 0%, #7a3248 100%);
+  --grad-cool:   linear-gradient(135deg, #3d3890 0%, #2a5e38 100%);
+  --grad-magic:  linear-gradient(135deg, #8f6e28 0%, #7a3248 50%, #3d3890 100%);
+
+  --aurora-warm:
+    radial-gradient(at 22% 28%, rgba(122,94,30,0.07) 0%, transparent 55%),
+    radial-gradient(at 78% 62%, rgba(122,50,72,0.05) 0%, transparent 50%),
+    radial-gradient(at 50% 92%, rgba(61,56,144,0.04) 0%, transparent 55%);
+  --aurora-deep:
+    radial-gradient(at 18% 18%, rgba(61,56,144,0.06) 0%, transparent 60%),
+    radial-gradient(at 82% 72%, rgba(122,94,30,0.05) 0%, transparent 55%);
 
   --bg-base:       #ede9e0;
   --bg-surface:    #faf7f2;
@@ -183,6 +227,8 @@
 
   body {
     background-color: var(--bg-surface);
+    background-image: var(--aurora-warm);
+    background-attachment: fixed;
     color: var(--text-primary);
     font-family: 'Lora', Georgia, serif;
     font-weight: 400;
@@ -200,8 +246,13 @@
   }
 
   ::selection {
-    background: rgba(198,168,112,0.28);
-    color: var(--gold-soft);
+    background: linear-gradient(135deg, rgba(198,168,112,0.36) 0%, rgba(201,154,170,0.30) 100%);
+    color: var(--gold-bright);
+    text-shadow: 0 0 12px rgba(198,168,112,0.3);
+  }
+  [data-theme="light"] ::selection {
+    background: linear-gradient(135deg, rgba(122,94,30,0.20) 0%, rgba(122,50,72,0.16) 100%);
+    color: var(--gold-deep);
     text-shadow: none;
   }
 
@@ -284,7 +335,9 @@
     padding: 15px clamp(24px, 5vw, 40px);
     font-size: 10.5px;
     letter-spacing: 0.20em;
-    background: linear-gradient(180deg, var(--gold-soft) 0%, var(--gold) 100%);
+    background: var(--grad-gold);
+    background-size: 130% 130%;
+    background-position: 0% 0%;
     color: #0a0c1a;
     border-radius: 100px;
     border: none;
@@ -320,10 +373,12 @@
   [data-theme="light"] .btn-gold { color: #ffffff; }
   .btn-gold:hover:not(:disabled) {
     transform: translateY(-2px) scale(1.012);
+    background-position: 100% 100%;
     box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.32),
       0 2px 4px rgba(0,0,0,0.18),
-      0 14px 36px rgba(198,168,112,0.36);
+      0 14px 36px rgba(198,168,112,0.42),
+      0 0 0 1px rgba(240,216,168,0.20);
   }
   .btn-gold:not(:disabled):hover::after {
     content: '';
@@ -365,9 +420,9 @@
   }
   .btn-outline-gold:hover:not(:disabled) {
     border-color: var(--gold);
-    background: var(--gold-glow);
+    background: linear-gradient(135deg, rgba(198,168,112,0.10) 0%, rgba(201,154,170,0.06) 100%);
     transform: translateY(-2px) scale(1.012);
-    box-shadow: 0 8px 24px rgba(198,168,112,0.16);
+    box-shadow: 0 8px 24px rgba(198,168,112,0.18), 0 0 0 1px rgba(198,168,112,0.20);
   }
   .btn-outline-gold:active:not(:disabled) {
     transform: translateY(0) scale(0.965);
@@ -413,6 +468,7 @@
   ═════════════════════════════════════ */
   .card-dark {
     background: var(--card-bg);
+    background-image: var(--aurora-deep);
     border: 1px solid var(--border-subtle);
     border-radius: var(--r-xl);
     box-shadow:
@@ -995,6 +1051,33 @@
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
 
+  /* Texto com gradiente — use em palavras-chave de headlines */
+  .text-aurora {
+    background: var(--grad-magic);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: auroraShimmer 12s ease-in-out infinite;
+  }
+  .text-gold-shimmer {
+    background: var(--grad-gold);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: auroraShimmer 10s ease-in-out infinite;
+  }
+
+  /* Backgrounds com aurora subtle — usar em sections grandes */
+  .bg-aurora-warm { background-image: var(--aurora-warm); }
+  .bg-aurora-deep { background-image: var(--aurora-deep); }
+
+  /* Pílulas com acentos */
+  .pill-rose     { background: var(--rose-soft);     color: var(--rose);     border-color: var(--rose); }
+  .pill-lavender { background: var(--lavender-soft); color: var(--lavender); border-color: var(--lavender); }
+  .pill-sage     { background: var(--sage-soft);     color: var(--sage);     border-color: var(--sage); }
+
   /* Toast brand */
   [data-theme="dark"] [data-sonner-toast].toaster-brand {
     background: #12142a !important;
@@ -1050,6 +1133,10 @@
 @keyframes goldShimmer {
   0%   { background-position: -200% center; }
   100% { background-position:  200% center; }
+}
+@keyframes auroraShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
 }
 @keyframes skeletonShimmer {
   0%   { left: -70%; }
@@ -1318,6 +1405,7 @@ section[id], [id^="section-"], #main {
   [data-wa-fab] span span { animation: none !important; }
   .skeleton::after { animation: none !important; }
   .section-label-live::before { animation: none !important; }
+  .text-aurora, .text-gold-shimmer { animation: none !important; background-position: 50% 50% !important; }
   html { scroll-behavior: auto; }
   img { animation: none !important; }
 }
